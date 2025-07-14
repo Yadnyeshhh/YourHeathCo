@@ -1,0 +1,50 @@
+.admin-sidebar {
+    width: 240px;
+    height: 100vh;
+    background-color: var(--primary-color); /* Uses your primary blue */
+    color: var(--light-text); /* Ensures text is white/light against the blue */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: var(--shadow); /* Adds a subtle shadow for depth */
+}
+
+.admin-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--light-text); /* Explicitly set for clarity */
+}
+
+.admin-menu-items {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
+.admin-menu-item {
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-radius 0.3s ease; /* Smooth transition */
+}
+
+.admin-menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* A subtle white overlay for hover */
+    padding: 5px 10px;
+    border-radius: var(--border-radius); /* Uses your global border-radius */
+}
+
+.admin-user-info {
+    border-top: 1px solid rgba(255, 255, 255, 0.3); /* Lighter border for contrast */
+    padding-top: 10px;
+}
+
+.admin-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7); /* Slightly muted white */
+}
+
+.admin-name {
+    font-weight: bold;
+    color: var(--light-text); /* Explicitly set for clarity */
+}
