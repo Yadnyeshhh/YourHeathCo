@@ -1,0 +1,827 @@
+/* Basic Reset & Global Styles */
+:root {
+    --primary-color: #007bff; /* A nice blue for medical/trust */
+    --secondary-color: #28a745; /* A green for success/health */
+    --accent-color: #ffc107; /* A subtle accent yellow */
+    --dark-text: #333;
+    --light-text: #f8f8f8;
+    --gray-bg: #f4f7fa;
+    --white-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    --border-radius: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif; /* Or a professional sans-serif font like 'Roboto', 'Open Sans' */
+    line-height: 1.6;
+    color: var(--dark-text);
+    background-color: var(--gray-bg);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    list-style: none;
+}
+
+h1, h2, h3, h4 {
+    color: var(--dark-text);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+h1 { font-size: 3.5rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 1.8rem; }
+h4 { font-size: 1.4rem; }
+
+p {
+    margin-bottom: 1rem;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+/* Icons (Placeholder - use Font Awesome or similar in a real project) */
+.icon-general-checkup::before,
+.icon-pediatrics::before,
+.icon-cardiology::before,
+.icon-dermatology::before,
+.icon-emergency::before,
+.icon-check::before,
+.icon-location::before,
+.icon-phone::before,
+.icon-email::before,
+.icon-facebook::before,
+.icon-twitter::before,
+.icon-linkedin::before {
+    font-family: 'Font Awesome 5 Free'; /* Example: Use Font Awesome */
+    font-weight: 900;
+    margin-right: 0.5rem;
+    /* Replace with actual Font Awesome unicode or SVG */
+}
+
+.icon-general-checkup::before { content: "\f478"; } /* Example icon: stethoscope */
+.icon-pediatrics::before { content: "\f478"; } /* Example icon: child */
+.icon-cardiology::before { content: "\f21e"; } /* Example icon: heartbeat */
+.icon-dermatology::before { content: "\f7fd"; } /* Example icon: medical-kit */
+.icon-emergency::before { content: "\f0f9"; } /* Example icon: ambulance */
+.icon-check::before { content: "\f00c"; color: var(--secondary-color); }
+.icon-location::before { content: "\f3c5"; }
+.icon-phone::before { content: "\f095"; }
+.icon-email::before { content: "\f0e0"; }
+.icon-facebook::before { content: "\f09a"; }
+.icon-twitter::before { content: "\f099"; }
+.icon-linkedin::before { content: "\f0e1"; }
+
+
+/* Utility Classes */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Header & Navigation */
+.hero-section {
+    background: linear-gradient(rgba(0, 123, 255, 0.7), rgba(0, 123, 255, 0.9)), url('https://via.placeholder.com/1920x800/007bff/FFFFFF?text=Modern+Clinic+Background') no-repeat center center/cover;
+    color: var(--light-text);
+    padding: 100px 0;
+    text-align: center;
+    position: relative;
+    min-height: 600px; /* Ensure sufficient height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: rgba(0, 0, 0, 0.2); /* Slightly transparent */
+    z-index: 100;
+}
+
+.navbar .logo a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--light-text);
+    text-decoration: none;
+}
+
+.navbar .nav-links {
+    display: flex;
+}
+
+.navbar .nav-links li {
+    margin-left: 30px;
+}
+
+.navbar .nav-links a {
+    color: var(--light-text);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-links a:hover {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.book-appointment-btn {
+    background-color: var(--secondary-color);
+    color: var(--light-text);
+    border: 2px solid var(--secondary-color);
+    padding: 10px 20px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.book-appointment-btn:hover {
+    background-color: darken(var(--secondary-color), 10%); /* This won't work in pure CSS, use a slightly darker color manually */
+    background-color: #218838; /* Darker green */
+    border-color: #218838;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin-top: 50px;
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    color: var(--light-text);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-ctas .primary-cta,
+.hero-ctas .secondary-cta {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    margin: 0 10px;
+    border-radius: 50px; /* Pill shape */
+    transition: all 0.3s ease;
+}
+
+.primary-cta {
+    background-color: var(--secondary-color);
+    color: var(--light-text);
+    border: 2px solid var(--secondary-color);
+}
+
+.primary-cta:hover {
+    background-color: #218838;
+    border-color: #218838;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.secondary-cta {
+    background-color: transparent;
+    color: var(--light-text);
+    border: 2px solid var(--light-text);
+}
+
+.secondary-cta:hover {
+    background-color: var(--light-text);
+    color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+
+/* Sections Styling */
+section {
+    padding: 80px 50px;
+    text-align: center;
+}
+
+section h2 {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+section h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* Services Section */
+.services-section {
+    background-color: var(--white-bg);
+}
+
+.service-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background-color: var(--gray-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.service-card i {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.service-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.service-card p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* About Us Section */
+.about-section {
+    background-color: var(--gray-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    gap: 50px;
+    text-align: left; /* Align text left within content */
+}
+
+.about-content {
+    flex: 1;
+    min-width: 400px;
+    max-width: 600px;
+}
+
+.about-content h2 {
+    text-align: left;
+}
+
+.about-content h2::after {
+    margin-left: 0;
+}
+
+.about-content ul {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.about-content ul li {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.about-image {
+    flex: 1;
+    min-width: 350px;
+}
+
+.about-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+/* CTA Appointment Section */
+.cta-appointment-section {
+    background: linear-gradient(rgba(0, 123, 255, 0.8), rgba(0, 123, 255, 0.9)), url('https://via.placeholder.com/1920x400/007bff/FFFFFF?text=Doctor+Patient') no-repeat center center/cover;
+    color: var(--light-text);
+    padding: 80px 50px;
+    text-align: center;
+}
+
+.cta-appointment-section h2 {
+    color: var(--light-text);
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+}
+
+.cta-appointment-section p {
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.book-appointment-lg-btn {
+    background-color: var(--accent-color);
+    color: var(--dark-text);
+    padding: 15px 40px;
+    font-size: 1.4rem;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.book-appointment-lg-btn:hover {
+    background-color: darken(var(--accent-color), 10%); /* #e0a800 */
+    background-color: #e0a800;
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+}
+
+/* Doctors Section */
+.doctors-section {
+    background-color: var(--white-bg);
+}
+
+.doctor-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.doctor-card {
+    background-color: var(--gray-bg);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.doctor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.doctor-card img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 4px solid var(--primary-color);
+}
+
+.doctor-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.doctor-card p {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.doctor-card span {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.view-profile-btn {
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.view-profile-btn:hover {
+    background-color: darken(var(--primary-color), 10%); /* #0056b3 */
+    background-color: #0056b3;
+}
+
+
+/* Testimonials Section */
+.testimonials-section {
+    background-color: var(--gray-bg);
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.testimonial-card {
+    background-color: var(--white-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes name/date to bottom */
+}
+
+.testimonial-card p {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.testimonial-card h4 {
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.testimonial-card span {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* Contact Section */
+.contact-section {
+    background-color: var(--white-bg);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+    text-align: left;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.contact-info h2 {
+    text-align: left;
+}
+.contact-info h2::after {
+    margin-left: 0;
+}
+
+.contact-info p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    color: #555;
+}
+
+.contact-info i {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    color: var(--primary-color);
+}
+
+.social-links {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.social-links a {
+    font-size: 2rem;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: var(--secondary-color);
+}
+
+.contact-form-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    background-color: var(--gray-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.contact-form-container h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--dark-text);
+    background-color: var(--white-bg);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.contact-form textarea {
+    resize: vertical;
+}
+
+.contact-form .primary-cta {
+    align-self: flex-start; /* Align button to the left */
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+}
+
+.contact-form .primary-cta:hover {
+    background-color: #0056b3;
+}
+
+
+/* Footer Section */
+.footer-section {
+    background-color: var(--dark-text);
+    color: var(--light-text);
+    padding: 50px 50px 30px;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left;
+    gap: 30px;
+}
+
+.footer-logo,
+.footer-links,
+.footer-contact {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 20px;
+}
+
+.footer-logo h3 {
+    color: var(--light-text);
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.footer-logo p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.footer-links h4,
+.footer-contact h4 {
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--light-text);
+    text-decoration: underline;
+}
+
+.footer-contact p {
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .navbar {
+        padding: 20px 30px;
+    }
+    .navbar .nav-links {
+        display: none; /* Hide navigation links for smaller screens */
+    }
+    .navbar .book-appointment-btn {
+        margin-left: auto; /* Push button to right if nav links are hidden */
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1.2rem;
+    }
+
+    .service-cards,
+    .doctor-cards,
+    .testimonial-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .about-section,
+    .contact-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-content,
+    .contact-info,
+    .contact-form-container {
+        min-width: unset;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .about-content h2,
+    .contact-info h2 {
+        text-align: center;
+    }
+    .about-content h2::after,
+    .contact-info h2::after {
+        margin: 10px auto 0;
+    }
+
+    .contact-form .primary-cta {
+        align-self: center; /* Center button on smaller screens */
+    }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-links ul {
+        padding-left: 0;
+    }
+    .footer-links h4,
+    .footer-contact h4 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 60px 20px;
+    }
+
+    .hero-section {
+        padding: 80px 0;
+        min-height: 500px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.8rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .hero-ctas {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .hero-ctas .primary-cta,
+    .hero-ctas .secondary-cta {
+        width: 80%; /* Make buttons wider */
+        max-width: 300px;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    .cta-appointment-section h2 {
+        font-size: 2.2rem;
+    }
+
+    .cta-appointment-section p {
+        font-size: 1.1rem;
+    }
+
+    .book-appointment-lg-btn {
+        font-size: 1.2rem;
+        padding: 12px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .navbar .logo {
+        margin-bottom: 15px;
+    }
+    .navbar .book-appointment-btn {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+
+    .service-card, .doctor-card, .testimonial-card {
+        padding: 20px;
+    }
+
+    .service-card i {
+        font-size: 3rem;
+    }
+
+    .doctor-card img {
+        width: 120px;
+        height: 120px;
+    }
+}

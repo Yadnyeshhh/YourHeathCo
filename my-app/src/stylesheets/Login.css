@@ -1,0 +1,345 @@
+/* login.css */
+
+/* Define CSS Variables within a specific scope */
+.login-page-container {
+  --primary-color: #007bff;
+  --secondary-color: #28a745;
+  --accent-color: #ffc107;
+  --text-color: #333;
+  --white: #ffffff;
+  --gray-light: #f8f9fa;
+  --gray-dark: #dee2e6;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  --radius: 16px;
+  --transition: 0.3s ease;
+
+  /* Styles that were previously on body or :root, now scoped */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #e0f2f7 0%, #c1e4f4 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--text-color);
+  overflow: hidden;
+  /* Ensure it takes full viewport height for proper centering */
+  width: 100vw;
+  height: 100vh;
+}
+
+/* The existing .login--body now becomes a child of .login-page-container */
+.login-page-container .login--body {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* --- Admin Login Top Right Button --- */
+.login-page-container .admin-login-top-right-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: background-color var(--transition), transform var(--transition);
+  z-index: 10;
+}
+
+.login-page-container .admin-login-top-right-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* --- Login Container --- */
+.login-page-container .login--container {
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+}
+
+.login-page-container .form-container h1 {
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.login-page-container .form-container input {
+  background-color: var(--gray-light);
+  border: 1px solid var(--gray-dark);
+  padding: 15px 20px;
+  margin: 10px 0;
+  width: calc(100% - 40px);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text-color);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.login-page-container .form-container input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.login-page-container .form-container a {
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  text-decoration: none;
+  margin: 15px 0 25px;
+  display: block;
+  transition: color var(--transition);
+}
+
+.login-page-container .form-container a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.login-page-container .login--button {
+  background-color: var(--secondary-color);
+  color: var(--white);
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow);
+  transition: background-color var(--transition), transform var(--transition);
+  margin-top: 20px;
+  width: 100%;
+}
+
+.login-page-container .login--button:hover {
+  background-color: #218838;
+  transform: translateY(-3px);
+}
+
+.login-page-container .signup-text {
+  margin-top: 30px;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.login-page-container .signup-text span {
+  color: var(--primary-color);
+  cursor: pointer;
+  font-weight: 600;
+  transition: color var(--transition);
+}
+
+.login-page-container .signup-text span:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* --- Custom Alert Styles --- */
+.login-page-container .custom-alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.login-page-container .custom-alert-box {
+  background-color: var(--white);
+  padding: 30px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+  max-width: 350px;
+  animation: fadeInScale 0.3s ease-out forwards;
+}
+
+.login-page-container .custom-alert-box p {
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+.login-page-container .custom-alert-button {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.login-page-container .custom-alert-button:hover {
+  background-color: #e0a800;
+  transform: translateY(-2px);
+}
+
+/* --- Admin Modal Styles --- */
+.login-page-container .admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(8px);
+}
+
+.login-page-container .admin-modal-content {
+  background-color: var(--white);
+  padding: 40px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  text-align: center;
+  animation: fadeInScale 0.3s ease-out forwards;
+}
+
+.login-page-container .admin-modal-content h2 {
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.login-page-container .admin-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--gray-dark);
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+.login-page-container .admin-modal-close:hover {
+  color: var(--text-color);
+}
+
+.login-page-container .admin-modal-content input {
+  background-color: var(--gray-light);
+  border: 1px solid var(--gray-dark);
+  padding: 15px 20px;
+  margin: 10px 0;
+  width: calc(100% - 40px);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text-color);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.login-page-container .admin-modal-content input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.login-page-container .admin-modal-content .login--button {
+  margin-top: 25px;
+  background-color: var(--primary-color);
+}
+
+.login-page-container .admin-modal-content .login--button:hover {
+  background-color: #0056b3;
+}
+
+/* --- Animations --- */
+/* These can remain global or be scoped if preferred, but for component-specific animations,
+   scoping them with the main container is a good practice. */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --- Responsive Adjustments --- */
+/* Ensure media queries also target elements within the scoped container */
+@media (max-width: 768px) {
+  .login-page-container .login--container,
+  .login-page-container .admin-modal-content {
+    margin: 20px;
+    padding: 30px;
+  }
+
+  .login-page-container .form-container h1 {
+    font-size: 2rem;
+  }
+
+  .login-page-container .login--button {
+    font-size: 1rem;
+    padding: 12px 25px;
+  }
+
+  .login-page-container .admin-login-top-right-button {
+    top: 15px;
+    right: 15px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page-container .login--container,
+  .login-page-container .admin-modal-content {
+    padding: 25px;
+    margin: 15px;
+  }
+
+  .login-page-container .form-container input,
+  .login-page-container .admin-modal-content input {
+    padding: 12px 15px;
+    width: calc(100% - 30px);
+  }
+
+  .login-page-container .custom-alert-box {
+    padding: 20px;
+    max-width: 300px;
+  }
+
+  .login-page-container .custom-alert-box p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+}
