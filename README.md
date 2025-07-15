@@ -1,4 +1,4 @@
-# YourHEalthCo
+# YourHealthCo
 
 **MyHealth Co** is a web-based healthcare dashboard designed to manage patient wellness. It supports both **User** and **Admin** roles with secure login and authentication.
 
