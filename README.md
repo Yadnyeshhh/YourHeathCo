@@ -1,7 +1,3 @@
-Here’s a clean **README.md** for your **MyHealth Co** project, covering login, features, and authentication:
-
----
-
 # YourHEalthCo
 
 **MyHealth Co** is a web-based healthcare dashboard designed to manage patient wellness. It supports both **User** and **Admin** roles with secure login and authentication.
