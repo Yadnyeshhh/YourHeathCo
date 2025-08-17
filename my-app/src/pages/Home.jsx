@@ -111,7 +111,7 @@ const LandingPage = () => {
   return (
     <div className="font-sans text-gray-800 bg-gray-50">
       {/* Header Section */}
-      <header className="relative bg-gradient-to-b from-blue-600/80 to-blue-600/90 text-white min-h-[600px] flex flex-col justify-center items-center text-center">
+      <header className="relative bg-gradient-to-b from-blue-800/90 via-blue-300/80 to-blue-100/90 text-white min-h-[600px] flex flex-col justify-center items-center text-centerrelative bg-gradient-to-b from-blue-900 via-blue-700/80 to-blue-200/90 text-white min-h-[600px] flex flex-col justify-center items-center text-center">
         <nav className="w-full flex items-center justify-between px-8 py-4 bg-black/30 backdrop-blur-lg fixed top-0 left-0 z-50">
           {/* Logo */}
           <div className="text-2xl font-bold text-white">
@@ -211,7 +211,7 @@ const LandingPage = () => {
           Comprehensive and compassionate healthcare solutions for you and your
           family.
         </p>
-        <button className="bg-yellow-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition">
+        <button className="bg-yellow-400 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-300 transition" onClick={toLogin}>
           Get Started
         </button>
 
@@ -234,7 +234,7 @@ const LandingPage = () => {
       {/* Services Section */}
       <section id="services" className="py-16 text-center bg-white">
         <h2 className="text-3xl font-bold mb-10">Our Specialized Services</h2>
-        <div className="grid gap-8 px-6 md:grid-cols-3 max-w-6xl mx-auto">
+        <div className="grid gap-8 px-6 md:grid-cols-3 max-w-6xl mx-auto justify-center">
           {[
             {
               title: "General Checkups",
@@ -270,37 +270,76 @@ const LandingPage = () => {
       </section>
 
       {/* About Section */}
-      <section
-        id="about"
-        className="py-16 max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center"
-      >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        * {
+          font-family: 'Poppins', sans-serif;
+        }
+      `}</style>
+
+      <h1 className="text-3xl font-semibold text-center mx-auto pt-10">About YourHealthCo</h1>
+      <p className="text-sm text-slate-500 text-center mt-2 max-w-md mx-auto">
+        Delivering quality healthcare with compassion, technology, and a patient-first approach.
+      </p>
+
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-10 px-6 py-16">
+        <div className="size-[520px] rounded-full absolute blur-[300px] -z-10 bg-[#E6F0FF]"></div>
+        
         <div>
-          <h2 className="text-3xl font-bold mb-6">About YourHealthCo</h2>
-          <p className="mb-6 text-gray-700">
-            YourHealthCo is committed to providing high-quality,
-            patient-centered healthcare. With a team of experienced
-            professionals and state-of-the-art facilities, we strive to offer
-            personalized care that addresses the unique needs of each
-            individual.
+          <h2 className="text-3xl font-semibold">Why Choose Us?</h2>
+          <p className="text-sm text-slate-500 mt-2">
+            YourHealthCo is committed to providing high-quality, patient-centered healthcare. 
+            With experienced professionals and state-of-the-art facilities, we ensure 
+            personalized care tailored to every individual.
           </p>
-          <ul className="space-y-3 text-gray-700">
-            <li>✅ Experienced & Certified Doctors</li>
-            <li>✅ State-of-the-Art Facilities</li>
-            <li>✅ Patient-Centered Approach</li>
-            <li>✅ Convenient Online Booking</li>
-          </ul>
-          <button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition">
+
+          <div className="flex flex-col gap-6 mt-6">
+            <div className="flex items-center gap-4">
+              <div className="size-9 p-2 bg-blue-50 border border-blue-200 rounded">
+                <span>✅</span>
+              </div>
+              <div>
+                <h3 className="text-base font-medium text-slate-600">Experienced & Certified Doctors</h3>
+                <p className="text-sm text-slate-500">A trusted team dedicated to your health.</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="size-9 p-2 bg-blue-50 border border-blue-200 rounded">
+                <span>🏥</span>
+              </div>
+              <div>
+                <h3 className="text-base font-medium text-slate-600">State-of-the-Art Facilities</h3>
+                <p className="text-sm text-slate-500">Modern equipment ensuring precise care.</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="size-9 p-2 bg-blue-50 border border-blue-200 rounded">
+                <span>💙</span>
+              </div>
+              <div>
+                <h3 className="text-base font-medium text-slate-600">Patient-Centered Approach</h3>
+                <p className="text-sm text-slate-500">We put your comfort and needs first.</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <div className="size-9 p-2 bg-blue-50 border border-blue-200 rounded">
+                <span>📅</span>
+              </div>
+              <div>
+                <h3 className="text-base font-medium text-slate-600">Convenient Online Booking</h3>
+                <p className="text-sm text-slate-500">Book appointments anytime, anywhere.</p>
+              </div>
+            </div>
+          </div>
+
+          <button className="mt-8 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition">
             Our Story
           </button>
         </div>
-        <div>
-          <img
-            src="https://via.placeholder.com/500x350/F8F8F8/333333?text=Clinic+Interior"
-            alt="Clinic Interior"
-            className="rounded-lg shadow-lg"
-          />
-        </div>
-      </section>
+      </div>
 
       {/* Call to Action */}
       <section className="py-16 bg-blue-600 text-white text-center">
