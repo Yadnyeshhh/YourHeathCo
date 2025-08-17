@@ -6,6 +6,7 @@ import Admin from "./components/admin/Admin";
 import PatientDetails from "./components/admin/PatientDetails";
 import Dashboard from "./pages/PatientDashboard";
 import './index.css';
+import './stylesheets/PD.css'
 
 const App = () => {
   return (

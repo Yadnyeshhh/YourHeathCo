@@ -4,6 +4,18 @@
   margin: 0;
   padding: 0;
 }
+:root {
+    --primary-color: #007bff; /* A nice blue for medical/trust */
+    --secondary-color: #28a745; /* A green for success/health */
+    --accent-color: #ffc107; /* A subtle accent yellow */
+    --dark-text: #333;
+    --light-text: #f8f8f8;
+    --gray-bg: #f4f7fa;
+    --white-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    --border-radius: 8px;
+}
 
 body {
   font-family: 'Arial', sans-serif; /* Adjusted to new theme's font */
@@ -720,79 +732,6 @@ button {
   }
 }
 
-@media (max-width: 768px) {
-  .sidebar {
-    width: 80px;
-  }
-
-  .sidebar-logo-section,
-  .sidebar-user-profile-section,
-  .sidebar-nav-item-text,
-  .sidebar-nav-item-count,
-  .sidebar-user-info {
-    display: none;
-  }
-
-  .sidebar-nav-item {
-    justify-content: center;
-    margin: 0;
-    padding: 15px 0;
-  }
-
-  .sidebar-nav-item-icon {
-    margin-right: 0;
-  }
-
-  /* Adjust main content area when sidebar collapses */
-  .dashboard-main-content-area {
-    padding-left: calc(80px + 1.5rem);
-  }
-
-  .dashboard-header {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .dashboard-header-title {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 15px;
-  }
-
-  .dashboard-header-actions {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .dashboard-top-cards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-}
-
-@media (max-width: 480px) {
-  .dashboard-main-content-section {
-    padding: 20px 15px;
-  }
-
-  .dashboard-header {
-    padding: 15px;
-  }
-
-  .dashboard-header-title {
-    font-size: 1.5rem;
-  }
-
-  .header-icon-button {
-    width: 35px;
-    height: 35px;
-  }
-
-  .header-new-patient-button {
-    padding: 8px 15px;
-    font-size: 0.9rem;
-  }
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -835,4 +774,360 @@ button {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+}
+
+
+/* ===========================================
+   MOBILE AND TABLET RESPONSIVE ADDITIONS
+   =========================================== */
+
+/* Mobile First Approach - Base styles for mobile */
+@media (max-width: 767px) {
+  /* Hide sidebar on mobile, show hamburger menu instead */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  /* Mobile overlay for sidebar */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
+  .sidebar-overlay.active {
+    display: block;
+  }
+  
+  /* Adjust main content for mobile */
+  .dashboard-main-content-area {
+    padding: 1rem;
+    padding-left: 1rem; /* Remove sidebar padding */
+  }
+  
+  /* Mobile header adjustments */
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .dashboard-header-title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .dashboard-header-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  /* Mobile hamburger menu button */
+  .mobile-menu-button {
+    display: block;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    padding: 0.5rem;
+    background: var(--primary-color);
+    color: var(--light-text);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  
+  /* Card adjustments for mobile */
+  .dashboard-card-upper button {
+    width: 100%;
+    min-width: auto;
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .dashboard-card-icon-wrapper {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Top cards grid - single column on mobile */
+  .dashboard-top-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Middle sections - single column on mobile */
+  .dashboard-middle-sections-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Bottom sections - single column on mobile */
+  .bottom-sections-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Program list - single column on mobile */
+  .program-list-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Billing section adjustments */
+  .billing-average-chart {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .billing-average-item {
+    flex: 1;
+    min-width: 80px;
+  }
+  
+  /* Table responsive adjustments */
+  .activity-log-table-container {
+    padding: 1rem;
+  }
+  
+  .activity-log-table-overflow {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .activity-log-th,
+  .activity-log-td {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  /* Modal adjustments for mobile */
+  .modal-content {
+    width: 95%;
+    max-width: none;
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .modal-title {
+    font-size: 1.4rem;
+  }
+  
+  .patient-details p {
+    font-size: 0.9rem;
+  }
+  
+  /* Team today section */
+  .team-today-member-item {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .team-today-member-avatar {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet sidebar adjustments */
+  .sidebar {
+    width: 12rem;
+  }
+  
+  .dashboard-main-content-area {
+    padding-left: calc(12rem + 1rem);
+  }
+  
+  /* Tablet header */
+  .dashboard-header {
+    padding: 1.25rem;
+  }
+  
+  .dashboard-header-title {
+    font-size: 1.75rem;
+  }
+  
+  /* Card adjustments for tablet */
+  .dashboard-card-upper button {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  /* Top cards - 2 columns on tablet */
+  .dashboard-top-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  
+  /* Middle sections - 2 columns on tablet */
+  .dashboard-middle-sections-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Program section spans full width on tablet */
+  .program-section {
+    grid-column: span 2;
+  }
+  
+  /* Billing section adjustments */
+  .billing-average-chart {
+    justify-content: space-between;
+  }
+  
+  /* Table adjustments for tablet */
+  .activity-log-th,
+  .activity-log-td {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Modal adjustments for tablet */
+  .modal-content {
+    width: 85%;
+    max-width: 500px;
+  }
+}
+
+/* Large tablet / small desktop */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  /* Adjust card width for better fit */
+  .dashboard-card-upper button {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  /* Top cards - 3 columns */
+  .dashboard-top-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* General responsive utilities */
+@media (max-width: 1023px) {
+  /* Hide mobile menu button on larger screens */
+  .mobile-menu-button {
+    display: none;
+  }
+  
+  /* Ensure text doesn't break awkwardly */
+  .dashboard-card-title,
+  .dashboard-card-value {
+    word-wrap: break-word;
+  }
+  
+  /* Responsive text sizing */
+  .dashboard-header-title {
+    word-wrap: break-word;
+  }
+  
+  /* Ensure buttons are touch-friendly */
+  .header-icon-button,
+  .header-new-patient-button,
+  .modal-close-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .sidebar-nav-item {
+    padding: 1rem 0.75rem;
+  }
+  
+  .header-icon-button {
+    padding: 0.75rem;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .sidebar-nav-item-inactive:hover,
+  .header-icon-button:hover,
+  .header-new-patient-button:hover,
+  .modal-close-button:hover {
+    background-color: initial;
+  }
+}
+
+/* Print styles */
+@media print {
+  .sidebar,
+  .dashboard-header-actions,
+  .mobile-menu-button {
+    display: none !important;
+  }
+  
+  .dashboard-main-content-area {
+    padding-left: 0;
+  }
+  
+  .dashboard-card-upper button {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 767px) and (orientation: landscape) {
+  .dashboard-header {
+    flex-direction: row;
+    padding: 0.75rem;
+  }
+  
+  .dashboard-header-title {
+    font-size: 1.25rem;
+  }
+  
+  .dashboard-main-content-area {
+    padding: 0.75rem;
+  }
+}
+
+/* Very small screens (older phones) */
+@media (max-width: 359px) {
+  .dashboard-header-title {
+    font-size: 1.25rem;
+  }
+  
+  .dashboard-card-value {
+    font-size: 1.25rem;
+  }
+  
+  .modal-content {
+    padding: 1rem;
+  }
+  
+  .billing-average-circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .modal-content {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Dark mode support (if needed) */
+@media (prefers-color-scheme: dark) {
+  .sidebar-overlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
 }

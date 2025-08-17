@@ -49,7 +49,7 @@ const createEmptyPatientSchedule = async (req, res) => {
       });
     }
 
-    // ✅ Valid default values according to schema
+    
     const defaultDay = {
       medicines: [],
       meal: {
@@ -103,7 +103,7 @@ const patient = await Patient.findOne({ id: patientId }).lean();
       };
     }
 
-    return result; // ✅ Correct format: { monday: { medicines: [...], meal: {...} }, ... }
+    return result; 
   } catch (err) {
     console.error("Error fetching patient data:", err);
     throw err;

@@ -1,6 +1,12 @@
-/* src/index.css (or similar) */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* You can add any custom global CSS here if needed */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
