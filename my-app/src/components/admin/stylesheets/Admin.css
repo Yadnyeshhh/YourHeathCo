@@ -1,29 +1,35 @@
 .dashboard-container {
-    display: flex;
-    min-height: 100vh; /* Use min-height to ensure it adapts to content */
-    background-color: var(--gray-bg); /* Match the overall grey background of sections */
-    
+  display: flex;
+  min-height: 100vh; /* Use min-height to ensure it adapts to content */
+  background-color: var(
+    --gray-bg
+  ); /* Match the overall grey background of sections */
+  margin-left: 240px; /* same as sidebar width */
 }
 
 .dashboard-main {
-    flex: 1;
-    padding: 24px;
-    background-color: var(--gray-bg); /* Keep the main dashboard background consistent with the container */
-    overflow-y: auto;
+  flex: 1;
+  padding: 24px;
+  background-color: var(
+    --gray-bg
+  ); /* Keep the main dashboard background consistent with the container */
+  overflow-y: auto;
 }
 
-/* Assuming this h1 is specifically for the dashboard main title, not global h1 */
 .dashboard-main h1 {
-    font-size: 3rem; /* Align with your global h1 but could be adjusted if needed */
-    color: var(--dark-text); /* Use your primary dark text color */
-    margin-bottom: 30px; /* Slightly more space below the main title */
-    text-align: left; /* Align to the left, as typical for dashboards */
+  font-size: 3rem; 
+  color: var(--dark-text); 
+  margin-bottom: 30px; 
+  text-align: left; 
 }
 
 .patient-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Adjusted minmax to match service/doctor cards */
-    gap: 30px; /* Increased gap to match other card grids */
-    max-width: 100%; /* Ensure it doesn't overflow */
-    margin: 0 auto; /* Center the grid if it doesn't fill the width */
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(280px, 1fr)
+  ); 
+  gap: 30px; 
+  max-width: 100%; 
+  margin: 0 auto; 
 }

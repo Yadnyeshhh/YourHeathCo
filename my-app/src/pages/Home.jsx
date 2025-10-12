@@ -277,7 +277,7 @@ const LandingPage = () => {
         }
       `}</style>
 
-      <h1 className="text-3xl font-semibold text-center mx-auto pt-10">About YourHealthCo</h1>
+      <h1 id="about" className="text-3xl font-semibold text-center mx-auto pt-10">About YourHealthCo</h1>
       <p className="text-sm text-slate-500 text-center mt-2 max-w-md mx-auto">
         Delivering quality healthcare with compassion, technology, and a patient-first approach.
       </p>

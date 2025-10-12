@@ -4,7 +4,6 @@ export const navItems = [
   { name: 'Dashboard', icon: 'LayoutDashboard', active: true },
   { name: 'Billing & Claims', icon: 'CreditCard' },
   { name: 'Analytics', icon: 'BarChart' },
-  { name: 'Messages', icon: 'MessageSquare', count: 5 },
   { name: 'Alerts', icon: 'Bell' },
   { name: 'Settings', icon: 'Settings' },
   { name: 'Help', icon: 'HelpCircle' },

@@ -16,7 +16,8 @@ const PatientCard = ({ patient }) => {
 
   return (
     <div className="admin-patient-card" onClick={handleViewDetails}>
-      <img src={patient.photoUrl} alt={`${patient.name}'s profile`} className="patient-photo" />
+    
+      <img src="/profile.png" alt={`${patient.name}'s profile`} className="patient-photo" />
       <h3>{patient.name}</h3>
       <button className="view-details-button" onClick={handleViewDetails}>
         View Details

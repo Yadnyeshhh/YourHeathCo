@@ -1,14 +1,19 @@
 .admin-sidebar {
-    width: 240px;
-    height: 100vh;
-    background-color: var(--primary-color); /* Uses your primary blue */
-    color: var(--light-text); /* Ensures text is white/light against the blue */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-    box-shadow: var(--shadow); /* Adds a subtle shadow for depth */
+  position: fixed;          /* Fixes the sidebar to the viewport */
+  top: 0;                   /* Aligns to the top */
+  left: 0;                  /* Aligns to the left */
+  width: 240px;
+  height: 100vh;            /* Full viewport height */
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  z-index: 100;            /* Keeps it above other elements */
 }
+
 
 .admin-title {
     font-size: 24px;
