@@ -111,7 +111,7 @@ const LandingPage = () => {
   return (
     <div className="font-sans text-gray-800 bg-gray-50">
       {/* Header Section */}
-      <header className="relative bg-gradient-to-b from-blue-800/90 via-blue-300/80 to-blue-100/90 text-white min-h-[600px] flex flex-col justify-center items-center text-centerrelative bg-gradient-to-b from-blue-900 via-blue-700/80 to-blue-200/90 text-white min-h-[600px] flex flex-col justify-center items-center text-center">
+      <header className="relative bg-blue-700 text-white min-h-[600px] flex flex-col justify-center items-center text-center">
         <nav className="w-full flex items-center justify-between px-8 py-4 bg-black/30 backdrop-blur-lg fixed top-0 left-0 z-50">
           {/* Logo */}
           <div className="text-2xl font-bold text-white">

@@ -56,6 +56,8 @@ button {
   padding: 1.5rem;
   padding-left: calc(16rem + 1.5rem);
   min-width: 0;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* Dashboard Main Content Section */
@@ -311,9 +313,11 @@ button {
 .dashboard-card-upper{
   margin: 0px;
   padding: 0px;
+  
+ 
 }
 .dashboard-card-upper button {
-  background-color: var(--white-bg); /* Adjusted to new theme variable */
+
   padding: 1.5rem;
   border-radius: var(--border-radius); /* Adjusted to new theme variable */
   box-shadow: var(--shadow); /* Adjusted to new theme variable */
@@ -322,6 +326,12 @@ button {
   gap: 1rem;
   margin: 0%;
   width: 12vw;
+   background-color: #f1fafe;
+   
+}
+.dashboard-card-upper :hover{
+  transition: 0.72s;
+  transform: scale(1.1, 1.1);
 }
 
 .dashboard-card-icon-wrapper {
@@ -651,26 +661,29 @@ button {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: center;     /* vertical center */
+  justify-content: center; /* horizontal center */
   z-index: 1000;
 }
 
 .modal-content {
-  background: var(--white-bg); /* Adjusted to new theme variable */
-  padding: 30px;
-  border-radius: var(--border-radius); /* Adjusted to new theme variable */
-  box-shadow: var(--shadow); /* Adjusted to new theme variable */
+  background: var(--white-bg);
+  padding: 20px; /* use px instead of auto */
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
   max-width: 500px;
   width: 90%;
   position: relative;
   animation: fadeIn 0.3s ease-out;
   z-index: 1001;
+  max-height: 80vh;       /* prevents overflow */
+  overflow-y: auto;       /* scroll if content is taller */
 }
+
 
 @keyframes fadeIn {
   from {
@@ -723,6 +736,9 @@ button {
 
 .modal-close-button:hover {
   background-color: #0056b3; /* Hardcoded darker primary color */
+}
+.cancel-btn{
+  margin-left: 15px;
 }
 
 /* Add or ensure these responsive adjustments are also in your PD.css */
@@ -813,7 +829,8 @@ button {
   /* Adjust main content for mobile */
   .dashboard-main-content-area {
     padding: 1rem;
-    padding-left: 1rem; /* Remove sidebar padding */
+    padding-left: 1rem; 
+    padding-top: 0;
   }
   
   /* Mobile header adjustments */

@@ -21,7 +21,7 @@ const PatientDashboard = () => {
   const [profile, setProfile] = useState(null);
   const [medications, setMedications] = useState([]);
   const [schedule, setSchedule] = useState(null);
-
+//  console.log(profile)
 useEffect(() => {
   const fetchProfile = async () => {
     try {
@@ -69,7 +69,7 @@ useEffect(() => {
       if (!response.ok) {
         console.error('Error creating schedule:', data.error);
       } else {
-        console.log('Schedule created:', data);
+        // console.log('Schedule created:', data);
       }
     } catch (err) {
       console.error('Network error:', err.message);

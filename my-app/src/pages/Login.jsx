@@ -126,9 +126,10 @@ export default function AuthPage() {
         setError(json.error);
         showCustomAlert(json.error || "Signup failed");
       } else {
-        localStorage.setItem("user", JSON.stringify(json));
-        showCustomAlert("Signup successful!");
-        navigate("/pdashboard");
+        localStorage.setItem("token", json.token); 
+  localStorage.setItem("userEmail", json.email);
+  showCustomAlert("Signup successful!");
+  navigate("/pdashboard");
       }
     } catch (err) {
       setError(err.message);

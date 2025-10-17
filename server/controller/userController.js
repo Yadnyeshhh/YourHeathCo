@@ -73,5 +73,25 @@ const signupUser = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.params.id; 
+    const updates = req.body; 
 
-module.exports = { loginUser, signupUser ,getProfile , getAllUsers};
+    
+    delete updates.password;
+    delete updates.email;
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, { new: true }).select('-password -__v');
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User updated successfully", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update user", error: error.message });
+  }
+};
+
+module.exports = { loginUser, signupUser ,getProfile , getAllUsers , updateUser};

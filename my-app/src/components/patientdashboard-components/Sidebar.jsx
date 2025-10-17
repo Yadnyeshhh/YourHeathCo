@@ -15,10 +15,9 @@ const Sidebar = ({ navItems , profile }) => {
   }
 
 
-  // 🧭 Handle normal navigation or selection
-  console.log(`Navigating to: ${name}`);
+  // console.log(`Navigating to: ${name}`);
 };
-  console.log(profile)
+  // console.log(profile)
   return (
     <div className="sidebar">
       <div>
