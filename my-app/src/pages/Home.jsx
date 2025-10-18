@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
@@ -7,6 +7,25 @@ const LandingPage = () => {
   const toLogin = () => {
     navigate("/login");
   };
+
+   const checkAuthAndRedirect = () => {
+  const userData = localStorage.getItem("user");
+
+  if (userData) {
+    try {
+      const user = JSON.parse(userData);
+      if (user.email && user.token) {
+        navigate("/pdashboard"); 
+      }
+    } catch (err) {
+      console.error("Invalid user data in localStorage", err);
+    }
+  }
+};
+useEffect ( ()=>{
+  checkAuthAndRedirect();
+},[]);
+
   const [menuOpen, setMenuOpen] = useState(false);
   const hospitalLogos = [
     "/logo1.svg",
