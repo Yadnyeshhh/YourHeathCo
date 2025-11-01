@@ -1,9 +1,19 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
 const adminSchema = new Schema({
+  instituteName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  address: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   email: {
     type: String,
     required: true,
@@ -18,9 +28,9 @@ const adminSchema = new Schema({
 });
 
 // statics.signup
-adminSchema.statics.signup = async function (email, password) {
-  if (!email || !password) {
-    throw Error("Enter both email and password");
+adminSchema.statics.signup = async function (instituteName, address, email, password) {
+  if (!instituteName || !address || !email || !password) {
+    throw Error("All fields are required");
   }
   if (!validator.isEmail(email)) {
     throw Error("Enter a valid email address");
@@ -34,8 +44,7 @@ adminSchema.statics.signup = async function (email, password) {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
 
-  const admin = await this.create({ email, password: hash });
-
+  const admin = await this.create({ instituteName, address, email, password: hash });
   return admin;
 };
 
@@ -57,5 +66,4 @@ adminSchema.statics.login = async function (email, password) {
 
   return admin;
 };
-
-module.exports = mongoose.model("Admin", adminSchema);
+module.exports = mongoose.models.Admin || mongoose.model("Admin", adminSchema);

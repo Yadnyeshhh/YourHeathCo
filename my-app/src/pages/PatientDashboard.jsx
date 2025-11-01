@@ -52,7 +52,7 @@ useEffect(() => {
   };
 
   fetchProfile();
-}, []); // run only once on mount
+}, []);
 
 useEffect(() => {
   const createPatientSchedule = async () => {

@@ -119,7 +119,7 @@ const PatientProfileModal = ({ isOpen, onClose, patientData, token, onUpdate }) 
               <img
                 src="/profile.png"
                 alt="Profile"
-                style={{ width: "120px", borderRadius: "50%" , width: "100%",
+                style={{  borderRadius: "50%" , width: "100%",
     height: "100%"}}
               />
             </div>

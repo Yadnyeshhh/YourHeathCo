@@ -1,15 +1,16 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const {loginAdmin , signupAdmin} = require('../controller/adminController')
-const authmiddleware = require('../middleware/auth')
+const { loginAdmin, signupAdmin, getProfile ,getAllUsers} = require("../controller/adminController");
+const requireAdminAuth = require("../middleware/requireAdminAuth");
 
-//get profile 
-// router.get("/profile" ,authmiddleware ,getProfile)
+// ------------------ Public Routes ------------------
+router.post("/signup", signupAdmin);
+router.post("/login", loginAdmin);
 
-//login route
-router.post("/login" ,loginAdmin)
+// ------------------ Protected Routes ------------------
+router.get("/profile", requireAdminAuth, getProfile);
 
-//signup route
-router.post("/signin" ,signupAdmin)
+// ✅ Get all users created by this admin
+router.get("/users", requireAdminAuth, getAllUsers);
 
 module.exports = router;

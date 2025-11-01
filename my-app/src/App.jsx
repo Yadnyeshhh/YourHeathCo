@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Admin from "./components/admin/Admin";
 import PatientDetails from "./components/admin/PatientDetails";
 import Dashboard from "./pages/PatientDashboard";
+import Adminsiginup from "./pages/adminsiginup";
 import './index.css';
 import './stylesheets/PD.css'
 
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/pdashboard" element={<Dashboard />} />
          <Route path="/admin" element={<Admin />} />
         <Route path="/patient/:id" element={<PatientDetails />} />
+        <Route path="/adminsignup" element={<Adminsiginup />} />
       </Routes>
     </>
   );

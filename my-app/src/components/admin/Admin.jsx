@@ -9,30 +9,39 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const Admin = () => {
   const [patients, setPatients] = useState([]);
  useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const admin = JSON.parse(localStorage.getItem("admin"));
-        const token = admin?.token;
-
-        if (!token) {
-          console.warn("No admin token found. Admin not logged in.");
-          return;
-        }
-
-        const res = await axios.get(`${apiUrl}/api/user/all`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setPatients(res.data);
-      } catch (err) {
-        console.error('Failed to fetch users:', err);
+  const fetchPatients = async () => {
+    try {
+      const storedAdmin = localStorage.getItem("admin");
+      if (!storedAdmin) {
+        console.warn("No admin data found in localStorage.");
+        return;
       }
-    };
 
-    fetchAllUsers();
-  }, []);
+      const admin = JSON.parse(storedAdmin);
+      const token = admin?.token;
+
+      if (!token) {
+        console.warn("No admin token found. Admin not logged in.");
+        return;
+      }
+
+      // ✅ Fetch all users for this admin
+      const res = await axios.get(`${apiUrl}/api/admin/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setPatients(res.data);
+    } catch (err) {
+      console.error("Failed to fetch admin's patients:", err);
+    }
+  };
+
+  fetchPatients();
+}, []);
+
+
   
 
   return (

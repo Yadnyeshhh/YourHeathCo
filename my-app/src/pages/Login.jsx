@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -31,6 +31,13 @@ export default function AuthPage() {
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [userToken, setUserToken] = useState("");
+
+  useEffect(() => {
+  const savedToken = localStorage.getItem("token");
+  if (savedToken) setUserToken(savedToken);
+}, []);
 
   const showCustomAlert = (message) => {
     setAlertMessage(message);
@@ -354,6 +361,14 @@ export default function AuthPage() {
                   className="text-blue-500 hover:underline"
                 >
                   User Login
+                </button>
+               <br></br>
+                <button
+                  type="button"
+                  onClick={() => navigate("/adminsignup")}
+                  className="text-blue-500 hover:underline ml-[10px]"
+                >
+                  Register a new admin
                 </button>
               </p>
             </form>

@@ -46,9 +46,14 @@ const loginUser = async (req, res) => {
 };
 
 //signup user
+// signup user (by Admin)
 const signupUser = async (req, res) => {
   const { name, age, gender, contact, bloodGroup, email, password } = req.body;
+
   try {
+    // ✅ Get admin ID from token (middleware must set req.admin)
+    const adminId = req.admin._id;
+
     const exists = await User.findOne({ email });
     if (exists) {
       return res.status(400).json({ error: "Email already exists" });
@@ -57,6 +62,7 @@ const signupUser = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
+    // 👇 Create user linked to the admin
     const user = await User.create({
       name,
       age,
@@ -65,14 +71,16 @@ const signupUser = async (req, res) => {
       bloodGroup,
       email,
       password: hash,
+      admin: adminId,
     });
-
-    const token = createToken(user._id);
-    res.status(200).json({ email: user.email, token });
+    
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
+
+//update user
 const updateUser = async (req, res) => {
   try {
     const userId = req.params.id; 
