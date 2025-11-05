@@ -157,6 +157,25 @@
 .as-hide {
   display: none;
 }
+.backbutton{
+ position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #2563eb; /* blue */
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.backbutton:hover{
+   background-color: #1d4ed8; /* darker blue */
+  transform: translateY(-2px);
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 420px) {

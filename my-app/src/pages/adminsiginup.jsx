@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👁️ icons
 import "../stylesheets/adminsignup.css";
-
+import { useNavigate } from "react-router-dom";
 const Adminsiginup = () => {
+  const navigate = useNavigate();
     const apiUrl = import.meta.env.VITE_API_URL; 
   const [formData, setFormData] = useState({
     instituteName: "",
@@ -65,6 +66,12 @@ const Adminsiginup = () => {
 
   return (
     <div className="as-page">
+    <button
+        onClick={() => navigate("/login")}
+        className="backbutton"
+      >
+      ← BACK
+      </button>
       <div className="as-card">
         <h2 className="as-title">Hospital Admin Signup</h2>
 

@@ -19,6 +19,9 @@ const Sidebar = () => {
             <a href="/admin">Dashboard</a>
           </li>
           <li className="admin-menu-item">
+            <a href="#">Add-patient</a>
+          </li>
+          <li className="admin-menu-item">
             <a href="#">Settings</a>
           </li>
           <li className="admin-menu-item">

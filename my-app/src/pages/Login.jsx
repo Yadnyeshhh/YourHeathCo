@@ -180,6 +180,12 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-900 via-blue-400 to-blue-200">
+    <button
+        onClick={() => navigate("/")}
+        className="absolute top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-blue-700 transition"
+      >
+        ← Back
+      </button>
       <div className="flex w-full max-w-6xl bg-white/90 shadow-xl rounded-2xl overflow-hidden">
         {/* Left Image */}
         <div className="hidden md:block w-1/2">
