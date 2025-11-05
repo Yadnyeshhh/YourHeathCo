@@ -45,52 +45,52 @@ export default function AuthPage() {
     setTimeout(() => setShowAlert(false), 3000);
   };
 
-  const handleUserFormSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
+    const handleUserFormSubmit = async (e) => {
+      e.preventDefault();
+      setError(null);
 
-    if (isSignInMode) {
-      // ---- LOGIN ----
-      if (!userEmail || !userPassword) {
-        return showCustomAlert("Please fill in all login fields.");
-      }
-
-      setIsLoading(true);
-      try {
-        const response = await fetch(`${apiUrl}/api/user/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userEmail, password: userPassword }),
-        });
-
-        const json = await response.json();
-
-        if (!response.ok) {
-          setError(json.error);
-          showCustomAlert(json.error || "Login failed");
-        } else {
-          localStorage.setItem("user", JSON.stringify(json));
-          navigate("/pdashboard");
+      if (isSignInMode) {
+        // ---- LOGIN ----
+        if (!userEmail || !userPassword) {
+          return showCustomAlert("Please fill in all login fields.");
         }
-      } catch (err) {
-        setError(err.message);
-        showCustomAlert("Network error. Please check your connection.");
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      // ---- SIGNUP (step 1) ----
-      if (!userEmail || !userPassword || !userConfirmPassword) {
-        return showCustomAlert("Please fill in all signup fields.");
-      }
-      if (userPassword !== userConfirmPassword) {
-        return showCustomAlert("Passwords do not match.");
-      }
 
-      // proceed to profile form
-      setShowProfileForm(true);
-    }
-  };
+        setIsLoading(true);
+        try {
+          const response = await fetch(`${apiUrl}/api/user/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: userEmail, password: userPassword }),
+          });
+
+          const json = await response.json();
+
+          if (!response.ok) {
+            setError(json.error);
+            showCustomAlert(json.error || "Login failed");
+          } else {
+            localStorage.setItem("user", JSON.stringify(json));
+            navigate("/pdashboard");
+          }
+        } catch (err) {
+          setError(err.message);
+          showCustomAlert("Network error. Please check your connection.");
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        // ---- SIGNUP (step 1) ----
+        if (!userEmail || !userPassword || !userConfirmPassword) {
+          return showCustomAlert("Please fill in all signup fields.");
+        }
+        if (userPassword !== userConfirmPassword) {
+          return showCustomAlert("Passwords do not match.");
+        }
+
+        // proceed to profile form
+        setShowProfileForm(true);
+      }
+    };
 
   const handleProfileFormSubmit = async (e) => {
     e.preventDefault();

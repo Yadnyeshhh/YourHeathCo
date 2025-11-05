@@ -1,28 +1,33 @@
 const jwt = require("jsonwebtoken");
 const Admin = require("../models/adminModel");
 
+// Middleware to verify admin JWT token
 const requireAdminAuth = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  // ✅ 1. Extract token from Authorization header
+  const { authorization } = req.headers;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided" });
+  if (!authorization) {
+    return res.status(401).json({ error: "Authorization token required" });
   }
 
-  const token = authHeader.split(" ")[1];
+  // Format: "Bearer <token>"
+  const token = authorization.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET);
+    // ✅ 2. Verify token
+    const { _id } = jwt.verify(token, process.env.SECRET);
 
-    // Verify admin exists
-    const admin = await Admin.findById(decoded._id).select("_id email");
-    if (!admin) {
-      return res.status(401).json({ message: "Admin not found" });
+    // ✅ 3. Attach admin to request (excluding password)
+    req.admin = await Admin.findById(_id).select("-password -__v");
+
+    if (!req.admin) {
+      return res.status(401).json({ error: "Admin not found" });
     }
 
-    req.admin = admin; // attach admin info to request
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+    next(); // ✅ move to next middleware or route handler
+  } catch (error) {
+    console.error("Auth error:", error.message);
+    res.status(401).json({ error: "Request not authorized" });
   }
 };
 

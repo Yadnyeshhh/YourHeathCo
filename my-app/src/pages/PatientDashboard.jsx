@@ -22,37 +22,39 @@ const PatientDashboard = () => {
   const [medications, setMedications] = useState([]);
   const [schedule, setSchedule] = useState(null);
 //  console.log(profile)
+
 useEffect(() => {
   const fetchProfile = async () => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      if (!storedUser) {
-        console.warn("No user found in localStorage.");
-        return;
-      }
+    const userData = localStorage.getItem("user");
 
-      const user = JSON.parse(storedUser);
-      const token = user?.token;
+    if (userData) {
+      const { token } = JSON.parse(userData);
 
-      if (!token) {
-        console.warn("No token found in user object.");
-        return;
-      }
-
-      const res = await axios.get(`${apiUrl}/api/user/profile`, {
+      fetch(`${apiUrl}/api/user/profile`, {
+        method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
-      });
-
-      setProfile(res.data); // ← Triggers second useEffect
-    } catch (err) {
-      console.error('Failed to fetch profile:', err);
+      })
+        .then(async (res) => {
+          if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || "Unauthorized");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Profile:", data);
+          setProfile(data); // ✅ ADD THIS LINE
+        })
+        .catch((err) => console.error("Error fetching profile:", err));
     }
   };
 
   fetchProfile();
 }, []);
+
 
 useEffect(() => {
   const createPatientSchedule = async () => {

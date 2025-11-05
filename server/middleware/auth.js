@@ -1,28 +1,23 @@
+// middleware/auth.js
 const jwt = require("jsonwebtoken");
-const User = require('../models/userModel')
+const User = require("../models/userModel");
 
 const authmiddleware = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const { authorization } = req.headers;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "No token provided" });
+  if (!authorization) {
+    return res.status(401).json({ error: "Authorization token required" });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authorization.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET);
-
-    // Optional: fetch user from DB to validate
-    const user = await User.findById(decoded._id).select("_id email");
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
-    }
-
-    req.user = user; // now has full user data
+    const { _id } = jwt.verify(token, process.env.SECRET);
+    req.user = await User.findById(_id).select("_id email name");
     next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
+  } catch (error) {
+    console.log("Auth error:", error.message);
+    res.status(401).json({ error: "Request not authorized" });
   }
 };
 

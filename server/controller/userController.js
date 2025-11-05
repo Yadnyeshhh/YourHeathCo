@@ -1,41 +1,31 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs"); 
+const bcrypt = require("bcryptjs");
+const { getAllUsers } = require("./adminController");
 
-
-
+// Helper: Create a JWT for users
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find().select('-password -__v'); // exclude sensitive fields
-    res.status(200).json(users);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch users' });
-  }
-};
 
-
+// 🧍‍♂️ Get patient (user) profile
 const getProfile = async (req, res) => {
   try {
-    const userId = req.user._id; // decoded from token by auth middleware
-    const user = await User.findById(userId).select('-email -password -__v');
+    const userId = req.user._id; // decoded from token by user auth middleware
+    const user = await User.findById(userId).select("-email -password -__v -admin");
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json(user);
   } catch (err) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-
-//login user
+// 🔐 Login user (patient)
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
+
   try {
     const user = await User.login(email, password);
     const token = createToken(user._id);
@@ -45,24 +35,20 @@ const loginUser = async (req, res) => {
   }
 };
 
-//signup user
-// signup user (by Admin)
+// 🆕 Signup user (patient self-registration — optional)
 const signupUser = async (req, res) => {
   const { name, age, gender, contact, bloodGroup, email, password } = req.body;
 
   try {
-    // ✅ Get admin ID from token (middleware must set req.admin)
-    const adminId = req.admin._id;
-
     const exists = await User.findOne({ email });
-    if (exists) {
-      return res.status(400).json({ error: "Email already exists" });
-    }
+    if (exists) return res.status(400).json({ error: "Email already exists" });
 
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    // 👇 Create user linked to the admin
+    // Note: if this route is used by admin, req.admin._id will exist
+    const adminId = req.admin ? req.admin._id : null;
+
     const user = await User.create({
       name,
       age,
@@ -71,30 +57,30 @@ const signupUser = async (req, res) => {
       bloodGroup,
       email,
       password: hash,
-      admin: adminId,
+      admin: adminId, // assign admin if available
     });
-    
+
+    const token = createToken(user._id);
+    res.status(201).json({ email: user.email, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-
-//update user
+// ✏️ Update user info (patients can update their profile)
 const updateUser = async (req, res) => {
   try {
-    const userId = req.params.id; 
-    const updates = req.body; 
+    const userId = req.params.id;
+    const updates = req.body;
 
-    
     delete updates.password;
     delete updates.email;
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updates, { new: true }).select('-password -__v');
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
+      new: true,
+    }).select("-password -__v -admin");
 
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
     res.status(200).json({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
@@ -102,4 +88,4 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, signupUser ,getProfile , getAllUsers , updateUser};
+module.exports = { loginUser, signupUser, getProfile, updateUser ,getAllUsers};
