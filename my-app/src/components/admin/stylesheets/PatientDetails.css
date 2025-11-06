@@ -1,144 +1,465 @@
 .admin-details-container {
   display: flex;
-  min-height: 100vh; /* Use min-height to allow content to extend beyond viewport */
-  background-color: var(--gray-bg);
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
 }
 
 .admin-details-main {
   flex: 1;
-  padding: 24px;
-  background-color: var(
-    --white-bg
-  ); /* Use the global white background for the main content area */
-  border-radius: var(
-    --border-radius
-  ); /* Apply global border-radius for consistency */
-  box-shadow: var(
-    --shadow
-  ); /* Add a subtle shadow as seen in other cards/sections */
-  margin: 20px; /* Add some margin around the main content to separate it from the sidebar */
-  margin-left: 250px; /* same as sidebar width */
-  padding: 20px;
+  margin-left: 260px;
+  padding: 40px 50px;
+  max-width: 1400px;
+  animation: fadeIn 0.4s ease-in-out;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Back Button */
 .admin-back-button {
-  background: none;
+  background: var(--primary-color);
+  color: var(--light-text);
   border: none;
-  color: var(--primary-color); /* Use your primary blue for the button text */
-  font-size: 16px;
+  padding: 12px 24px;
+  border-radius: var(--border-radius);
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
-  margin-bottom: 16px;
-  transition: color 0.3s ease; /* Smooth transition for hover effect */
-  padding: 5px 0; /* Add a little padding for better clickability */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .admin-back-button:hover {
-  color: #0056b3; /* Darker shade of primary-color on hover (manual equivalent of darken) */
-  text-decoration: underline; /* Add underline on hover for clearer interaction */
+  transform: translateX(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Optional: Use more specific class or wrap h2/p if needed */
+.admin-back-button:active {
+  transform: translateX(-2px);
+}
+
+/* Patient Header */
 .admin-details-main h2 {
-  font-size: 2rem; /* Adjusted to be slightly smaller than h2 but larger than h3 from global styles */
-  margin-bottom: 15px; /* Slightly increased margin for better spacing */
-  color: var(--dark-text); /* Use your dark text color */
-  line-height: 1.2; /* Maintain consistent line height */
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
 }
 
-.admin-details-main p {
-  margin: 8px 0; /* Adjusted margin for slightly more vertical spacing */
-  color: #555; /* A slightly softer dark color for paragraphs, similar to other sections */
-  font-size: 1rem; /* Ensure consistent paragraph font size */
+.admin-details-main > p {
+  font-size: 16px;
+  color: #5a6c7d;
+  margin-bottom: 8px;
+  line-height: 1.6;
 }
 
+.admin-details-main > p strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Section Styling */
 .section {
-  margin-top: 24px;
-  padding: 16px;
-  background-color: #f9f9f9;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.section:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
 }
 
 .section h3 {
-  margin-bottom: 12px;
-  font-size: 1.25rem;
-  color: var(--dark-text);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--primary-color);
+  display: inline-block;
 }
 
-.medication-list {
-  list-style: disc inside;
-  padding-left: 0;
-  color: #333;
+.section p {
+  font-size: 15px;
+  color: #5a6c7d;
+  margin-bottom: 10px;
+  line-height: 1.6;
 }
 
-.medication-list li {
-  margin-bottom: 6px;
+.section p strong {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-right: 8px;
 }
 
+/* Doctor Form Styling */
+.doctor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input {
+  padding: 14px 16px;
+  font-size: 15px;
+  border: 2px solid #e8ecf1;
+  border-radius: 8px;
+  color: #2c3e50;
+  background: #f8fafb;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(74, 158, 255, 0.1);
+}
+
+.form-group input:disabled {
+  background: #f8fafb;
+  color: #5a6c7d;
+  cursor: not-allowed;
+  border-color: #e8ecf1;
+}
+
+.form-group input::placeholder {
+  color: #a0aec0;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.cancel-btn {
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid #e8ecf1;
+  background: white;
+  color: #5a6c7d;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.cancel-btn:hover {
+  border-color: #cbd5e0;
+  background: #f8fafb;
+  color: #2c3e50;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cancel-btn:active {
+  transform: translateY(0);
+}
+
+/* Medication Table */
 .medication-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+  background: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.medication-table th,
-.medication-table td {
-  border: 1px solid #ccc;
-  padding: 8px;
+.medication-table thead {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2c5282 100%);
+}
+
+.medication-table thead th {
+  padding: 16px 20px;
   text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--light-text);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
 }
 
-.medication-table th {
-  background-color: #f0f0f0;
-  color: #333;
+.medication-table thead th:first-child {
+  border-top-left-radius: var(--border-radius);
 }
 
-.medication-table input {
-  width: 90%;
-  padding: 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+.medication-table thead th:last-child {
+  border-top-right-radius: var(--border-radius);
+}
+
+.medication-table tbody tr {
+  border-bottom: 1px solid #e8ecf1;
+  transition: all 0.2s ease;
+}
+
+.medication-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.medication-table tbody tr:hover {
+  background: #f8fafb;
+  transform: scale(1.01);
+}
+
+.medication-table tbody td {
+  padding: 16px 20px;
+  font-size: 15px;
+  color: #2c3e50;
+  vertical-align: middle;
+}
+
+.medication-table tbody td:first-child {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* Input Fields in Table */
+.medication-table input[type="text"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #e8ecf1;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+  background: #f8fafb;
+}
+
+.medication-table input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
+}
+
+.medication-table input[type="text"]::placeholder {
+  color: #a0aec0;
+}
+
+/* Action Buttons */
+.medication-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: flex-start;
 }
 
 .edit-btn,
 .save-btn {
-  margin-top: 12px;
-  padding: 8px 16px;
-  background-color: var(--primary-color);
-  color: #fff;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
 }
 
-.edit-btn:hover,
-.save-btn:hover {
-  background-color: #0056b3;
+.edit-btn::before,
+.save-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
 }
 
-.medication-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 12px;
+.edit-btn:hover::before,
+.save-btn:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
-.add-btn,
-.save-btn,
 .edit-btn {
-  padding: 8px 16px;
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.3s ease;
 }
 
-.add-btn:hover,
-.save-btn:hover,
 .edit-btn:hover {
-  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+  color: white;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(86, 171, 47, 0.4);
+}
+
+.edit-btn:active,
+.save-btn:active {
+  transform: translateY(0);
+}
+
+/* Loading State */
+.section p:only-child {
+  text-align: center;
+  padding: 40px;
+  color: #a0aec0;
+  font-style: italic;
+}
+
+/* Input validation states */
+.form-group input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #ff3b30;
+  background: #fff5f5;
+}
+
+.form-group input:valid:not(:focus):not(:placeholder-shown) {
+  border-color: #56ab2f;
+}
+
+/* Loading state for form */
+.form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .admin-details-main {
+    margin-left: 240px;
+    padding: 30px 35px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-details-main {
+    margin-left: 220px;
+    padding: 25px 20px;
+  }
+
+  .admin-details-main h2 {
+    font-size: 26px;
+  }
+
+  .section {
+    padding: 20px;
+  }
+
+  .section h3 {
+    font-size: 20px;
+  }
+
+  .medication-table {
+    font-size: 14px;
+  }
+
+  .medication-table thead th,
+  .medication-table tbody td {
+    padding: 12px 14px;
+  }
+
+  .medication-actions,
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .edit-btn,
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+
+  .form-group input {
+    font-size: 16px; /* Prevents zoom on mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-details-main {
+    margin-left: 0;
+    padding: 20px 15px;
+  }
+
+  .medication-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .section h3 {
+    font-size: 18px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input {
+    padding: 12px 14px;
+  }
+}
+
+/* Empty State */
+.medication-table tbody tr td:empty::before {
+  content: '—';
+  color: #cbd5e0;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--primary-color);
+  color: white;
 }

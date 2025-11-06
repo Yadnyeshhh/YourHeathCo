@@ -1,4 +1,6 @@
 const User = require("../models/userModel");
+const PatientStatus = require("../models/PatientStatus");
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { getAllUsers } = require("./adminController");
@@ -11,16 +13,20 @@ const createToken = (_id) => {
 // 🧍‍♂️ Get patient (user) profile
 const getProfile = async (req, res) => {
   try {
-    const userId = req.user._id; // decoded from token by user auth middleware
-    const user = await User.findById(userId).select("-email -password -__v -admin");
+    const user = await User.findById(req.user._id).select("-password");
 
-    if (!user) return res.status(404).json({ message: "User not found" });
+    const status = await PatientStatus.findOne({ patient: req.user._id });
 
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(200).json({
+      ...user.toObject(),
+      patientStatus: status || null, // include linked status
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch profile" });
   }
 };
+
 
 // 🔐 Login user (patient)
 const loginUser = async (req, res) => {

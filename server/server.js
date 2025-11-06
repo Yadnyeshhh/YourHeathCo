@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/user.js");
 const adminRoutes = require('./routes/admin.js')
 const medRoutes = require('./routes/meds_meal.js')
+const PatientStatusRoutes = require('./routes/patientStatusRoutes.js')
+
 require('dotenv').config();
 const mongourl =  process.env.MONGO_URI;
 const PORT = process.env.PORT 
@@ -21,7 +23,8 @@ app.use((req, res, next) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/meds_meals" , medRoutes)
+app.use("/api/meds_meals" , medRoutes);
+app.use("/api/patient-status" , PatientStatusRoutes);
 
 mongoose.connect(mongourl).then(()=>{
    app.listen(PORT , ()=>{

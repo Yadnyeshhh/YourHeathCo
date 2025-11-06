@@ -11,6 +11,20 @@ const PatientDetails = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [schedule, setSchedule] = useState(null);
+  
+  // New states for doctor assignment
+  const [isDoctorEditing, setIsDoctorEditing] = useState(false);
+  const [doctor , setDoctor] = useState(patient.assignedDoctor
+);
+const [appointment , setAppointment] = useState(patient.nextAppointment
+)
+useEffect(() => {
+  if (patient?.nextAppointment) {
+    const isoString = patient.nextAppointment;
+    const formatted = isoString.slice(0, 16); // "YYYY-MM-DDTHH:mm"
+    setAppointment(formatted);
+  }
+}, [patient]);
 
   if (!patient) return <div>Patient not found</div>;
 
@@ -56,6 +70,40 @@ const PatientDetails = () => {
     }
   };
 
+ const handleDoctorSave = async () => {
+  try {
+    const storedAdmin = localStorage.getItem("admin");
+    if (!storedAdmin) return alert("Admin not logged in");
+
+    const { token } = JSON.parse(storedAdmin);
+
+    const response = await fetch(
+      `${apiUrl}/api/patient-status/${patient._id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          assignedDoctor: doctor,
+          nextAppointment: appointment,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to update status");
+
+    alert("✅ Doctor & appointment updated successfully!");
+    setIsDoctorEditing(false);
+  } catch (err) {
+    console.error("Save error:", err);
+    alert("Could not update doctor assignment.");
+  }
+};
+
+
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
@@ -86,10 +134,65 @@ const PatientDetails = () => {
         <p>Condition: {patient.condition}</p>
         <p><strong>Medical History:</strong> {patient.history}</p>
 
+        {/* Doctor Assignment Form */}
         <div className="section">
           <h3>Assigned Doctor</h3>
-          <p><strong>Doctor:</strong> {patient.doctor}</p>
-          <p><strong>Appointment:</strong> {patient.appointment}</p>
+          <form className="doctor-form">
+            <div className="form-group">
+              <label htmlFor="doctor">Doctor Name</label>
+              <input
+                type="text"
+                id="doctor"
+                value={doctor}
+                onChange={(e) => setDoctor(e.target.value)}
+                disabled={!isDoctorEditing}
+                placeholder="Enter doctor name"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="appointment">Appointment Date</label>
+              <input
+                type="datetime-local"
+                id="appointment"
+                value={appointment}
+                onChange={(e) => setAppointment( e.target.value )}
+                disabled={!isDoctorEditing}
+              />
+            </div>
+
+            <div className="form-actions">
+              {isDoctorEditing ? (
+                <>
+                  <button 
+                    type="button" 
+                    className="save-btn" 
+                    onClick={handleDoctorSave}
+                  >
+                    Save Changes
+                  </button>
+                  <button 
+                    type="button" 
+                    className="cancel-btn" 
+                    onClick={() => {
+                      setIsDoctorEditing(false);
+                      setDoctorData({ doctor: patient.doctor, appointment: patient.appointment });
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button 
+                  type="button" 
+                  className="edit-btn" 
+                  onClick={() => setIsDoctorEditing(true)}
+                >
+                  Edit Assignment
+                </button>
+              )}
+            </div>
+          </form>
         </div>
 
         {/* Medications Table */}
@@ -142,7 +245,7 @@ const PatientDetails = () => {
           )}
         </div>
 
-        {/* Meals Table — Styled the same as Medications */}
+        {/* Meals Table */}
         <div className="section">
           <h3>Meals</h3>
           {!schedule ? (

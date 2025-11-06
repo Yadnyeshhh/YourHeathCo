@@ -54,6 +54,7 @@ useEffect(() => {
 
   fetchProfile();
 }, []);
+console.log(profile)
 
 
 useEffect(() => {

@@ -19,7 +19,6 @@
 .dashboard-main h1 {
   font-size: 3rem; 
   color: var(--dark-text); 
-  margin-bottom: 30px; 
   text-align: left; 
 }
 
@@ -33,3 +32,27 @@
   max-width: 100%; 
   margin: 0 auto; 
 }
+
+.filter-dropdown {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+}
+
+.filter-dropdown:hover {
+  border-color: #007bff;
+}
+
+.no-patients {
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+  margin-top: 30px;
+}
+

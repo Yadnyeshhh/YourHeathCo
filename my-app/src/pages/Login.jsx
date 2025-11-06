@@ -1,9 +1,9 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Admin from "../components/admin/Admin";
 
 export default function AuthPage() {
-  const apiUrl = import.meta.env.VITE_API_URL; 
+  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
   const [isSignInMode, setIsSignInMode] = useState(true);
@@ -35,9 +35,9 @@ export default function AuthPage() {
   const [userToken, setUserToken] = useState("");
 
   useEffect(() => {
-  const savedToken = localStorage.getItem("token");
-  if (savedToken) setUserToken(savedToken);
-}, []);
+    const savedToken = localStorage.getItem("token");
+    if (savedToken) setUserToken(savedToken);
+  }, []);
 
   const showCustomAlert = (message) => {
     setAlertMessage(message);
@@ -45,59 +45,65 @@ export default function AuthPage() {
     setTimeout(() => setShowAlert(false), 3000);
   };
 
-    const handleUserFormSubmit = async (e) => {
-      e.preventDefault();
-      setError(null);
+  const handleUserFormSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
 
-      if (isSignInMode) {
-        // ---- LOGIN ----
-        if (!userEmail || !userPassword) {
-          return showCustomAlert("Please fill in all login fields.");
-        }
-
-        setIsLoading(true);
-        try {
-          const response = await fetch(`${apiUrl}/api/user/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: userEmail, password: userPassword }),
-          });
-
-          const json = await response.json();
-
-          if (!response.ok) {
-            setError(json.error);
-            showCustomAlert(json.error || "Login failed");
-          } else {
-            localStorage.setItem("user", JSON.stringify(json));
-            navigate("/pdashboard");
-          }
-        } catch (err) {
-          setError(err.message);
-          showCustomAlert("Network error. Please check your connection.");
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        // ---- SIGNUP (step 1) ----
-        if (!userEmail || !userPassword || !userConfirmPassword) {
-          return showCustomAlert("Please fill in all signup fields.");
-        }
-        if (userPassword !== userConfirmPassword) {
-          return showCustomAlert("Passwords do not match.");
-        }
-
-        // proceed to profile form
-        setShowProfileForm(true);
+    if (isSignInMode) {
+      // ---- LOGIN ----
+      if (!userEmail || !userPassword) {
+        return showCustomAlert("Please fill in all login fields.");
       }
-    };
+
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${apiUrl}/api/user/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: userEmail, password: userPassword }),
+        });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+          setError(json.error);
+          showCustomAlert(json.error || "Login failed");
+        } else {
+          localStorage.setItem("user", JSON.stringify(json));
+          navigate("/pdashboard");
+        }
+      } catch (err) {
+        setError(err.message);
+        showCustomAlert("Network error. Please check your connection.");
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      // ---- SIGNUP (step 1) ----
+      if (!userEmail || !userPassword || !userConfirmPassword) {
+        return showCustomAlert("Please fill in all signup fields.");
+      }
+      if (userPassword !== userConfirmPassword) {
+        return showCustomAlert("Passwords do not match.");
+      }
+
+      // proceed to profile form
+      setShowProfileForm(true);
+    }
+  };
 
   const handleProfileFormSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
-    if (!userName || !userAge || !userGender || !userContact || !userBloodGroup) {
+    if (
+      !userName ||
+      !userAge ||
+      !userGender ||
+      !userContact ||
+      !userBloodGroup
+    ) {
       setIsLoading(false);
       return showCustomAlert("Please fill in all profile fields.");
     }
@@ -133,10 +139,10 @@ export default function AuthPage() {
         setError(json.error);
         showCustomAlert(json.error || "Signup failed");
       } else {
-        localStorage.setItem("token", json.token); 
-  localStorage.setItem("userEmail", json.email);
-  showCustomAlert("Signup successful!");
-  navigate("/pdashboard");
+        localStorage.setItem("token", json.token);
+        localStorage.setItem("userEmail", json.email);
+        showCustomAlert("Signup successful!");
+        navigate("/pdashboard");
       }
     } catch (err) {
       setError(err.message);
@@ -146,41 +152,65 @@ export default function AuthPage() {
     }
   };
 
-  const handleAdminLoginSubmit = async (e) => {
-    e.preventDefault();
-    if (!aemail || !apassword) {
-      return showCustomAlert("Please enter admin credentials.");
+ const handleAdminLoginSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!aemail || !apassword) {
+    return showCustomAlert("Please enter admin credentials.");
+  }
+
+  setIsLoading(true);
+  setError(null);
+
+  try {
+    const response = await fetch(`${apiUrl}/api/admin/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: aemail, password: apassword }),
+    });
+
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+      showCustomAlert(json.error || "Admin login failed");
+      return;
     }
 
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(`${apiUrl}/api/admin/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: aemail, password: apassword }),
+    console.log("Institute:", json.instituteName);
+
+    if (json && json.email && json.token) {
+      const adminData = {
+        email: json.email,
+        token: json.token,
+      };
+
+      localStorage.setItem("admin", JSON.stringify(adminData));
+
+      // ✅ Only this navigate call
+      navigate("/admin", {
+        state: {
+          instituteName: json.instituteName,
+          address: json.address,
+        },
       });
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        setError(json.error);
-        showCustomAlert(json.error || "Admin login failed");
-      } else {
-        localStorage.setItem("admin", JSON.stringify(json));
-        navigate("/admin");
-      }
-    } catch (err) {
-      setError(err.message);
-      showCustomAlert("Network error. Please check your connection.");
-    } finally {
-      setIsLoading(false);
+    } else {
+      showCustomAlert("Invalid server response. Please try again.");
+      console.error("Unexpected response:", json);
     }
-  };
+  } catch (err) {
+    setError(err.message);
+    showCustomAlert("Network error. Please check your connection.");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-900 via-blue-400 to-blue-200">
-    <button
+      <button
         onClick={() => navigate("/")}
         className="absolute top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-blue-700 transition"
       >
@@ -189,7 +219,11 @@ export default function AuthPage() {
       <div className="flex w-full max-w-6xl bg-white/90 shadow-xl rounded-2xl overflow-hidden">
         {/* Left Image */}
         <div className="hidden md:block w-1/2">
-          <img src="/login card.png" alt="Side Illustration" className="h-full w-full object-cover" />
+          <img
+            src="/login card.png"
+            alt="Side Illustration"
+            className="h-full w-full object-cover"
+          />
         </div>
 
         {/* Right Side */}
@@ -202,7 +236,10 @@ export default function AuthPage() {
 
           {/* LOGIN / SIGNUP FORM */}
           {!showProfileForm && !showAdminModal && (
-            <form onSubmit={handleUserFormSubmit} className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg">
+            <form
+              onSubmit={handleUserFormSubmit}
+              className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg"
+            >
               <h2 className="text-2xl font-bold text-center mb-4">
                 {isSignInMode ? "Sign in" : "Create Account"}
               </h2>
@@ -240,7 +277,9 @@ export default function AuthPage() {
               </button>
 
               <p className="text-center text-sm mt-4 text-gray-600">
-                {isSignInMode ? "Don’t have an account?" : "Already have an account?"}{" "}
+                {isSignInMode
+                  ? "Don’t have an account?"
+                  : "Already have an account?"}{" "}
                 <button
                   type="button"
                   onClick={() => {
@@ -267,8 +306,13 @@ export default function AuthPage() {
 
           {/* PROFILE FORM (after signup step 1) */}
           {showProfileForm && (
-            <form onSubmit={handleProfileFormSubmit} className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg">
-              <h2 className="text-2xl font-bold text-center mb-4">Complete Profile</h2>
+            <form
+              onSubmit={handleProfileFormSubmit}
+              className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg"
+            >
+              <h2 className="text-2xl font-bold text-center mb-4">
+                Complete Profile
+              </h2>
 
               <input
                 type="text"
@@ -336,8 +380,13 @@ export default function AuthPage() {
 
           {/* ADMIN LOGIN FORM */}
           {showAdminModal && (
-            <form onSubmit={handleAdminLoginSubmit} className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg">
-              <h2 className="text-2xl font-bold text-center mb-4">Admin Login</h2>
+            <form
+              onSubmit={handleAdminLoginSubmit}
+              className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg"
+            >
+              <h2 className="text-2xl font-bold text-center mb-4">
+                Admin Login
+              </h2>
               <input
                 type="email"
                 placeholder="Admin Email"
@@ -368,7 +417,7 @@ export default function AuthPage() {
                 >
                   User Login
                 </button>
-               <br></br>
+                <br></br>
                 <button
                   type="button"
                   onClick={() => navigate("/adminsignup")}

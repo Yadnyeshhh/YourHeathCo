@@ -1,5 +1,6 @@
 const Admin = require("../models/adminModel");
 const User = require("../models/userModel");
+const PatientStatus = require('../models/PatientStatus')
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -60,15 +61,35 @@ const signupAdmin = async (req, res) => {
 // 📋 GET /api/admin/users → get all patients of this admin
 const getAllUsers = async (req, res) => {
   try {
-    const adminId = req.admin._id; // ✅ from requireAdminAuth middleware
+    const adminId = req.admin._id;
+
+    // Fetch users (patients) under this admin
     const users = await User.find({ admin: adminId }).select("-password -__v");
 
     if (!users.length) {
       return res.status(404).json({ message: "No users found for this admin" });
     }
 
-    res.status(200).json(users);
+    // Attach patient status for each user
+    const usersWithStatus = await Promise.all(
+      users.map(async (user) => {
+        const status = await PatientStatus.findOne({ patient: user._id });
+        return {
+          ...user.toObject(),
+          admitted: status?.admitted || false,
+          admissionTime: status?.admissionTime || null,
+          dischargeTime: status?.dischargeTime || null,
+          roomNumber: status?.roomNumber || "",
+          diagnosis: status?.diagnosis || "",
+          assignedDoctor: status?.assignedDoctor || "",
+          nextAppointment: status?.nextAppointment || null,
+        };
+      })
+    );
+
+    res.status(200).json(usersWithStatus);
   } catch (err) {
+    console.error("Error fetching users:", err);
     res.status(500).json({ error: "Failed to fetch users" });
   }
 };
