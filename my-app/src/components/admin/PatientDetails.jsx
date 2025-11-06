@@ -24,7 +24,7 @@ useEffect(() => {
     const formatted = isoString.slice(0, 16); // "YYYY-MM-DDTHH:mm"
     setAppointment(formatted);
   }
-}, [patient]);
+}, [patient]);  
 
   if (!patient) return <div>Patient not found</div>;
 

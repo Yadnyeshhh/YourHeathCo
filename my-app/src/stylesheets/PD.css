@@ -430,6 +430,29 @@ button {
   color: var(--dark-text); /* Adjusted to new theme variable */
 }
 
+.next-appointment {
+  margin-top: 20px;
+  padding: 15px 20px;
+  background: #e0f2fe; /* soft blue background */
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.next-appointment h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.next-appointment p {
+  margin-top: 5px;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+}
+
+
 /* Billing Section */
 .billing-section {
   background-color: var(--primary-color); /* Adjusted to new theme variable */
@@ -512,53 +535,81 @@ button {
 
 /* Team Today Section */
 .team-today-section {
-  background-color: var(--white-bg); /* Adjusted to new theme variable */
-  padding: 1.5rem;
-  border-radius: var(--border-radius); /* Adjusted to new theme variable */
-  box-shadow: var(--shadow); /* Adjusted to new theme variable */
+  background-color: var(--white-bg);
+  padding: 1.8rem 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
   width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-today-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .team-today-section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #4f46e5;
+  padding-left: 0.6rem;
 }
 
 .team-today-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .team-today-member-item {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  background: #f9fafb;
+  border-radius: 10px;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.team-today-member-item:last-child {
-  margin-bottom: 0;
+.team-today-member-item:hover {
+  background: #eef2ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .team-today-member-avatar {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  margin-right: 0.75rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 5px rgba(79, 70, 229, 0.3);
 }
 
-
+.team-today-member-info {
+  display: flex;
+  flex-direction: column;
+}
 
 .team-today-member-name {
   font-weight: 600;
-  color: var(--dark-text); /* Adjusted to new theme variable */
+  font-size: 1rem;
+  color: var(--dark-text);
+  margin-bottom: 0.25rem;
 }
 
 .team-today-member-designation {
   font-size: 0.875rem;
-  color: #6b7280; /* Keeping a gray shade */
+  color: #6b7280;
 }
+
 
 /* Bottom Table (Activity Log) */
 .activity-log-table-container {

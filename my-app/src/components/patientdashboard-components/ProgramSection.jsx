@@ -2,10 +2,11 @@
 
 import React from 'react';
 
-const ProgramSection = ({ data }) => {
+const ProgramSection = ({ data, nextAppointment }) => {
   return (
     <div className="program-section">
       <h2 className="program-section-title">Quick Updates</h2>
+      
       <div className="program-list-grid">
         {data.map((item, index) => (
           <div key={index} className="program-list-item">
@@ -14,6 +15,14 @@ const ProgramSection = ({ data }) => {
           </div>
         ))}
       </div>
+
+      {/* ✅ Show next appointment once at the bottom */}
+      {nextAppointment && (
+        <div className="next-appointment">
+          <h3>Next Appointment</h3>
+          <p>{new Date(nextAppointment).toLocaleString()}</p>
+        </div>
+      )}
     </div>
   );
 };
