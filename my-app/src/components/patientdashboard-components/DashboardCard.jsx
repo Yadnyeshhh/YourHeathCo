@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import LucideIcon from './LucideIcon.jsx';
+import "./stylesheets/dashboardcard.css"
 
 const DashboardCard = ({ title, value, icon, colorClass, meds }) => {
   const [showTable, setShowTable] = useState(false);

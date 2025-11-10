@@ -1,0 +1,309 @@
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+/* Modal Content */
+.modal-content {
+  background: var(--white-bg);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  animation: fadeIn 0.3s ease-out;
+  z-index: 1001;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Title */
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.625rem;
+}
+
+/* Patient Details */
+.patient-details p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0.625rem;
+  line-height: 1.6;
+}
+
+.patient-details strong {
+  color: var(--dark-text);
+  width: 100px;
+  display: inline-block;
+}
+
+/* Modal Buttons */
+.modal-close-button {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal-close-button:hover {
+  background-color: #0056b3;
+}
+
+.cancel-btn {
+  margin-left: 0.9375rem;
+}
+
+.close-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: #c0392b;
+}
+
+/* Data Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: var(--gray-bg);
+  font-weight: 600;
+  color: var(--dark-text);
+}
+.dashboard-card-upper button{
+  width: 100%;
+}
+/* Dashboard Grid Responsive */
+@media (max-width: 1200px) {
+  .dashboard-middle-sections-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet (768px to 1023px) */
+@media screen and (max-width: 1023px) {
+  .modal-content {
+    max-width: 500px;
+    padding: 1.75rem;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .patient-details p {
+    font-size: 0.9375rem;
+  }
+
+  .patient-details strong {
+    width: 90px;
+  }
+
+  .data-table {
+    font-size: 0.875rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.5rem;
+  }
+}
+
+/* Mobile (below 768px) */
+@media screen and (max-width: 767px) {
+  .modal-overlay {
+    padding: 0.5rem;
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-width: none;
+    padding: 1.5rem;
+    max-height: 85vh;
+  }
+
+  .modal-title {
+    font-size: 1.375rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .patient-details p {
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .patient-details strong {
+    width: auto;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .modal-close-button,
+  .close-button {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .cancel-btn {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  /* Stack buttons vertically on mobile */
+  .modal-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* Make table scrollable horizontally on small screens */
+  .data-table-wrapper {
+    overflow-x: auto;
+    margin: 1rem -1.5rem;
+    padding: 0 1.5rem;
+  }
+
+  .data-table {
+    font-size: 0.8125rem;
+    min-width: 400px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.375rem;
+  }
+}
+
+/* Small mobile (below 480px) */
+@media screen and (max-width: 479px) {
+  .modal-content {
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.25rem;
+  }
+
+  .patient-details p {
+    font-size: 0.8125rem;
+  }
+
+  .modal-close-button,
+  .close-button {
+    padding: 0.625rem 1rem;
+    font-size: 0.9375rem;
+  }
+
+  .data-table {
+    font-size: 0.75rem;
+    min-width: 350px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.25rem;
+  }
+}
+
+/* Extra small mobile (below 360px) */
+@media screen and (max-width: 359px) {
+  .modal-overlay {
+    padding: 0.25rem;
+    padding-top: 1rem;
+  }
+
+  .modal-content {
+    padding: 1rem;
+    max-height: 90vh;
+  }
+
+  .modal-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media screen and (max-width: 767px) and (orientation: landscape) {
+  .modal-overlay {
+    align-items: flex-start;
+    padding-top: 0.5rem;
+  }
+
+  .modal-content {
+    max-height: 92vh;
+  }
+}
+
+/* Accessibility: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .modal-content {
+    animation: none;
+  }
+
+  .modal-close-button,
+  .close-button {
+    transition: none;
+  }
+}

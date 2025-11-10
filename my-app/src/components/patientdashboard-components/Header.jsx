@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LucideIcon from './LucideIcon.jsx';
 import PatientProfileModal from './PatientProfileModal';
+import "./stylesheets/header.css"
 
 const Header = ({ profile }) => {
   // Modal open state

@@ -46,6 +46,7 @@ button {
   background-color: var(--gray-bg); /* Adjusted to new theme variable */
   font-family: 'Arial', sans-serif; /* Adjusted to new theme's font */
   color: var(--dark-text); /* Adjusted to new theme variable */
+  max-width: 100vw;
 }
 
 /* Main Content Area */
@@ -53,11 +54,12 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
   padding-left: calc(16rem + 1.5rem);
   min-width: 0;
   padding-top: 0;
   padding-bottom: 0;
+  /* width: 100vw; */
 }
 
 /* Dashboard Main Content Section */
@@ -69,6 +71,7 @@ button {
   border-bottom-right-radius: var(--border-radius); /* Adjusted to new theme variable */
   box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); /* Keeping a subtle inner shadow */
   overflow-y: auto;
+  width: 80vw;
 }
 
 /* Top Cards Grid */
@@ -77,6 +80,40 @@ button {
   grid-template-columns: 1fr;
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+.pbcontainer{
+ display: flex;
+ flex-direction: row;
+ /* gap: 10px; */
+ /* height: 40vh;  */
+}
+@media (max-width: 960px) {
+  .pbcontainer{
+    /* flex-direction:column; */
+    /* align-items: center; */
+    justify-self: center;
+    margin: auto;
+  }
+  .dashboard-main-content-area{
+ padding-left: 24vw;
+  }
+
+}
+@media(max-width:940px){
+  .dashboard-main-content-area{
+    padding: 1rem;
+    padding-right: 1rem ;
+    width: 100vw;
+  }
+  .dashboard-main-content-section{
+    width: 100%;
+  }
+  .pbcontainer{
+    /* align-items: center; */
+    /* justify-items: center; */
+    margin: 0px;
+  }
 }
 
 @media (min-width: 640px) {
@@ -90,6 +127,14 @@ button {
     grid-template-columns: repeat(5, 1fr);
   }
 }
+@media(max-width:570px){
+  .pbcontainer{
+    flex-direction: column;
+    /* align-items: center;
+     */
+     /* justify-content: center; */
+  }
+}
 
 /* Middle Sections Grid */
 .dashboard-middle-sections-grid {
@@ -97,6 +142,7 @@ button {
   grid-template-columns: 1fr;
   gap: 1.5rem;
   margin-bottom: 2rem;
+  width: 100vw;
 }
 
 @media (min-width: 1024px) {
@@ -119,195 +165,9 @@ button {
   }
 }
 
-/* Sidebar */
-.sidebar {
-  width: 16rem;
-  background-color: var(--white-bg); /* Adjusted to new theme variable */
-  padding: 1.5rem;
-  box-shadow: var(--shadow); /* Adjusted to new theme variable */
-  border-top-right-radius: var(--border-radius); /* Adjusted to new theme variable */
-  border-bottom-right-radius: var(--border-radius); /* Adjusted to new theme variable */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-
-.sidebar-logo-section {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2.5rem;
-}
-
-.sidebar-logo-icon {
-  color: var(--primary-color); /* Adjusted to new theme variable */
-  margin-right: 0.5rem;
-}
-
-.sidebar-logo-text {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-}
-
-.sidebar-nav-list {
-  list-style: none;
-  padding: 0;
-  margin-top: auto;
-}
-
-.sidebar-nav-item-wrapper {
-  margin-top: 0.6rem;
-}
-
-.sidebar-nav-item {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem;
-  border-radius: var(--border-radius); /* Adjusted to new theme variable */
-  transition: background-color 200ms ease-in-out, color 200ms ease-in-out, box-shadow 200ms ease-in-out;
-}
-.sidebar-nav-item span{
-  padding: 0px;
-  margin: 0px;
-}
-
-.sidebar-nav-item-active {
-  background-color: var(--primary-color); /* Adjusted to new theme variable */
-  color: var(--light-text); /* Adjusted to new theme variable */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Keeping existing shadow */
-}
-
-.sidebar-nav-item-inactive {
-  color: var(--dark-text); /* Adjusted to new theme variable */
-}
-
-.sidebar-nav-item-inactive:hover {
-  background-color: var(--gray-bg); /* Adjusted to new theme variable */
-  color: var(--primary-color); /* Adjusted to new theme variable */
-}
-
-.sidebar-nav-item-icon {
-  margin-right: 0.75rem;
-  color: inherit;
-}
-
-.sidebar-nav-item-text {
-  font-weight: 500;
-  flex-grow: 1;
-}
-
-.sidebar-nav-item-count {
-  margin-left: auto;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-}
-
-.sidebar-nav-item-count-active {
-  background-color: var(--light-text); /* Adjusted to new theme variable */
-  color: var(--primary-color); /* Adjusted to new theme variable */
-}
-
-.sidebar-nav-item-count-inactive {
-  background-color: var(--border-color); /* Adjusted to new theme variable */
-  color: var(--dark-text); /* Adjusted to new theme variable */
-}
-
-.sidebar-user-profile-section {
-  margin-top: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color); /* Adjusted to new theme variable */
-  display: flex;
-  align-items: center;
-}
-
-.sidebar-user-avatar {
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  margin-right: 0.75rem;
-}
 
 
 
-.sidebar-user-name {
-  font-weight: 600;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-}
-
-.sidebar-user-role {
-  font-size: 0.875rem;
-  color: #6b7280; /* Keeping a gray shade for less emphasis */
-}
-
-/* Header */
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem;
-  background-color: var(--white-bg); /* Adjusted to new theme variable */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Keeping a subtle shadow */
-  border-top-left-radius: var(--border-radius); /* Adjusted to new theme variable */
-  border-top-right-radius: var(--border-radius); /* Adjusted to new theme variable */
-}
-
-.dashboard-header-title {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-}
-
-.dashboard-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.header-icon-button {
-  padding: 0.5rem;
-  border-radius: 9999px;
-  transition: background-color 150ms ease-in-out;
-}
-
-.header-icon-button:hover {
-  background-color: var(--gray-bg); /* Adjusted to new theme variable */
-}
-
-.header-icon {
-  color: #4b5563; /* Keeping a gray shade */
-}
-
-/* MODIFIED: New Patient Button color changed to match landing page primary color */
-.header-new-patient-button {
-  display: flex;
-  align-items: center;
-  background-color: var(--primary-color); /* Adjusted to new theme variable */
-  color: var(--light-text); /* Adjusted to new theme variable */
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  box-shadow: var(--shadow); /* Adjusted to new theme variable */
-  transition: background-color 150ms ease-in-out;
-}
-
-.header-new-patient-button:hover {
-  background-color: #0056b3; /* Hardcoded darker primary color */
-}
-
-.header-new-patient-icon {
-  margin-right: 0.5rem;
-}
 
 /* Dashboard Card */
 .dashboard-card-upper{
@@ -377,825 +237,29 @@ button {
   font-weight: 700;
   color: var(--dark-text); /* Adjusted to new theme variable */
 }
-
-/* Program Section */
-.program-section {
-  background-color: var(--white-bg); /* Adjusted to new theme variable */
-  padding: 1.5rem;
-  border-radius: var(--border-radius); /* Adjusted to new theme variable */
-  box-shadow: var(--shadow); /* Adjusted to new theme variable */
-  grid-column: span 1;
-}
-
-@media (min-width: 1024px) {
-  .program-section {
-    grid-column: span 2;
-  }
-}
-
-.program-section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-  margin-bottom: 1rem;
-}
-
-.program-list-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-@media (min-width: 768px) {
-  .program-list-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.program-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color); /* Adjusted to new theme variable */
-  border-radius: var(--border-radius); /* Adjusted to new theme variable */
-}
-
-.program-list-item-title {
-  color: var(--dark-text); /* Adjusted to new theme variable */
-}
-
-.program-list-item-count {
-  font-weight: 600;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-}
-
-.next-appointment {
-  margin-top: 20px;
-  padding: 15px 20px;
-  background: #e0f2fe; /* soft blue background */
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.next-appointment h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #1e3a8a;
-}
-
-.next-appointment p {
-  margin-top: 5px;
-  font-size: 16px;
-  color: #333;
-  font-weight: 500;
-}
-
-
-/* Billing Section */
-.billing-section {
-  background-color: var(--primary-color); /* Adjusted to new theme variable */
-  color: var(--light-text); /* Adjusted to new theme variable */
-  padding: 1.5rem;
-  border-radius: var(--border-radius); /* Adjusted to new theme variable */
-  box-shadow: var(--shadow); /* Adjusted to new theme variable */
-  grid-column: span 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.billing-section-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.billing-total-amount-wrapper {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.billing-total-icon {
-  margin-right: 0.75rem;
-}
-
-
-
-.billing-total-label {
-  font-size: 0.875rem;
-  opacity: 0.8;
-}
-
-.billing-total-value {
-  font-size: 1.875rem;
-  font-weight: 700;
-}
-
-
-
-.billing-average-label {
-  font-size: 0.875rem;
-  opacity: 0.8;
-  margin-bottom: 0.5rem;
-}
-
-.billing-average-chart {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.billing-average-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.billing-average-circle {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 9999px;
-  background-color: var(--light-text); /* Adjusted to new theme variable */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary-color); /* Adjusted to new theme variable */
-  font-weight: 700;
-  font-size: 0.875rem;
-}
-
-.billing-average-day {
-  font-size: 0.75rem;
-  margin-top: 0.25rem;
-  opacity: 0.8;
-}
-
-/* Team Today Section */
-.team-today-section {
-  background-color: var(--white-bg);
-  padding: 1.8rem 2rem;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  width: 100%;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.team-today-section:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-}
-
-.team-today-section-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--dark-text);
-  margin-bottom: 1.5rem;
-  border-left: 4px solid #4f46e5;
-  padding-left: 0.6rem;
-}
-
-.team-today-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.team-today-member-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.8rem 1rem;
-  background: #f9fafb;
-  border-radius: 10px;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
-}
-
-.team-today-member-item:hover {
-  background: #eef2ff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.team-today-member-avatar {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  background: #4f46e5;
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 1.1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  box-shadow: 0 2px 5px rgba(79, 70, 229, 0.3);
-}
-
-.team-today-member-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.team-today-member-name {
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--dark-text);
-  margin-bottom: 0.25rem;
-}
-
-.team-today-member-designation {
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-
-/* Bottom Table (Activity Log) */
-.activity-log-table-container {
-  background-color: var(--white-bg); /* Adjusted to new theme variable */
-  padding: 1.5rem;
-  border-radius: var(--border-radius); /* Adjusted to new theme variable */
-  box-shadow: var(--shadow); /* Adjusted to new theme variable */
-}
-
-.activity-log-table-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-  margin-bottom: 1rem;
-}
-
-.activity-log-table-overflow {
-  overflow-x: auto;
-}
-
-.activity-log-table {
-  min-width: 100%;
-  border-collapse: collapse;
-}
-
-.activity-log-table-head {
-  background-color: var(--gray-bg); /* Adjusted to new theme variable */
-}
-
-.activity-log-th {
-  padding: 0.75rem 1.5rem;
-  text-align: left;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #6b7280; /* Keeping a gray shade */
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.activity-log-th-first {
-  border-top-left-radius: var(--border-radius); /* Adjusted to new theme variable */
-}
-
-.activity-log-th-last {
-  border-top-right-radius: var(--border-radius); /* Adjusted to new theme variable */
-}
-
-.activity-log-table-body {
-  background-color: var(--white-bg); /* Adjusted to new theme variable */
-}
-
-.activity-log-table-body tr {
-  border-bottom: 1px solid var(--border-color); /* Adjusted to new theme variable */
-}
-
-.activity-log-table-body tr:last-child {
-  border-bottom: none;
-}
-
-.activity-log-td {
-  padding: 1rem 1.5rem;
-  white-space: nowrap;
-  font-size: 0.875rem;
-  color: #6b7280; /* Keeping a gray shade */
-}
-
-.activity-log-td-vehicle {
-  font-weight: 500;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-}
-
-.activity-log-status-badge {
-  padding: 0.25rem 0.5rem;
-  display: inline-flex;
-  font-size: 0.75rem;
-  line-height: 1.25rem;
-  font-weight: 600;
-  border-radius: 9999px;
-}
-
-/* Status badge colors based on new theme */
-.status-completed {
-  background-color: rgba(40, 167, 69, 0.15); /* Lighter secondary color */
-  color: var(--secondary-color);
-}
-
-.status-pending {
-  background-color: rgba(255, 193, 7, 0.15); /* Lighter accent color */
-  color: #c09800; /* Darker accent for readability */
-}
-
-.status-in-progress {
-  background-color: rgba(0, 123, 255, 0.15); /* Lighter primary color */
-  color: var(--primary-color);
-}
-
-/* PD.css additions for Modal */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
-  display: flex;
-  align-items: center;     /* vertical center */
-  justify-content: center; /* horizontal center */
-  z-index: 1000;
-}
-
-.modal-content {
-  background: var(--white-bg);
-  padding: 20px; /* use px instead of auto */
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  max-width: 500px;
-  width: 90%;
-  position: relative;
-  animation: fadeIn 0.3s ease-out;
-  z-index: 1001;
-  max-height: 80vh;       /* prevents overflow */
-  overflow-y: auto;       /* scroll if content is taller */
-}
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.modal-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--dark-text); /* Adjusted to new theme variable */
-  margin-bottom: 20px;
-  border-bottom: 2px solid var(--border-color); /* Adjusted to new theme variable */
-  padding-bottom: 10px;
-}
-
-.patient-details p {
-  font-size: 1rem;
-  color: #555; 
-  margin-bottom: 10px;
-  line-height: 1.6;
-}
-
-.patient-details strong {
-  color: var(--dark-text); 
-  width: 100px;
-  display: inline-block;
-}
-
-.modal-close-button {
-  background-color: var(--primary-color); 
-  color: var(--light-text); 
-  border: none;
-  padding: 10px 20px;
-  border-radius: var(--border-radius); 
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-top: 25px;
-  transition: background-color 0.3s ease;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.modal-close-button:hover {
-  background-color: #0056b3; /* Hardcoded darker primary color */
-}
-.cancel-btn{
-  margin-left: 15px;
-}
-
-/* Add or ensure these responsive adjustments are also in your PD.css */
-@media (max-width: 1200px) {
-  .dashboard-middle-sections-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 600px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-.data-table th,
-.data-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-.close-button {
-  margin-top: 1rem;
-  padding: 8px 16px;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-
-/* ===========================================
-   MOBILE AND TABLET RESPONSIVE ADDITIONS
-   =========================================== */
-
-/* Mobile First Approach - Base styles for mobile */
-@media (max-width: 767px) {
-  /* Hide sidebar on mobile, show hamburger menu instead */
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-  }
-  
-  .sidebar.mobile-open {
-    transform: translateX(0);
-  }
-  
-  /* Mobile overlay for sidebar */
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-  }
-  
-  .sidebar-overlay.active {
-    display: block;
-  }
-  
-  /* Adjust main content for mobile */
+/* Responsive fix for mobile view */
+@media (max-width: 768px) {
   .dashboard-main-content-area {
-    padding: 1rem;
-    padding-left: 1rem; 
-    padding-top: 0;
+    padding-left: 1.5rem; /* remove extra sidebar padding */
+    width: 100vw;         /* ensure full width */
   }
-  
-  /* Mobile header adjustments */
-  .dashboard-header {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-  }
-  
-  .dashboard-header-title {
-    font-size: 1.5rem;
-    text-align: center;
-  }
-  
-  .dashboard-header-actions {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  /* Mobile hamburger menu button */
-  .mobile-menu-button {
-    display: block;
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 1001;
-    padding: 0.5rem;
-    background: var(--primary-color);
-    color: var(--light-text);
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-  }
-  
-  /* Card adjustments for mobile */
-  .dashboard-card-upper button {
-    width: 100%;
-    min-width: auto;
-    flex-direction: column;
-    text-align: center;
-    padding: 1rem;
-  }
-  
-  .dashboard-card-icon-wrapper {
-    margin-bottom: 0.5rem;
-  }
-  
-  /* Top cards grid - single column on mobile */
-  .dashboard-top-cards-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  /* Middle sections - single column on mobile */
-  .dashboard-middle-sections-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  /* Bottom sections - single column on mobile */
-  .bottom-sections-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  /* Program list - single column on mobile */
-  .program-list-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  /* Billing section adjustments */
-  .billing-average-chart {
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  .billing-average-item {
-    flex: 1;
-    min-width: 80px;
-  }
-  
-  /* Table responsive adjustments */
-  .activity-log-table-container {
-    padding: 1rem;
-  }
-  
-  .activity-log-table-overflow {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .activity-log-th,
-  .activity-log-td {
-    padding: 0.5rem;
-    font-size: 0.8rem;
-  }
-  
-  /* Modal adjustments for mobile */
-  .modal-content {
-    width: 95%;
-    max-width: none;
-    margin: 1rem;
-    padding: 1.5rem;
-  }
-  
-  .modal-title {
-    font-size: 1.4rem;
-  }
-  
-  .patient-details p {
-    font-size: 0.9rem;
-  }
-  
-  /* Team today section */
-  .team-today-member-item {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .team-today-member-avatar {
-    width: 2rem;
-    height: 2rem;
+
+  .dashboard-main-content-section {
+    border-radius: 0; /* optional: makes it edge-to-edge */
   }
 }
 
-/* Tablet styles */
-@media (min-width: 768px) and (max-width: 1023px) {
-  /* Tablet sidebar adjustments */
-  .sidebar {
-    width: 12rem;
-  }
-  
-  .dashboard-main-content-area {
-    padding-left: calc(12rem + 1rem);
-  }
-  
-  /* Tablet header */
-  .dashboard-header {
-    padding: 1.25rem;
-  }
-  
-  .dashboard-header-title {
-    font-size: 1.75rem;
-  }
-  
-  /* Card adjustments for tablet */
-  .dashboard-card-upper button {
-    width: 100%;
-    min-width: auto;
-  }
-  
-  /* Top cards - 2 columns on tablet */
-  .dashboard-top-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-  
-  /* Middle sections - 2 columns on tablet */
-  .dashboard-middle-sections-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  /* Program section spans full width on tablet */
-  .program-section {
-    grid-column: span 2;
-  }
-  
-  /* Billing section adjustments */
-  .billing-average-chart {
-    justify-content: space-between;
-  }
-  
-  /* Table adjustments for tablet */
-  .activity-log-th,
-  .activity-log-td {
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-  }
-  
-  /* Modal adjustments for tablet */
-  .modal-content {
-    width: 85%;
-    max-width: 500px;
-  }
-}
 
-/* Large tablet / small desktop */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  /* Adjust card width for better fit */
-  .dashboard-card-upper button {
-    width: 100%;
-    min-width: auto;
-  }
-  
-  /* Top cards - 3 columns */
-  .dashboard-top-cards-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
 
-/* General responsive utilities */
-@media (max-width: 1023px) {
-  /* Hide mobile menu button on larger screens */
-  .mobile-menu-button {
-    display: none;
-  }
-  
-  /* Ensure text doesn't break awkwardly */
-  .dashboard-card-title,
-  .dashboard-card-value {
-    word-wrap: break-word;
-  }
-  
-  /* Responsive text sizing */
-  .dashboard-header-title {
-    word-wrap: break-word;
-  }
-  
-  /* Ensure buttons are touch-friendly */
-  .header-icon-button,
-  .header-new-patient-button,
-  .modal-close-button {
-    min-height: 44px;
-    min-width: 44px;
-  }
-}
 
-/* Touch device optimizations */
-@media (hover: none) and (pointer: coarse) {
-  /* Larger touch targets */
-  .sidebar-nav-item {
-    padding: 1rem 0.75rem;
-  }
-  
-  .header-icon-button {
-    padding: 0.75rem;
-  }
-  
-  /* Remove hover effects on touch devices */
-  .sidebar-nav-item-inactive:hover,
-  .header-icon-button:hover,
-  .header-new-patient-button:hover,
-  .modal-close-button:hover {
-    background-color: initial;
-  }
-}
 
-/* Print styles */
-@media print {
-  .sidebar,
-  .dashboard-header-actions,
-  .mobile-menu-button {
-    display: none !important;
-  }
-  
-  .dashboard-main-content-area {
-    padding-left: 0;
-  }
-  
-  .dashboard-card-upper button {
-    box-shadow: none;
-    border: 1px solid #ccc;
-  }
-}
 
-/* Landscape mobile adjustments */
-@media (max-width: 767px) and (orientation: landscape) {
-  .dashboard-header {
-    flex-direction: row;
-    padding: 0.75rem;
-  }
-  
-  .dashboard-header-title {
-    font-size: 1.25rem;
-  }
-  
-  .dashboard-main-content-area {
-    padding: 0.75rem;
-  }
-}
 
-/* Very small screens (older phones) */
-@media (max-width: 359px) {
-  .dashboard-header-title {
-    font-size: 1.25rem;
-  }
-  
-  .dashboard-card-value {
-    font-size: 1.25rem;
-  }
-  
-  .modal-content {
-    padding: 1rem;
-  }
-  
-  .billing-average-circle {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 0.75rem;
-  }
-}
 
-/* Accessibility improvements */
-@media (prefers-reduced-motion: reduce) {
-  .sidebar,
-  .modal-content {
-    animation: none;
-    transition: none;
-  }
-}
 
-/* Dark mode support (if needed) */
-@media (prefers-color-scheme: dark) {
-  .sidebar-overlay {
-    background: rgba(0, 0, 0, 0.7);
-  }
-}
+
+
+
+
+
+

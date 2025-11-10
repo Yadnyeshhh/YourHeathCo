@@ -2,6 +2,7 @@
 
 import React from 'react';
 import LucideIcon from './LucideIcon.jsx'; // Import the new LucideIcon component
+import "./stylesheets/billingsection.css"
 
 const BillingSection = () => {
   return (

@@ -176,8 +176,8 @@ export default function AuthPage() {
       showCustomAlert(json.error || "Admin login failed");
       return;
     }
-
-    console.log("Institute:", json.instituteName);
+  // console.log(json);
+  //   console.log("Institute:", json.instituteName);
 
     if (json && json.email && json.token) {
       const adminData = {

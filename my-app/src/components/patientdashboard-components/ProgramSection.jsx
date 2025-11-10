@@ -1,6 +1,7 @@
 // src/components/ProgramSection.js
 
 import React from 'react';
+import "./stylesheets/programsection.css"
 
 const ProgramSection = ({ data, nextAppointment }) => {
   return (

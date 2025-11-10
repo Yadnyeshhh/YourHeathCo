@@ -11,6 +11,7 @@ const Admin = () => {
   const [patients, setPatients] = useState([]);
   const [filter, setFilter] = useState("All"); // 👈 state for filter option
    const location = useLocation();
+   const [admin , setAdmin] = useState()
  
   const { instituteName, address } = location.state || {};
   useEffect(() => {
@@ -23,8 +24,9 @@ const Admin = () => {
         }
 
         const admin = JSON.parse(storedAdmin);
+        console.log(admin)
         const token = admin?.token;
-   
+    
 
         if (!token) {
           console.warn("No admin token found. Admin not logged in.");
@@ -46,6 +48,7 @@ const Admin = () => {
     fetchPatients();
   }, []);
   console.log(patients)
+  console.log(admin)
 
   //  Filter logic
   const filteredPatients = patients.filter((patient) => {
@@ -76,7 +79,7 @@ const Admin = () => {
         <div className="patient-grid">
           {filteredPatients.length > 0 ? (
             filteredPatients.map((patient) => (
-              <PatientCard key={patient._id} patient={patient} />
+              <PatientCard key={patient._id} patient={patient} instituteName = {instituteName}/>
             ))
           ) : (
             <p className="no-patients">No patients found.</p>

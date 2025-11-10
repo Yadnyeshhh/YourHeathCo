@@ -1,0 +1,283 @@
+/* Program Section */
+.program-section {
+  background-color: var(--white-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  grid-column: span 1;
+  width: 40vw;
+}
+
+@media (min-width: 1024px) {
+  .program-section {
+    grid-column: span 2;
+  }
+}
+
+.program-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  margin-bottom: 1rem;
+}
+
+.program-list-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 960px) {
+  .program-section{
+    width: 30vw;
+  }
+  .program-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width:940px){
+  .program-section{
+    width: 45vw;
+  }
+}
+@media(max-width:570px){
+
+  .program-section{
+    width: 80vw;
+  }
+}
+
+.program-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.program-list-item:hover {
+  background-color: var(--gray-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.program-list-item-title {
+  color: var(--dark-text);
+  font-size: 0.9375rem;
+}
+
+.program-list-item-count {
+  font-weight: 600;
+  color: var(--dark-text);
+  font-size: 0.9375rem;
+}
+
+/* Next Appointment */
+.next-appointment {
+  margin-top: 1.25rem;
+  padding: 0.9375rem 1.25rem;
+  background: #e0f2fe;
+  border-radius: 0.625rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.next-appointment h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.next-appointment p {
+  margin-top: 0.3125rem;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Tablet (768px to 1023px) */
+@media screen and (max-width: 1023px) {
+  .program-section {
+    padding: 1.25rem;
+  }
+
+  .program-section-title {
+    font-size: 1.125rem;
+  }
+
+  .program-list-grid {
+    gap: 0.875rem;
+  }
+
+  .program-list-item {
+    padding: 0.625rem 0.75rem;
+  }
+
+  .program-list-item-title {
+    font-size: 0.875rem;
+  }
+
+  .program-list-item-count {
+    font-size: 0.875rem;
+  }
+
+  .next-appointment {
+    padding: 0.875rem 1rem;
+  }
+
+  .next-appointment h3 {
+    font-size: 1rem;
+  }
+
+  .next-appointment p {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Mobile (below 768px) */
+@media screen and (max-width: 767px) {
+  .program-section {
+    padding: 1.25rem;
+    grid-column: span 1;
+  }
+
+  .program-section-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .program-list-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .program-list-item {
+    padding: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .program-list-item-title {
+    font-size: 0.875rem;
+    flex: 1 1 auto;
+  }
+
+  .program-list-item-count {
+    font-size: 0.875rem;
+    margin-left: 0.5rem;
+  }
+
+  .next-appointment {
+    margin-top: 1rem;
+    padding: 0.875rem 1rem;
+  }
+
+  .next-appointment h3 {
+    font-size: 1rem;
+  }
+
+  .next-appointment p {
+    font-size: 0.875rem;
+    margin-top: 0.375rem;
+  }
+}
+
+/* Small mobile (below 480px) */
+@media screen and (max-width: 479px) {
+  .program-section {
+    padding: 1rem;
+  }
+
+  .program-section-title {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .program-list-grid {
+    gap: 0.625rem;
+  }
+
+  .program-list-item {
+    padding: 0.625rem;
+  }
+
+  .program-list-item-title {
+    font-size: 0.8125rem;
+  }
+
+  .program-list-item-count {
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .next-appointment {
+    padding: 0.75rem 0.875rem;
+    border-radius: 0.5rem;
+  }
+
+  .next-appointment h3 {
+    font-size: 0.9375rem;
+  }
+
+  .next-appointment p {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Extra small mobile (below 360px) */
+@media screen and (max-width: 359px) {
+  .program-section {
+    padding: 0.875rem;
+  }
+
+  .program-section-title {
+    font-size: 0.9375rem;
+  }
+
+  .program-list-item {
+    padding: 0.5rem 0.625rem;
+  }
+
+  .program-list-item-title {
+    font-size: 0.75rem;
+  }
+
+  .program-list-item-count {
+    font-size: 0.75rem;
+  }
+
+  .next-appointment {
+    padding: 0.625rem 0.75rem;
+  }
+
+  .next-appointment h3 {
+    font-size: 0.875rem;
+  }
+
+  .next-appointment p {
+    font-size: 0.75rem;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media screen and (max-width: 767px) and (orientation: landscape) {
+  .program-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+/* When in a grid container on larger tablets */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* If program section spans full width on tablet */
+  .program-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Accessibility: Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .program-list-item {
+    transition: none;
+  }
+}

@@ -1,6 +1,7 @@
 // src/components/TeamTodaySection.js
 
 import React from 'react';
+import "./stylesheets/teamTodaySection.css"
 
 const TeamTodaySection = ({ doctor }) => {
   // Function to get initials from doctor name

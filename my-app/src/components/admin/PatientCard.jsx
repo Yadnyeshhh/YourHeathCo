@@ -2,12 +2,12 @@ import React from 'react';
 import './stylesheets/Patientcard.css';
 import { useNavigate } from 'react-router-dom';
 const apiUrl = import.meta.env.VITE_API_URL;
-const PatientCard = ({ patient }) => {
+const PatientCard = ({ patient , institue}) => {
   const navigate = useNavigate();
 
   const handleViewDetails = (e) => {
     e.stopPropagation();
-    navigate(`/patient/${patient.id}`, { state: { patient } }); // ← Pass patient as state
+    navigate(`/patient/${patient.id}`, { state: { patient , institue } }); // ← Pass patient as state
   };
 
 

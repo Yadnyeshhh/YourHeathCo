@@ -8,6 +8,7 @@ const PatientDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const patient = state?.patient;
+  
 
   const [isEditing, setIsEditing] = useState(false);
   const [schedule, setSchedule] = useState(null);
@@ -18,6 +19,7 @@ const PatientDetails = () => {
 );
 const [appointment , setAppointment] = useState(patient.nextAppointment
 )
+
 useEffect(() => {
   if (patient?.nextAppointment) {
     const isoString = patient.nextAppointment;
