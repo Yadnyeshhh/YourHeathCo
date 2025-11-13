@@ -2,12 +2,21 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./stylesheets/Sidebar.css";
 
-const Sidebar = ({admin} ) => {
+const Sidebar = ({ admin, id }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("admin");
-    navigate("/login"); // redirect to login page
+    navigate("/login");
+  };
+
+  const handleAddPatient = () => {
+    // Navigate to AddPatient page with admin ID as a route param or state
+    navigate(`/addpatient` , {
+        state: {
+          id,
+        },
+      });
   };
 
   return (
@@ -18,9 +27,15 @@ const Sidebar = ({admin} ) => {
           <li className="admin-menu-item">
             <a href="/admin">Dashboard</a>
           </li>
-          <li className="admin-menu-item">
-            <a href="#">Add-patient</a>
+
+          <li
+            className="admin-menu-item"
+            style={{ cursor: "pointer" }}
+            onClick={handleAddPatient}
+          >
+            Add-patient
           </li>
+
           <li className="admin-menu-item">
             <a href="#">Settings</a>
           </li>
@@ -30,6 +45,7 @@ const Sidebar = ({admin} ) => {
           <li className="admin-menu-item">
             <a href="#">Help</a>
           </li>
+
           <li
             className="admin-menu-item"
             style={{ color: "red", cursor: "pointer" }}
@@ -42,9 +58,7 @@ const Sidebar = ({admin} ) => {
 
       <div className="admin-user-info">
         <p className="admin-label">Logged in as:</p>
-        <p className="admin-name">
-          {admin}
-        </p>
+        <p className="admin-name">{admin}</p>
       </div>
     </div>
   );

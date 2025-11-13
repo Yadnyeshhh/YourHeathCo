@@ -27,7 +27,6 @@ const getProfile = async (req, res) => {
   }
 };
 
-
 // 🔐 Login user (patient)
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -86,12 +85,127 @@ const updateUser = async (req, res) => {
       new: true,
     }).select("-password -__v -admin");
 
-    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+    if (!updatedUser)
+      return res.status(404).json({ message: "User not found" });
 
-    res.status(200).json({ message: "User updated successfully", user: updatedUser });
+    res
+      .status(200)
+      .json({ message: "User updated successfully", user: updatedUser });
   } catch (error) {
-    res.status(500).json({ message: "Failed to update user", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to update user", error: error.message });
   }
 };
 
-module.exports = { loginUser, signupUser, getProfile, updateUser ,getAllUsers};
+const searchUsers = async (req, res) => {
+  try {
+    const query = req.query.query || "";
+    const gender = req.query.gender || "";
+    const bloodGroup = req.query.bloodGroup || "";
+    const minAge = parseInt(req.query.minAge) || 0;
+    const maxAge = parseInt(req.query.maxAge) || 120;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+
+    // ✅ Base filter: users who are not assigned to any admin
+    const filter = {
+      $and: [
+        {
+          $or: [
+            { admin: { $exists: false } },
+            { admin: null }
+          ]
+        },
+        { age: { $gte: minAge, $lte: maxAge } }
+      ]
+    };
+
+    // ✅ Search fields dynamically
+    if (query) {
+      filter.$and.push({
+        $or: [
+          { name: { $regex: query, $options: "i" } },
+          { email: { $regex: query, $options: "i" } },
+          { contact: { $regex: query, $options: "i" } }
+        ]
+      });
+    }
+
+    if (gender) filter.$and.push({ gender });
+    if (bloodGroup) filter.$and.push({ bloodGroup });
+
+    const skip = (page - 1) * limit;
+
+    const users = await User.find(filter)
+      .skip(skip)
+      .limit(limit)
+      .select("-password -__v");
+
+    const totalUsers = await User.countDocuments(filter);
+    const totalPages = Math.ceil(totalUsers / limit);
+
+    res.status(200).json({ users, totalPages });
+  } catch (error) {
+    console.error("Search users error:", error);
+    res.status(500).json({ message: "Server error while searching users" });
+  }
+};
+
+// @desc    Assign a user to an admin
+// @route   PATCH /api/users/assign/:id
+// @access  Private (Admin)
+const assignUserToAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { adminId } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { admin: adminId },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// @desc    Unassign a user (remove admin)
+// @route   PATCH /api/users/unassign/:id
+// @access  Private (Admin)
+const unassignUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { admin: null },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = {
+  loginUser,
+  signupUser,
+  getProfile,
+  updateUser,
+  getAllUsers,
+  searchUsers,
+  assignUserToAdmin,
+  unassignUser,
+};

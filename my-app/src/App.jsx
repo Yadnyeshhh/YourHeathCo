@@ -4,6 +4,7 @@ import LandingPage from "./pages/Home";
 import Login from "./pages/Login";
 import Admin from "./components/admin/Admin";
 import PatientDetails from "./components/admin/PatientDetails";
+import AddPatient from "./components/admin/addPatient";
 import Dashboard from "./pages/PatientDashboard";
 import Adminsiginup from "./pages/adminsiginup";
 import './index.css';
@@ -19,6 +20,7 @@ const App = () => {
          <Route path="/admin" element={<Admin />} />
         <Route path="/patient/:id" element={<PatientDetails />} />
         <Route path="/adminsignup" element={<Adminsiginup />} />
+        <Route path="/addpatient" element={<AddPatient />} />
       </Routes>
     </>
   );

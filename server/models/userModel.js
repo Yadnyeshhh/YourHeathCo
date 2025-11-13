@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// -------------------- Static: Signup --------------------
+
 userSchema.statics.signup = async function (name, age, gender, contact, bloodGroup, email, password, admin) {
   if (!name || !email || !password) {
     throw Error("All required fields must be filled");
@@ -62,7 +62,7 @@ userSchema.statics.signup = async function (name, age, gender, contact, bloodGro
   return user;
 };
 
-// -------------------- Static: Login --------------------
+
 userSchema.statics.login = async function (email, password) {
   if (!email || !password) {
     throw Error("All fields must be filled");

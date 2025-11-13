@@ -13,7 +13,8 @@ const Admin = () => {
    const location = useLocation();
    const [admin , setAdmin] = useState()
  
-  const { instituteName, address } = location.state || {};
+  const { instituteName, address , id } = location.state || {};
+  console.log("state :-" ,location.state)
   useEffect(() => {
     const fetchPatients = async () => {
       try {
@@ -24,7 +25,7 @@ const Admin = () => {
         }
 
         const admin = JSON.parse(storedAdmin);
-        console.log(admin)
+        // console.log(admin)
         const token = admin?.token;
     
 
@@ -48,7 +49,7 @@ const Admin = () => {
     fetchPatients();
   }, []);
   console.log(patients)
-  console.log(admin)
+  // console.log(admin)
 
   //  Filter logic
   const filteredPatients = patients.filter((patient) => {
@@ -60,7 +61,7 @@ const Admin = () => {
 
   return (
     <div className="dashboard-container">
-      <Sidebar admin = {instituteName}  />
+      <Sidebar admin = {instituteName} id = {id}  />
       <div className="dashboard-main">
         <div className="dashboard-header">
           <h1>Patient Dashboard</h1>

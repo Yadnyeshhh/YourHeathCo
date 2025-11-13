@@ -1,10 +1,14 @@
 const jwt = require("jsonwebtoken");
 const Admin = require("../models/adminModel");
 
+
+
+
 // Middleware to verify admin JWT token
 const requireAdminAuth = async (req, res, next) => {
   // ✅ 1. Extract token from Authorization header
   const { authorization } = req.headers;
+  // console.log("🔑 Incoming token header:", authorization);
 
   if (!authorization) {
     return res.status(401).json({ error: "Authorization token required" });

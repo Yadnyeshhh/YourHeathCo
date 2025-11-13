@@ -33,6 +33,7 @@ const loginAdmin = async (req, res) => {
 
     // ✅ include profile info in response
     res.status(200).json({
+      _id:admin._id,
       email: admin.email,
       instituteName: admin.instituteName,
       address: admin.address,

@@ -1,48 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import './stylesheets/PatientDetails.css';
-import Sidebar from './Sidebar';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./stylesheets/PatientDetails.css";
+import Sidebar from "./Sidebar";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const PatientDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const patient = state?.patient;
-  
 
   const [isEditing, setIsEditing] = useState(false);
   const [schedule, setSchedule] = useState(null);
-  
+
   // New states for doctor assignment
   const [isDoctorEditing, setIsDoctorEditing] = useState(false);
-  const [doctor , setDoctor] = useState(patient.assignedDoctor
-);
-const [appointment , setAppointment] = useState(patient.nextAppointment
-)
+  const [doctor, setDoctor] = useState(patient.assignedDoctor);
+  const [appointment, setAppointment] = useState(patient.nextAppointment);
 
-useEffect(() => {
-  if (patient?.nextAppointment) {
-    const isoString = patient.nextAppointment;
-    const formatted = isoString.slice(0, 16); // "YYYY-MM-DDTHH:mm"
-    setAppointment(formatted);
-  }
-}, [patient]);  
+  useEffect(() => {
+    if (patient?.nextAppointment) {
+      const isoString = patient.nextAppointment;
+      const formatted = isoString.slice(0, 16); // "YYYY-MM-DDTHH:mm"
+      setAppointment(formatted);
+    }
+  }, [patient]);
 
   if (!patient) return <div>Patient not found</div>;
 
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
-  const handleChange = (dayKey, field, value, type = 'medicine') => {
+  const handleChange = (dayKey, field, value, type = "medicine") => {
     const updated = { ...schedule };
 
-    if (type === 'medicine') {
+    if (type === "medicine") {
       if (!updated[dayKey].medicines || !updated[dayKey].medicines[0]) {
-        updated[dayKey].medicines = [{ name: '', time: '' }];
+        updated[dayKey].medicines = [{ name: "", time: "" }];
       }
       updated[dayKey].medicines[0][field] = value;
     } else {
       if (!updated[dayKey].meal) {
-        updated[dayKey].meal = { breakfast: '', lunch: '', dinner: '' };
+        updated[dayKey].meal = { breakfast: "", lunch: "", dinner: "" };
       }
       updated[dayKey].meal[field] = value;
     }
@@ -55,56 +52,56 @@ useEffect(() => {
       const response = await fetch(
         `${apiUrl}/api/meds_meals/patient/${patient._id}/medications`,
         {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ schedule }),
         }
       );
 
-      if (!response.ok) throw new Error('Failed to update medications');
+      if (!response.ok) throw new Error("Failed to update medications");
 
       const updatedPatient = await response.json();
-      console.log('Updated:', updatedPatient);
+      console.log("Updated:", updatedPatient);
       setIsEditing(false);
     } catch (err) {
-      console.error('Save error:', err);
-      alert('Could not save medications.');
+      console.error("Save error:", err);
+      alert("Could not save medications.");
     }
   };
 
- const handleDoctorSave = async () => {
-  try {
-    const storedAdmin = localStorage.getItem("admin");
-    if (!storedAdmin) return alert("Admin not logged in");
+  const handleDoctorSave = async () => {
+    try {
+      const storedAdmin = localStorage.getItem("admin");
+      if (!storedAdmin) return alert("Admin not logged in");
 
-    const { token } = JSON.parse(storedAdmin);
+      const { token } = JSON.parse(storedAdmin);
 
-    const response = await fetch(
-      `${apiUrl}/api/patient-status/${patient._id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          assignedDoctor: doctor,
-          nextAppointment: appointment,
-        }),
-      }
-    );
+      const response = await fetch(
+        `${apiUrl}/api/patient-status/${patient._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            assignedDoctor: doctor,
+            nextAppointment: appointment,
+          }),
+        }
+      );
 
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to update status");
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.error || "Failed to update status");
 
-    alert("✅ Doctor & appointment updated successfully!");
-    setIsDoctorEditing(false);
-  } catch (err) {
-    console.error("Save error:", err);
-    alert("Could not update doctor assignment.");
-  }
-};
-
+      alert("✅ Doctor & appointment updated successfully!");
+      setIsDoctorEditing(false);
+    } catch (err) {
+      console.error("Save error:", err);
+      alert("Could not update doctor assignment.");
+    }
+  };
 
   useEffect(() => {
     const fetchSchedule = async () => {
@@ -112,12 +109,12 @@ useEffect(() => {
         const res = await fetch(
           `${apiUrl}/api/meds_meals/patient/${patient._id}/schedule`
         );
-        if (!res.ok) throw new Error('Failed to fetch schedule');
+        if (!res.ok) throw new Error("Failed to fetch schedule");
 
         const data = await res.json();
         setSchedule(data);
       } catch (err) {
-        console.error('Failed to fetch schedule:', err);
+        console.error("Failed to fetch schedule:", err);
       }
     };
 
@@ -126,15 +123,51 @@ useEffect(() => {
     }
   }, [patient]);
 
+  
+  const handleUnassign = async () => {
+  const confirmUnassign = window.confirm(
+    `Are you sure you want to unassign ${patient.name} from your admin list?`
+  );
+  if (!confirmUnassign) return;
+
+  try {
+    const storedAdmin = localStorage.getItem("admin");
+    if (!storedAdmin) return alert("Admin not logged in");
+
+    const { token } = JSON.parse(storedAdmin);
+
+    const res = await fetch(`${apiUrl}/api/user/unassign/${patient._id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to unassign patient");
+
+    alert("✅ Patient successfully unassigned!");
+    navigate(-1); // go back to the previous page
+  } catch (err) {
+    console.error("Unassign error:", err);
+    alert(err.message || "Error while unassigning patient");
+  }
+};
+
+
   return (
     <div className="admin-details-container">
       <Sidebar />
       <div className="admin-details-main">
-        <button className="admin-back-button" onClick={() => navigate(-1)}>← Back</button>
+        <button className="admin-back-button" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
         <h2>{patient.name}</h2>
         <p>Age: {patient.age}</p>
         <p>Condition: {patient.condition}</p>
-        <p><strong>Medical History:</strong> {patient.history}</p>
+        <p>
+          <strong>Medical History:</strong> {patient.history}
+        </p>
 
         {/* Doctor Assignment Form */}
         <div className="section">
@@ -151,14 +184,14 @@ useEffect(() => {
                 placeholder="Enter doctor name"
               />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="appointment">Appointment Date</label>
               <input
                 type="datetime-local"
                 id="appointment"
                 value={appointment}
-                onChange={(e) => setAppointment( e.target.value )}
+                onChange={(e) => setAppointment(e.target.value)}
                 disabled={!isDoctorEditing}
               />
             </div>
@@ -166,28 +199,31 @@ useEffect(() => {
             <div className="form-actions">
               {isDoctorEditing ? (
                 <>
-                  <button 
-                    type="button" 
-                    className="save-btn" 
+                  <button
+                    type="button"
+                    className="save-btn"
                     onClick={handleDoctorSave}
                   >
                     Save Changes
                   </button>
-                  <button 
-                    type="button" 
-                    className="cancel-btn" 
+                  <button
+                    type="button"
+                    className="cancel-btn"
                     onClick={() => {
                       setIsDoctorEditing(false);
-                      setDoctorData({ doctor: patient.doctor, appointment: patient.appointment });
+                      setDoctorData({
+                        doctor: patient.doctor,
+                        appointment: patient.appointment,
+                      });
                     }}
                   >
                     Cancel
                   </button>
                 </>
               ) : (
-                <button 
-                  type="button" 
-                  className="edit-btn" 
+                <button
+                  type="button"
+                  className="edit-btn"
                   onClick={() => setIsDoctorEditing(true)}
                 >
                   Edit Assignment
@@ -213,7 +249,7 @@ useEffect(() => {
               </thead>
               <tbody>
                 {Object.entries(schedule).map(([dayKey, dayData]) => {
-                  const med = dayData?.medicines?.[0] || { name: '', time: '' };
+                  const med = dayData?.medicines?.[0] || { name: "", time: "" };
                   return (
                     <tr key={`med-${dayKey}`}>
                       <td>{capitalize(dayKey)}</td>
@@ -222,10 +258,17 @@ useEffect(() => {
                           <input
                             type="text"
                             value={med.name}
-                            onChange={(e) => handleChange(dayKey, 'name', e.target.value, 'medicine')}
+                            onChange={(e) =>
+                              handleChange(
+                                dayKey,
+                                "name",
+                                e.target.value,
+                                "medicine"
+                              )
+                            }
                           />
                         ) : (
-                          med.name || ''
+                          med.name || ""
                         )}
                       </td>
                       <td>
@@ -233,10 +276,17 @@ useEffect(() => {
                           <input
                             type="text"
                             value={med.time}
-                            onChange={(e) => handleChange(dayKey, 'time', e.target.value, 'medicine')}
+                            onChange={(e) =>
+                              handleChange(
+                                dayKey,
+                                "time",
+                                e.target.value,
+                                "medicine"
+                              )
+                            }
                           />
                         ) : (
-                          med.time || ''
+                          med.time || ""
                         )}
                       </td>
                     </tr>
@@ -264,7 +314,11 @@ useEffect(() => {
               </thead>
               <tbody>
                 {Object.entries(schedule).map(([dayKey, dayData]) => {
-                  const meal = dayData?.meal || { breakfast: '', lunch: '', dinner: '' };
+                  const meal = dayData?.meal || {
+                    breakfast: "",
+                    lunch: "",
+                    dinner: "",
+                  };
                   return (
                     <tr key={`meal-${dayKey}`}>
                       <td>{capitalize(dayKey)}</td>
@@ -273,10 +327,17 @@ useEffect(() => {
                           <input
                             type="text"
                             value={meal.breakfast}
-                            onChange={(e) => handleChange(dayKey, 'breakfast', e.target.value, 'meal')}
+                            onChange={(e) =>
+                              handleChange(
+                                dayKey,
+                                "breakfast",
+                                e.target.value,
+                                "meal"
+                              )
+                            }
                           />
                         ) : (
-                          meal.breakfast || ''
+                          meal.breakfast || ""
                         )}
                       </td>
                       <td>
@@ -284,10 +345,17 @@ useEffect(() => {
                           <input
                             type="text"
                             value={meal.lunch}
-                            onChange={(e) => handleChange(dayKey, 'lunch', e.target.value, 'meal')}
+                            onChange={(e) =>
+                              handleChange(
+                                dayKey,
+                                "lunch",
+                                e.target.value,
+                                "meal"
+                              )
+                            }
                           />
                         ) : (
-                          meal.lunch || ''
+                          meal.lunch || ""
                         )}
                       </td>
                       <td>
@@ -295,10 +363,17 @@ useEffect(() => {
                           <input
                             type="text"
                             value={meal.dinner}
-                            onChange={(e) => handleChange(dayKey, 'dinner', e.target.value, 'meal')}
+                            onChange={(e) =>
+                              handleChange(
+                                dayKey,
+                                "dinner",
+                                e.target.value,
+                                "meal"
+                              )
+                            }
                           />
                         ) : (
-                          meal.dinner || ''
+                          meal.dinner || ""
                         )}
                       </td>
                     </tr>
@@ -313,13 +388,25 @@ useEffect(() => {
         {schedule && (
           <div className="medication-actions">
             {isEditing ? (
-              <button className="save-btn" onClick={handleSave}>Save</button>
+              <button className="save-btn" onClick={handleSave}>
+                Save
+              </button>
             ) : (
-              <button className="edit-btn" onClick={() => setIsEditing(true)}>Edit</button>
+              <button className="edit-btn" onClick={() => setIsEditing(true)}>
+                Edit
+              </button>
             )}
           </div>
         )}
+
+        {/* Unassign Button */}
+      <div className="unassign-section">
+        <button className="unassign-btn" onClick={handleUnassign}>
+          Unassign Patient
+        </button>
       </div>
+      </div>
+      
     </div>
   );
 };
