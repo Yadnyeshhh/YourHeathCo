@@ -16,6 +16,10 @@ const PatientDetails = () => {
   const [isDoctorEditing, setIsDoctorEditing] = useState(false);
   const [doctor, setDoctor] = useState(patient.assignedDoctor);
   const [appointment, setAppointment] = useState(patient.nextAppointment);
+  const [admittedStatus, setAdmittedStatus] = useState(
+  patient.admitted ? "Admitted" : "Not Admitted"
+);
+
 
   useEffect(() => {
     if (patient?.nextAppointment) {
@@ -155,6 +159,8 @@ const PatientDetails = () => {
 };
 
 
+
+
   return (
     <div className="admin-details-container">
       <Sidebar />
@@ -168,6 +174,58 @@ const PatientDetails = () => {
         <p>
           <strong>Medical History:</strong> {patient.history}
         </p>
+
+        {/* Admitted Status Form */}
+<div className="section">
+  <h3>Admitted Status</h3>
+  <form
+    className="doctor-form"
+    onSubmit={async (e) => {
+      e.preventDefault();
+      const storedAdmin = localStorage.getItem("admin");
+      if (!storedAdmin) return alert("Admin not logged in");
+      const { token } = JSON.parse(storedAdmin);
+
+      try {
+        const res = await fetch(`${apiUrl}/api/patient-status/${patient._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ admitted: admittedStatus === "Admitted" }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to update admitted status");
+        alert("✅ Admitted status updated successfully!");
+      } catch (err) {
+        console.error(err);
+        alert("Error updating admitted status");
+      }
+    }}
+  >
+    <div className="form-group">
+      <label htmlFor="admittedStatus">Select Status</label>
+      <select
+        id="admittedStatus"
+        className="status-select"
+        value={admittedStatus}
+        onChange={(e) => setAdmittedStatus(e.target.value)}
+      >
+        <option value="Admitted">Admitted</option>
+        <option value="Not Admitted">Not Admitted</option>
+      </select>
+    </div>
+
+    <div className="form-actions">
+      <button type="submit" className="update-status-btn">
+        Update Status
+      </button>
+    </div>
+  </form>
+</div>
+
 
         {/* Doctor Assignment Form */}
         <div className="section">
