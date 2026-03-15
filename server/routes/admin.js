@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { loginAdmin, signupAdmin, getProfile ,getAllUsers} = require("../controller/adminController");
+const { loginAdmin, signupAdmin, getProfile ,getAllUsers} = require("../controllers/adminController");
 const requireAdminAuth = require("../middleware/requireAdminAuth");
 
 // ------------------ Public Routes ------------------

@@ -1,18 +1,16 @@
 const express = require('express');
-const mongoose = require("mongoose");
-
-const userRoutes = require("./routes/user.js");
-const adminRoutes = require('./routes/admin.js')
-const medRoutes = require('./routes/meds_meal.js')
-const PatientStatusRoutes = require('./routes/patientStatusRoutes.js')
-
+const cors = require('cors');
 require('dotenv').config();
-const mongourl =  process.env.MONGO_URI;
-const PORT = process.env.PORT 
-const cors = require('cors')
+
+const connectDB = require('./config/db');
+const userRoutes = require("./routes/user.js");
+const adminRoutes = require('./routes/admin.js');
+const medRoutes = require('./routes/meds_meal.js');
+const PatientStatusRoutes = require('./routes/patientStatusRoutes.js');
+
+const PORT = process.env.PORT;
 const app = express();
 
-// console.log('hello')
 app.use(cors());
 app.use(express.json());
 
@@ -23,14 +21,11 @@ app.use((req, res, next) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/meds_meals" , medRoutes);
-app.use("/api/patient-status" , PatientStatusRoutes);
+app.use("/api/meds_meals", medRoutes);
+app.use("/api/patient-status", PatientStatusRoutes);
 
-mongoose.connect(mongourl).then(()=>{
-   app.listen(PORT , ()=>{
-     console.log('listening on 3000 and connectied to mongo')
-   })
-   
-}).catch((error)=>{
-    console.log(error);
-})
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT} and connected to MongoDB`);
+  });
+});

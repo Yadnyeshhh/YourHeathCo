@@ -11,7 +11,7 @@ const {
   searchUsers,
   assignUserToAdmin,
   unassignUser,
-} = require("../controller/userController");
+} = require("../controllers/userController");
 
 // ✅ Import middleware
 const authMiddleware = require("../middleware/auth");

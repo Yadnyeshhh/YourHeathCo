@@ -5,7 +5,7 @@ const {
   updateMeds,
   getAllMedsAndMeals,
   createEmptyPatientSchedule
-} = require('../controller/meds_meal');
+} = require('../controllers/meds_meal');
 
 router.post('/create/:id', createEmptyPatientSchedule);
 

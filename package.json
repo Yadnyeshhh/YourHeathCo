@@ -1,5 +1,13 @@
 {
-  "dependencies": {
-    "react-icons": "^5.5.0"
+  "name": "yourhealthco",
+  "version": "1.0.0",
+  "description": "YourHealthCo — Healthcare management platform",
+  "private": true,
+  "scripts": {
+    "client": "cd client && npm run dev",
+    "server": "cd server && node server.js",
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
+    "install:all": "npm run install:client && npm run install:server"
   }
 }
