@@ -1,0 +1,115 @@
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.625rem;
+}
+
+.patient-details p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 0.625rem;
+  line-height: 1.6;
+}
+
+.patient-details strong {
+  color: var(--dark-text);
+  width: 100px;
+  display: inline-block;
+}
+
+.modal-close-button {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  border: none;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.modal-close-button:hover {
+  background-color: #0056b3;
+}
+
+@media screen and (max-width: 1023px) {
+  .modal-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .patient-details p {
+    font-size: 0.9375rem;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .patient-details strong {
+    width: 90px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .modal-title {
+    font-size: 1.375rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .patient-details p {
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .patient-details strong {
+    width: auto;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .modal-title {
+    font-size: 1.25rem;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .patient-details p {
+    font-size: 0.8125rem;
+  }
+}
+
+@media screen and (max-width: 359px) {
+  .modal-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+.patientprofilemodal-inline-1 {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+}
+
+.patientprofilemodal-inline-2 {
+  margin-top: 20px;
+}
+

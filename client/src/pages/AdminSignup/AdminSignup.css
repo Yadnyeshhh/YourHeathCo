@@ -1,0 +1,128 @@
+.as-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ background: linear-gradient(to bottom, #1e3a8a, #60a5fa, #bfdbfe);
+  font-family: "Poppins", sans-serif;
+}
+
+.as-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px 35px;
+  width: 360px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.as-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+.as-title {
+  font-size: 1.6rem;
+  margin-bottom: 25px;
+  color: #222;
+  font-weight: 600;
+}
+
+.as-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.as-input {
+  width: 100%;
+  padding: 12px 45px;
+  border: 1px solid #d1d5db;
+  border-radius: 25px;
+  font-size: 15px;
+  background-color: #f9fafc;
+  transition: all 0.3s ease;
+  color: #111827;
+}
+
+.as-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  background-color: #fff;
+}
+
+.as-btn {
+  background-color: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.as-btn:hover {
+  background-color: #1e4ed8;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+.as-message {
+  margin-top: 10px;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.as-bottom-text {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.as-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.as-link:hover {
+  text-decoration: underline;
+}
+
+.backbutton{
+ position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #2563eb; /* blue */
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.backbutton:hover{
+   background-color: #1d4ed8; /* darker blue */
+  transform: translateY(-2px);
+}
+
+@media (max-width: 420px) {
+  .as-card {
+    width: 90%;
+    padding: 30px 25px;
+  }
+}
+
+@media (max-width: 420px) {
+  .as-title {
+    font-size: 1.4rem;
+  }
+}
+

@@ -1,17 +1,3 @@
-.admin-details-container {
-  display: flex;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-}
-
-.admin-details-main {
-  flex: 1;
-  margin-left: 260px;
-  padding: 40px 50px;
-  max-width: 1400px;
-  animation: fadeIn 0.4s ease-in-out;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -24,150 +10,14 @@
 }
 
 /* Back Button */
-.admin-back-button {
-  background: var(--primary-color);
-  color: var(--light-text);
-  border: none;
-  padding: 12px 24px;
-  border-radius: var(--border-radius);
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.admin-back-button:hover {
-  transform: translateX(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.admin-back-button:active {
-  transform: translateX(-2px);
-}
 
 /* Patient Header */
-.admin-details-main h2 {
-  font-size: 32px;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
-}
-
-.admin-details-main > p {
-  font-size: 16px;
-  color: #5a6c7d;
-  margin-bottom: 8px;
-  line-height: 1.6;
-}
-
-.admin-details-main > p strong {
-  color: #2c3e50;
-  font-weight: 600;
-}
 
 /* Section Styling */
-.section {
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  margin-top: 30px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.section:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-}
-
-.section h3 {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 3px solid var(--primary-color);
-  display: inline-block;
-}
-
-.section p {
-  font-size: 15px;
-  color: #5a6c7d;
-  margin-bottom: 10px;
-  line-height: 1.6;
-}
-
-.section p strong {
-  color: #2c3e50;
-  font-weight: 600;
-  margin-right: 8px;
-}
 
 /* Doctor Form Styling */
-.doctor-form {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-top: 20px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.form-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #2c3e50;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.form-group input {
-  padding: 14px 16px;
-  font-size: 15px;
-  border: 2px solid #e8ecf1;
-  border-radius: 8px;
-  color: #2c3e50;
-  background: #f8fafb;
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  background: white;
-  box-shadow: 0 0 0 4px rgba(74, 158, 255, 0.1);
-}
-
-.form-group input:disabled {
-  background: #f8fafb;
-  color: #5a6c7d;
-  cursor: not-allowed;
-  border-color: #e8ecf1;
-}
-
-.form-group input::placeholder {
-  color: #a0aec0;
-}
 
 /* Form Actions */
-.form-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
 
 .cancel-btn {
   padding: 14px 32px;
@@ -196,96 +46,10 @@
 }
 
 /* Medication Table */
-.medication-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin-top: 20px;
-  background: white;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.medication-table thead {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #2c5282 100%);
-}
-
-.medication-table thead th {
-  padding: 16px 20px;
-  text-align: left;
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--light-text);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: none;
-}
-
-.medication-table thead th:first-child {
-  border-top-left-radius: var(--border-radius);
-}
-
-.medication-table thead th:last-child {
-  border-top-right-radius: var(--border-radius);
-}
-
-.medication-table tbody tr {
-  border-bottom: 1px solid #e8ecf1;
-  transition: all 0.2s ease;
-}
-
-.medication-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.medication-table tbody tr:hover {
-  background: #f8fafb;
-  transform: scale(1.01);
-}
-
-.medication-table tbody td {
-  padding: 16px 20px;
-  font-size: 15px;
-  color: #2c3e50;
-  vertical-align: middle;
-}
-
-.medication-table tbody td:first-child {
-  font-weight: 600;
-  color: var(--primary-color);
-}
 
 /* Input Fields in Table */
-.medication-table input[type="text"] {
-  width: 100%;
-  padding: 10px 14px;
-  border: 2px solid #e8ecf1;
-  border-radius: 6px;
-  font-size: 14px;
-  color: #2c3e50;
-  transition: all 0.3s ease;
-  background: #f8fafb;
-}
-
-.medication-table input[type="text"]:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  background: white;
-  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
-}
-
-.medication-table input[type="text"]::placeholder {
-  color: #a0aec0;
-}
 
 /* Action Buttons */
-.medication-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 30px;
-  justify-content: flex-start;
-}
 
 .edit-btn,
 .save-btn {
@@ -347,111 +111,23 @@
 }
 
 /* Loading State */
-.section p:only-child {
-  text-align: center;
-  padding: 40px;
-  color: #a0aec0;
-  font-style: italic;
-}
 
 /* Input validation states */
-.form-group input:invalid:not(:focus):not(:placeholder-shown) {
-  border-color: #ff3b30;
-  background: #fff5f5;
-}
-
-.form-group input:valid:not(:focus):not(:placeholder-shown) {
-  border-color: #56ab2f;
-}
 
 /* Loading state for form */
-.form-actions button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none !important;
-}
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .admin-details-main {
-    margin-left: 240px;
-    padding: 30px 35px;
-  }
-}
 
 @media (max-width: 768px) {
-  .admin-details-main {
-    margin-left: 220px;
-    padding: 25px 20px;
-  }
-
-  .admin-details-main h2 {
-    font-size: 26px;
-  }
-
-  .section {
-    padding: 20px;
-  }
-
-  .section h3 {
-    font-size: 20px;
-  }
-
-  .medication-table {
-    font-size: 14px;
-  }
-
-  .medication-table thead th,
-  .medication-table tbody td {
-    padding: 12px 14px;
-  }
-
-  .medication-actions,
-  .form-actions {
-    flex-direction: column;
-  }
 
   .edit-btn,
   .save-btn,
   .cancel-btn {
     width: 100%;
   }
-
-  .form-group input {
-    font-size: 16px; /* Prevents zoom on mobile */
-  }
-}
-
-@media (max-width: 480px) {
-  .admin-details-main {
-    margin-left: 0;
-    padding: 20px 15px;
-  }
-
-  .medication-table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .section h3 {
-    font-size: 18px;
-  }
-
-  .form-group label {
-    font-size: 13px;
-  }
-
-  .form-group input {
-    padding: 12px 14px;
-  }
 }
 
 /* Empty State */
-.medication-table tbody tr td:empty::before {
-  content: '—';
-  color: #cbd5e0;
-}
 
 /* Smooth scrolling */
 html {
@@ -464,63 +140,7 @@ html {
   color: white;
 }
 
-.unassign-section {
-  margin-top: 2rem;
-  display: flex;
-  justify-content: center;
-}
-
-.unassign-btn {
-  background-color: #e74c3c;
-  color: white;
-  font-size: 1rem;
-  padding: 0.8rem 1.6rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.unassign-btn:hover {
-  background-color: #c0392b;
-}
-
 /* Dropdown for Admitted Status */
-.status-select {
-  padding: 14px 16px;
-  font-size: 15px;
-  border: 2px solid #e8ecf1;
-  border-radius: 8px;
-  color: #2c3e50;
-  background: #f8fafb;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.status-select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  background: white;
-  box-shadow: 0 0 0 4px rgba(74, 158, 255, 0.1);
-}
 
 /* Update Status Button */
-.update-status-btn {
-  padding: 14px 32px;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  color: white;
-  background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
-  box-shadow: 0 2px 8px rgba(91, 134, 229, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.update-status-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(91, 134, 229, 0.4);
-}
 

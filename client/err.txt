@@ -1,0 +1,12 @@
+TypeError: Cannot read properties of undefined (reading 'nodes')
+    at C:\miniprojects\healthcare\client\src\styles\PD.css:92:3
+    at file:///C:/miniprojects/healthcare/client/refactor.mjs:178:33
+    at C:\miniprojects\healthcare\client\node_modules\postcss\lib\container.js:387:18
+    at C:\miniprojects\healthcare\client\node_modules\postcss\lib\container.js:315:18
+    at AtRule.each (C:\miniprojects\healthcare\client\node_modules\postcss\lib\container.js:63:16)
+    at AtRule.walk (C:\miniprojects\healthcare\client\node_modules\postcss\lib\container.js:312:17)
+    at C:\miniprojects\healthcare\client\node_modules\postcss\lib\container.js:320:24
+    at Root.each (C:\miniprojects\healthcare\client\node_modules\postcss\lib\container.js:63:16)
+    at Root.walk (C:\miniprojects\healthcare\client\node_modules\postcss\lib\container.js:312:17)
+    at Root.walkRules (C:\miniprojects\healthcare\client\node_modules\postcss\lib\container.js:385:19)
+    at file:///C:/miniprojects/healthcare/client/refactor.mjs:153:7
