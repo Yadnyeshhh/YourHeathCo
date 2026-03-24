@@ -1,321 +1,790 @@
-.billing-section {
-  background-color: var(--primary-color);
-  color: var(--light-text);
+/* PatientBilling.css — matched to Dashboard design system */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Design tokens inherited from dashboard (var() references resolve from the
+   root stylesheet that already defines these on :root / a parent element)
+   ─────────────────────────────────────────────────────────────────────────── */
+/*
+  Dashboard variables used throughout:
+    --white-bg         → card / section backgrounds
+    --gray-bg          → hover states
+    --dark-text        → all primary text
+    --border-color     → all borders
+    --border-radius    → all rounded corners
+    --shadow           → card box-shadows
+  Semantic colours (already present in billing / program dashboard CSS):
+    #e0f2fe            → light-blue tint (next-appointment bg)
+    #1e3a8a            → deep navy heading / active states
+    #333               → secondary body copy
+*/
+
+/* ─── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── Root container — matches .program-section / .billing-section ───────── */
+.pb-root {
+  background-color: var(--white-bg);
   padding: 1.5rem;
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
-  grid-column: span 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 40vw;
-  margin: 5px;
+  gap: 1.25rem;
+  font-family: var(--font-family, 'Segoe UI', sans-serif);
+  color: var(--dark-text);
 }
 
-.billing-section-title {
-  font-size: 1.25rem;
+/* ─── Page Header ────────────────────────────────────────────────────────── */
+.pb-page-header { padding-bottom: 0.25rem; }
+
+.pb-header-pill {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #1e3a8a;
+  font-size: 0.75rem;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--border-radius);
   margin-bottom: 0.5rem;
 }
 
-.billing-total-amount-wrapper {
+.pb-page-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+}
+
+.pb-page-sub {
+  font-size: 0.9375rem;
+  color: #333;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ─── Summary row ────────────────────────────────────────────────────────── */
+.pb-summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* Summary card — matches .program-list-item structure */
+.pb-summary-card {
+  background-color: var(--white-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 0.9375rem 1.25rem;
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pb-summary-card:hover {
+  background-color: var(--gray-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Accent bottom stripe per variant — uses only dashboard palette colours */
+.pb-summary-card--blue  { border-bottom: 3px solid #1e3a8a; }
+.pb-summary-card--green { border-bottom: 3px solid #15803d; }
+.pb-summary-card--red   { border-bottom: 3px solid #b91c1c; }
+
+.pb-summary-icon { font-size: 1.5rem; line-height: 1; flex-shrink: 0; }
+
+.pb-summary-body { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.pb-summary-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dark-text);
+  opacity: 0.6;
+}
+
+.pb-summary-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--dark-text);
+}
+.pb-summary-card--blue  .pb-summary-value { color: #1e3a8a; }
+.pb-summary-card--green .pb-summary-value { color: #15803d; }
+.pb-summary-card--red   .pb-summary-value { color: #b91c1c; }
+
+/* ─── Content layout ─────────────────────────────────────────────────────── */
+.pb-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+.pb-content--split { grid-template-columns: 1fr 1fr; }
+
+/* ─── Card shell — matches .program-section exactly ─────────────────────── */
+.pb-card {
+  background-color: var(--white-bg);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+}
+
+.pb-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--dark-text);
   margin-bottom: 1rem;
 }
 
-.billing-total-icon {
-  margin-right: 0.75rem;
-  flex-shrink: 0;
-}
+/* ─── Bills section ──────────────────────────────────────────────────────── */
+.pb-bills-section { display: flex; flex-direction: column; }
 
-.billing-total-label {
-  font-size: 0.875rem;
-  opacity: 0.8;
-}
-
-.billing-total-value {
-  font-size: 1.875rem;
-  font-weight: 700;
-}
-
-.billing-average-label {
-  font-size: 0.875rem;
-  opacity: 0.8;
-  margin-bottom: 0.5rem;
-}
-
-.billing-average-chart {
+.pb-bills-header {
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.pb-bills-header .pb-card-title { margin-bottom: 0; }
+
+/* ─── Filter bar ─────────────────────────────────────────────────────────── */
+.pb-filter-bar { display: flex; gap: 0.375rem; }
+
+.pb-filter-btn {
+  padding: 0.3125rem 0.875rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background-color: var(--white-bg);
+  color: var(--dark-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pb-filter-btn:hover {
+  background-color: var(--gray-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.pb-filter-btn--active {
+  background-color: #1e3a8a;
+  color: #fff;
+  border-color: #1e3a8a;
 }
 
-.billing-average-item {
+/* ─── Bill list — uses .program-list-grid gap/layout ────────────────────── */
+.pb-bill-list {
+  list-style: none;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 0.75rem;
+}
+.pb-empty {
+  font-size: 0.9375rem;
+  color: var(--dark-text);
+  opacity: 0.5;
+  padding: 1.5rem 0;
+  text-align: center;
 }
 
-.billing-average-circle {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 9999px;
-  background-color: var(--light-text);
+/* Bill row — direct port of .program-list-item */
+.pb-bill-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pb-bill-row:hover {
+  background-color: var(--gray-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.pb-bill-row--selected {
+  background-color: #e0f2fe;
+  border-color: #1e3a8a;
+}
+.pb-bill-row--paid    { border-left: 3px solid #15803d; }
+.pb-bill-row--pending { border-left: 3px solid #b91c1c; }
+
+.pb-bill-row-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.pb-bill-id {
+  font-size: 0.75rem;
+  color: var(--dark-text);
+  opacity: 0.5;
+  font-weight: 500;
+}
+.pb-bill-category {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+.pb-bill-date {
+  font-size: 0.8125rem;
+  color: var(--dark-text);
+  opacity: 0.5;
+}
+
+.pb-bill-row-right {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+}
+.pb-bill-amount {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  white-space: nowrap;
+}
+.pb-bill-arrow {
+  font-size: 1.1rem;
+  color: var(--dark-text);
+  opacity: 0.3;
+  line-height: 1;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.pb-bill-row:hover .pb-bill-arrow { transform: translateX(3px); opacity: 0.7; }
+
+/* ─── Status badge ───────────────────────────────────────────────────────── */
+.pb-badge {
+  display: inline-block;
+  padding: 0.1875rem 0.625rem;
+  border-radius: var(--border-radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pb-badge--paid    { background: #dcfce7; color: #166534; }
+.pb-badge--pending { background: #fee2e2; color: #991b1b; }
+
+/* ─── Detail panel ───────────────────────────────────────────────────────── */
+.pb-detail-wrapper { height: fit-content; position: sticky; top: 1rem; }
+.pb-details-panel  { display: flex; flex-direction: column; }
+
+/* Header block — mirrors .next-appointment */
+.pb-details-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9375rem 1.25rem;
+  background: #e0f2fe;
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  margin: -1.5rem -1.5rem 1rem -1.5rem;
+}
+.pb-details-id {
+  display: block;
+  font-size: 0.75rem;
+  color: #1e3a8a;
+  font-weight: 500;
+  opacity: 0.75;
+  margin-bottom: 0.25rem;
+}
+.pb-details-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  line-height: 1.3;
+}
+.pb-details-close {
+  flex-shrink: 0;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--white-bg);
+  color: var(--dark-text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-color);
-  font-weight: 700;
-  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
 }
+.pb-details-close:hover { background-color: #fee2e2; color: #b91c1c; border-color: #fecaca; }
 
-.billing-average-day {
+/* ─── Meta grid ──────────────────────────────────────────────────────────── */
+.pb-details-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.pb-meta-item {
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background-color: var(--white-bg);
+}
+.pb-meta-label {
   font-size: 0.75rem;
-  margin-top: 0.25rem;
-  opacity: 0.8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dark-text);
+  opacity: 0.5;
+}
+.pb-meta-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dark-text);
+  line-height: 1.4;
 }
 
+/* ─── Sub-sections inside detail ─────────────────────────────────────────── */
+.pb-details-section { margin-bottom: 1rem; }
+.pb-details-section:last-child { margin-bottom: 0; }
+
+.pb-details-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dark-text);
+  opacity: 0.5;
+  margin-bottom: 0.625rem;
+}
+
+/* ─── Itemised charges list ──────────────────────────────────────────────── */
+.pb-items-list { list-style: none; display: flex; flex-direction: column; gap: 0.375rem; }
+
+.pb-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9375rem;
+  color: var(--dark-text);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s ease;
+}
+.pb-item-row:hover { background-color: var(--gray-bg); }
+
+.pb-item-row--total {
+  background-color: #e0f2fe;
+  border-color: #1e3a8a;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-top: 0.125rem;
+}
+.pb-item-row--total:hover { background-color: #e0f2fe; }
+
+.pb-item-amount { font-weight: 600; color: var(--dark-text); }
+.pb-item-row--total .pb-item-amount { color: #1e3a8a; }
+
+/* ─── Document image grid ────────────────────────────────────────────────── */
+.pb-doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.75rem;
+}
+.pb-doc-thumb {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  aspect-ratio: 3/2;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s ease;
+}
+.pb-doc-thumb:hover { box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); }
+.pb-doc-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pb-doc-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(30, 58, 138, 0.5);
+  color: #fff;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.pb-doc-thumb:hover .pb-doc-overlay { opacity: 1; }
+
+/* ─── Payment section — mirrors .next-appointment exactly ───────────────── */
+.pb-payment-section {
+  padding: 0.9375rem 1.25rem;
+  background: #e0f2fe;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.pb-payment-section .pb-details-section-title { color: #1e3a8a; opacity: 1; }
+
+.pb-pay-amount-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 0.625rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.pb-pay-amount-display span {
+  font-size: 0.875rem;
+  color: #333;
+  font-weight: 500;
+}
+.pb-pay-amount-display strong {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.pb-pay-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Payment method row — port of .program-list-item */
+.pb-pay-method {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--white-bg);
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--dark-text);
+  font-family: inherit;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pb-pay-method input[type="radio"] { display: none; }
+.pb-pay-method-icon { font-size: 1.125rem; }
+.pb-pay-method:hover {
+  background-color: var(--gray-bg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.pb-pay-method--active {
+  background-color: #e0f2fe;
+  border-color: #1e3a8a;
+  color: #1e3a8a;
+  font-weight: 600;
+}
+
+/* Pay Now button */
+.pb-pay-btn {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  border: none;
+  background-color: #1e3a8a;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.pb-pay-btn:hover:not(:disabled) {
+  background-color: #1e40af;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.pb-pay-btn:active:not(:disabled) { background-color: #1d3083; }
+.pb-pay-btn--loading { opacity: 0.7; cursor: not-allowed; }
+
+/* ─── Payment success state ──────────────────────────────────────────────── */
+.pb-pay-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+}
+.pb-pay-success-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: #15803d;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.pb-pay-success-title { font-size: 1rem; font-weight: 600; color: #166534; }
+.pb-pay-success-sub   { font-size: 0.875rem; color: #333; font-weight: 500; }
+
+/* ─── Image modal ────────────────────────────────────────────────────────── */
+.pb-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1.5rem;
+}
+.pb-modal-box {
+  position: relative;
+  background: var(--white-bg);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  max-width: 90vw;
+  max-height: 90vh;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.pb-modal-close {
+  position: absolute;
+  top: -0.75rem;
+  right: -0.75rem;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  background: var(--white-bg);
+  color: var(--dark-text);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  transition: background-color 0.2s ease;
+}
+.pb-modal-close:hover { background-color: #fee2e2; color: #b91c1c; }
+.pb-modal-img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(90vh - 2rem);
+  border-radius: var(--border-radius);
+  object-fit: contain;
+}
+
+/* ─── Responsive — mirrors dashboard breakpoints exactly ─────────────────── */
+
+/* 1023px — tablet */
+@media screen and (max-width: 1023px) {
+  .pb-root             { padding: 1.25rem; }
+  .pb-card             { padding: 1.25rem; }
+  .pb-card-title       { font-size: 1.125rem; }
+  .pb-page-title       { font-size: 1.125rem; }
+  .pb-page-sub         { font-size: 0.9375rem; }
+  .pb-bill-list        { gap: 0.875rem; }
+  .pb-bill-row         { padding: 0.625rem 0.75rem; }
+  .pb-bill-category    { font-size: 0.875rem; }
+  .pb-bill-amount      { font-size: 0.875rem; }
+  .pb-details-header   { padding: 0.875rem 1rem; margin: -1.25rem -1.25rem 1rem -1.25rem; }
+  .pb-details-title    { font-size: 1rem; }
+  .pb-next-appointment h3 { font-size: 1rem; }
+  .pb-next-appointment p  { font-size: 0.9375rem; }
+}
+
+/* 960px — program-section reference breakpoint */
 @media (max-width: 960px) {
-  .billing-section {
-    width: 30vw;
-    padding: 1.25rem;
-  }
+  .pb-summary-row    { grid-template-columns: repeat(2, 1fr); }
+  .pb-content--split { grid-template-columns: 1fr; }
+  .pb-detail-wrapper { position: static; }
 }
 
-@media (max-width: 960px) {
-  .billing-section-title {
-    font-size: 1.125rem;
-  }
-}
-
-@media (max-width: 960px) {
-  .billing-total-value {
-    font-size: 1.625rem;
-  }
-}
-
-@media (max-width: 960px) {
-  .billing-average-circle {
-    width: 2.75rem;
-    height: 2.75rem;
-    font-size: 0.8125rem;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-section {
-    width: 35vw;
-    padding: 1.25rem;
-    grid-column: span 1;
-    /* width: 0vw; */
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-section-title {
-    font-size: 1.125rem;
-    margin-bottom: 0.75rem;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-total-amount-wrapper {
-    margin-bottom: 1.25rem;
-    flex-wrap: wrap;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-total-icon {
-    margin-right: 0.5rem;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-total-value {
-    font-size: 1.5rem;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-average-label {
-    margin-bottom: 0.75rem;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-average-chart {
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-average-item {
-    min-width: 4rem;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-average-circle {
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 0.75rem;
-  }
-}
-
-@media screen and (max-width: 960px) {
-  .billing-average-day {
-    font-size: 0.6875rem;
-  }
-}
-
-@media (max-width:940px) {
-  .billing-section{
-  width: 45vw;
-  }
-}
-
-@media (max-width:570px) {
-  .billing-section{
-    width: 80vw;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-section {
-    padding: 1rem;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-section-title {
-    font-size: 1rem;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-total-value {
-    font-size: 1.375rem;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-total-label {
-    font-size: 0.8125rem;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-average-label {
-    font-size: 0.8125rem;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-average-chart {
-    gap: 0.5rem;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-average-item {
-    min-width: 3.5rem;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-average-circle {
-    width: 2.25rem;
-    height: 2.25rem;
-    font-size: 0.6875rem;
-  }
-}
-
-@media screen and (max-width: 479px) {
-  .billing-average-day {
-    font-size: 0.625rem;
-    margin-top: 0.375rem;
-  }
-}
-
-@media screen and (max-width: 359px) {
-  .billing-section {
-    padding: 0.875rem;
-  }
-}
-
-@media screen and (max-width: 359px) {
-  .billing-section-title {
-    font-size: 0.9375rem;
-  }
-}
-
-@media screen and (max-width: 359px) {
-  .billing-total-value {
-    font-size: 1.25rem;
-  }
-}
-
-@media screen and (max-width: 359px) {
-  .billing-average-chart {
-    gap: 0.375rem;
-  }
-}
-
-@media screen and (max-width: 359px) {
-  .billing-average-item {
-    min-width: 3rem;
-  }
-}
-
-@media screen and (max-width: 359px) {
-  .billing-average-circle {
-    width: 2rem;
-    height: 2rem;
-    font-size: 0.625rem;
-  }
-}
-
-@media screen and (max-width: 359px) {
-  .billing-average-day {
-    font-size: 0.5625rem;
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 1023px) {
-  .billing-section {
-    min-height: 250px;
-  }
-}
-
-@media screen and (max-width: 767px) and (orientation: landscape) {
-  .billing-section {
-    padding: 1rem 1.5rem;
-  }
-}
-
-@media screen and (max-width: 767px) and (orientation: landscape) {
-  .billing-average-chart {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
-    padding-bottom: 0.5rem;
-  }
-}
-
-@media screen and (max-width: 767px) and (orientation: landscape) {
-  .billing-average-item {
-    flex-shrink: 0;
-  }
-}
-
+/* 767px */
 @media screen and (max-width: 767px) {
-  .dashboard-middle-sections-grid .billing-section {
-    margin-bottom: 1rem;
-  }
+  .pb-root              { padding: 1.25rem; }
+  .pb-card              { padding: 1.25rem; }
+  .pb-card-title        { font-size: 1.125rem; margin-bottom: 0.875rem; }
+  .pb-bills-header      { flex-direction: column; align-items: flex-start; }
+  .pb-bill-row          { padding: 0.75rem; flex-wrap: wrap; }
+  .pb-bill-category     { font-size: 0.875rem; flex: 1 1 auto; max-width: 100%; }
+  .pb-bill-amount       { font-size: 0.875rem; margin-left: 0.5rem; }
+  .pb-bill-list         { gap: 0.75rem; }
+  .pb-details-meta      { grid-template-columns: 1fr; }
+  .pb-summary-row       { grid-template-columns: 1fr; gap: 0.75rem; }
+  .pb-details-header    { margin: -1.25rem -1.25rem 0.875rem -1.25rem; padding: 0.875rem 1rem; }
+  .pb-payment-section   { padding: 0.875rem 1rem; }
+  .pb-pay-amount-display strong { font-size: 1rem; }
 }
 
+/* 570px */
+@media (max-width: 570px) {
+  .pb-root { padding: 1rem; }
+}
+
+/* 479px */
+@media screen and (max-width: 479px) {
+  .pb-root              { padding: 1rem; }
+  .pb-card              { padding: 1rem; }
+  .pb-card-title        { font-size: 1rem; margin-bottom: 0.75rem; }
+  .pb-page-title        { font-size: 1rem; }
+  .pb-page-sub          { font-size: 0.8125rem; }
+  .pb-summary-row       { gap: 0.625rem; }
+  .pb-summary-value     { font-size: 1rem; }
+  .pb-summary-label     { font-size: 0.6875rem; }
+  .pb-bill-row          { padding: 0.625rem; }
+  .pb-bill-category     { font-size: 0.8125rem; }
+  .pb-bill-amount       { font-size: 0.8125rem; font-weight: 700; }
+  .pb-bill-id           { font-size: 0.6875rem; }
+  .pb-bill-date         { font-size: 0.6875rem; }
+  .pb-item-row          { font-size: 0.8125rem; padding: 0.4375rem 0.625rem; }
+  .pb-pay-method        { padding: 0.625rem; font-size: 0.8125rem; }
+  .pb-pay-btn           { padding: 0.625rem; font-size: 0.8125rem; }
+  .pb-details-header    { padding: 0.75rem 0.875rem; margin: -1rem -1rem 0.75rem -1rem; }
+  .pb-details-title     { font-size: 0.9375rem; }
+  .pb-payment-section   { padding: 0.75rem 0.875rem; }
+  .pb-pay-amount-display { padding: 0.5rem 0.625rem; }
+  .pb-pay-amount-display strong { font-size: 0.9375rem; }
+  .pb-doc-grid          { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+  .pb-filter-btn        { padding: 0.25rem 0.625rem; font-size: 0.8125rem; }
+}
+
+/* 359px */
+@media screen and (max-width: 359px) {
+  .pb-root              { padding: 0.875rem; }
+  .pb-card              { padding: 0.875rem; }
+  .pb-card-title        { font-size: 0.9375rem; }
+  .pb-page-title        { font-size: 0.9375rem; }
+  .pb-bill-row          { padding: 0.5rem 0.625rem; }
+  .pb-bill-category     { font-size: 0.75rem; }
+  .pb-bill-amount       { font-size: 0.75rem; }
+  .pb-item-row          { font-size: 0.75rem; padding: 0.375rem 0.5rem; }
+  .pb-pay-method        { padding: 0.5rem 0.625rem; font-size: 0.75rem; }
+  .pb-pay-btn           { font-size: 0.875rem; padding: 0.5rem; }
+  .pb-details-header    { padding: 0.625rem 0.75rem; margin: -0.875rem -0.875rem 0.625rem -0.875rem; }
+  .pb-details-title     { font-size: 0.875rem; }
+  .pb-payment-section   { padding: 0.625rem 0.75rem; }
+  .pb-doc-grid          { grid-template-columns: 1fr; }
+  .pb-filter-btn        { padding: 0.1875rem 0.5rem; font-size: 0.75rem; }
+}
+
+/* Landscape mobile — matches program-section landscape rule */
+@media screen and (max-width: 767px) and (orientation: landscape) {
+  .pb-summary-row { grid-template-columns: repeat(3, 1fr); }
+  .pb-doc-grid    { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Tablet range — matches program-section min/max rule */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .pb-summary-row    { grid-template-columns: repeat(3, 1fr); }
+  .pb-content--split { grid-template-columns: 1fr 1fr; }
+  .pb-detail-wrapper { position: sticky; top: 1rem; }
+}
+
+/* Reduced motion — mirrors program-section rule */
+@media (prefers-reduced-motion: reduce) {
+  .pb-bill-row,
+  .pb-summary-card,
+  .pb-pay-btn,
+  .pb-pay-method,
+  .pb-doc-thumb,
+  .pb-filter-btn { transition: none; }
+}
+
+/* ─── Dashboard Modal Styles ─────────────────────────────────────────────── */
+
+.pb-clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.pb-dashboard-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7); /* Background dim */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  animation: pbFadeIn 0.3s ease-out;
+  backdrop-filter: blur(2px);
+}
+
+.pb-dashboard-modal {
+  background: var(--white-bg);
+  width: 100%;
+  max-width: 1100px;
+  max-height: 90vh;
+  border-radius: var(--border-radius);
+  position: relative;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 2rem;
+  animation: pbSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pb-modal-main-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--gray-bg);
+  border: 1px solid var(--border-color);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.pb-modal-main-close:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.pb-sub-modal {
+  z-index: 1100; /* Ensure image preview is above dashboard modal */
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+
+@keyframes pbFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pbSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ─── Adjustments for Modal Layout ───────────────────────────────────────── */
+
+@media (max-width: 960px) {
+  .pb-dashboard-modal {
+    padding: 1rem;
+    width: 95%;
+  }
+}
