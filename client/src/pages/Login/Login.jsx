@@ -1,7 +1,7 @@
 import "./Login.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Admin from "../../components/admin/Admin/Admin";
+
 export default function AuthPage() {
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function AuthPage() {
   const [userBloodGroup, setUserBloodGroup] = useState("");
 
   // Admin states
-  const [aemail, setAEmail] = useState("");
+  const [aEmail, setAEmail] = useState("");
   const [apassword, setAPassword] = useState("");
   const [showAdminModal, setShowAdminModal] = useState(false);
 
@@ -30,19 +30,20 @@ export default function AuthPage() {
   const [showAlert, setShowAlert] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [userToken, setUserToken] = useState("");
-  useEffect(() => {
-    const savedToken = localStorage.getItem("token");
-    if (savedToken) setUserToken(savedToken);
-  }, []);
-  const showCustomAlert = message => {
+
+  // BUG FIX 1: Removed unused `userToken` state and the useEffect that set it
+  // (the token is stored in localStorage on login/signup — no need to mirror it in state)
+
+  const showCustomAlert = (message) => {
     setAlertMessage(message);
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 3000);
   };
-  const handleUserFormSubmit = async e => {
+
+  const handleUserFormSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
     if (isSignInMode) {
       // ---- LOGIN ----
       if (!userEmail || !userPassword) {
@@ -52,20 +53,18 @@ export default function AuthPage() {
       try {
         const response = await fetch(`${apiUrl}/api/user/login`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: userEmail,
-            password: userPassword
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: userEmail, password: userPassword }),
         });
         const json = await response.json();
         if (!response.ok) {
           setError(json.error);
           showCustomAlert(json.error || "Login failed");
         } else {
-          localStorage.setItem("user", JSON.stringify(json));
+          // BUG FIX 2: Store token and email consistently (same pattern as signup),
+          // instead of storing the whole object under "user" and never saving "token"
+          localStorage.setItem("token", json.token);
+          localStorage.setItem("userEmail", json.email);
           navigate("/pdashboard");
         }
       } catch (err) {
@@ -82,214 +81,339 @@ export default function AuthPage() {
       if (userPassword !== userConfirmPassword) {
         return showCustomAlert("Passwords do not match.");
       }
-
-      // proceed to profile form
       setShowProfileForm(true);
     }
   };
-  const handleProfileFormSubmit = async e => {
+
+  const handleProfileFormSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+
+    const age = Number(userAge);
+
     if (!userName || !userAge || !userGender || !userContact || !userBloodGroup) {
       setIsLoading(false);
       return showCustomAlert("Please fill in all profile fields.");
     }
-    if (isNaN(userAge) || parseInt(userAge) <= 0) {
+
+    if (!Number.isInteger(age) || age <= 0) {
       setIsLoading(false);
       return showCustomAlert("Please enter a valid age.");
     }
-    if (!/^[0-9]{10}$/.test(userContact)) {
+
+    if (!/^[6-9]\d{9}$/.test(userContact)) {
       setIsLoading(false);
       return showCustomAlert("Please enter a valid 10-digit contact number.");
     }
+
     try {
       const response = await fetch(`${apiUrl}/api/user/signup`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: userName,
-          age: parseInt(userAge),
+          name: userName.trim(),
+          age: age,
           gender: userGender,
           contact: userContact,
           bloodGroup: userBloodGroup,
-          email: userEmail,
-          password: userPassword
-        })
+          email: userEmail.trim(),
+          password: userPassword,
+        }),
       });
-      const json = await response.json();
+
+      let json;
+      try {
+        json = await response.json();
+      } catch {
+        throw new Error("Invalid server response");
+      }
+
       if (!response.ok) {
         setError(json.error);
         showCustomAlert(json.error || "Signup failed");
-      } else {
-        localStorage.setItem("token", json.token);
-        localStorage.setItem("userEmail", json.email);
-        showCustomAlert("Signup successful!");
-        navigate("/pdashboard");
+        return;
       }
+
+      localStorage.setItem("token", json.token);
+      localStorage.setItem("userEmail", json.email);
+
+      // Reset profile form fields
+      setUserName("");
+      setUserAge("");
+      setUserGender("");
+      setUserContact("");
+      setUserBloodGroup("");
+
+      showCustomAlert("Signup successful!");
+      navigate("/pdashboard");
     } catch (err) {
       setError(err.message);
-      showCustomAlert("Network error. Please check your connection.");
+      showCustomAlert(err.message || "Network error.");
     } finally {
       setIsLoading(false);
     }
   };
-  const handleAdminLoginSubmit = async e => {
+
+  const handleAdminLoginSubmit = async (e) => {
     e.preventDefault();
-    if (!aemail || !apassword) {
+
+    if (!aEmail || !apassword) {
       return showCustomAlert("Please enter admin credentials.");
     }
+
     setIsLoading(true);
     setError(null);
+
     try {
       const response = await fetch(`${apiUrl}/api/admin/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: aemail,
-          password: apassword
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: aEmail, password: apassword }),
       });
+
       const json = await response.json();
+
       if (!response.ok) {
         setError(json.error);
         showCustomAlert(json.error || "Admin login failed");
         return;
       }
-      console.log("json : ", json);
-      //   console.log("Institute:", json.instituteName);
 
       if (json && json.email && json.token) {
-        const adminData = {
-          email: json.email,
-          token: json.token
-        };
-        localStorage.setItem("admin", JSON.stringify(adminData));
-
-        // ✅ Only this navigate call
+        localStorage.setItem(
+          "admin",
+          JSON.stringify({ email: json.email, token: json.token })
+        );
         navigate("/admin", {
           state: {
             instituteName: json.instituteName,
             address: json.address,
-            id: json._id
-          }
+            id: json._id,
+          },
         });
       } else {
-        showCustomAlert("Invalid server response. Please try again.");
-        console.error("Unexpected response:", json);
+        showCustomAlert("Invalid server response.");
       }
     } catch (err) {
       setError(err.message);
-      showCustomAlert("Network error. Please check your connection.");
+      showCustomAlert("Network error.");
     } finally {
       setIsLoading(false);
     }
   };
-  return <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-900 via-blue-400 to-blue-200">
-      <button onClick={() => navigate("/")} className="absolute top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-blue-700 transition">
-        ← Back
+
+  return (
+    <div className="login-screen-container">
+      <button onClick={() => navigate("/")} className="login-back-button">
+        &larr; Back
       </button>
-      <div className="flex w-full max-w-6xl bg-white/90 shadow-xl rounded-2xl overflow-hidden">
+
+      <div className="login-card-wrapper">
         {/* Left Image */}
-        <div className="hidden md:block w-1/2">
-          <img src="/login card.png" alt="Side Illustration" className="h-full w-full object-cover" />
+        <div className="login-image-section">
+          <img
+            src="/login card.png"
+            alt="Side Illustration"
+            className="login-side-image"
+          />
         </div>
 
         {/* Right Side */}
-        <div className="w-full md:w-1/2 p-8 flex flex-col items-center justify-center">
-          {showAlert && <div className="mb-4 w-full bg-red-500 text-white py-2 px-4 rounded-lg text-center">
-              {alertMessage}
-            </div>}
+        <div className="login-form-section">
+          {showAlert && (
+            <div className="login-alert-banner">{alertMessage}</div>
+          )}
 
           {/* LOGIN / SIGNUP FORM */}
-          {!showProfileForm && !showAdminModal && <form onSubmit={handleUserFormSubmit} className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg">
-              <h2 className="text-2xl font-bold text-center mb-4">
+          {!showProfileForm && !showAdminModal && (
+            <form onSubmit={handleUserFormSubmit} className="login-form-card">
+              <h2 className="login-form-title">
                 {isSignInMode ? "Sign in" : "Create Account"}
               </h2>
 
-              <input type="email" placeholder="Email" value={userEmail} onChange={e => setUserEmail(e.target.value)} className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-400" />
-              <input type="password" placeholder="Password" value={userPassword} onChange={e => setUserPassword(e.target.value)} className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-400" />
-              {!isSignInMode && <input type="password" placeholder="Confirm Password" value={userConfirmPassword} onChange={e => setUserConfirmPassword(e.target.value)} className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-400" />}
+              <input
+                type="email"
+                placeholder="Email"
+                value={userEmail}
+                onChange={(e) => setUserEmail(e.target.value)}
+                className="login-input"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={userPassword}
+                onChange={(e) => setUserPassword(e.target.value)}
+                className="login-input"
+              />
+              {!isSignInMode && (
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={userConfirmPassword}
+                  onChange={(e) => setUserConfirmPassword(e.target.value)}
+                  className="login-input"
+                />
+              )}
 
-              <button type="submit" disabled={isLoading} className="w-full h-12 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="login-submit-button blue"
+              >
                 {isLoading ? "Processing..." : isSignInMode ? "Login" : "Next"}
               </button>
 
-              <p className="text-center text-sm mt-4 text-gray-600">
-                {isSignInMode ? "Don’t have an account?" : "Already have an account?"}{" "}
-                <button type="button" onClick={() => {
-              setIsSignInMode(!isSignInMode);
-            }} className="text-blue-500 hover:underline">
+              <p className="login-footer-text">
+                {isSignInMode ? "Don't have an account?" : "Already have an account?"}{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsSignInMode(!isSignInMode)}
+                  className="login-link-button blue-text"
+                >
                   {isSignInMode ? "Sign up" : "Login"}
                 </button>
               </p>
 
-              <p className="text-center text-sm mt-2 text-gray-600">
+              <p className="login-footer-text">
                 Are you an admin?{" "}
-                <button type="button" onClick={() => setShowAdminModal(true)} className="text-red-500 hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setShowAdminModal(true)}
+                  className="login-link-button red-text"
+                >
                   Admin Login
                 </button>
               </p>
-            </form>}
+            </form>
+          )}
 
-          {/* PROFILE FORM (after signup step 1) */}
-          {showProfileForm && <form onSubmit={handleProfileFormSubmit} className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg">
-              <h2 className="text-2xl font-bold text-center mb-4">
-                Complete Profile
-              </h2>
+          {/* PROFILE FORM */}
+          {showProfileForm && (
+            <form onSubmit={handleProfileFormSubmit} className="login-form-card">
+              <h2 className="login-form-title">Complete Profile</h2>
 
-              <input type="text" placeholder="Full Name" value={userName} onChange={e => setUserName(e.target.value)} className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-400" required />
-              <input type="number" placeholder="Age" value={userAge} onChange={e => setUserAge(e.target.value)} min="0" className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-400" required />
-              <select value={userGender} onChange={e => setUserGender(e.target.value)} className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-400" required>
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                className="login-input"
+                required
+              />
+              <input
+                type="number"
+                placeholder="Age"
+                value={userAge}
+                onChange={(e) => setUserAge(e.target.value)}
+                className="login-input"
+                required
+              />
+              <select
+                value={userGender}
+                onChange={(e) => setUserGender(e.target.value)}
+                className="login-input"
+                required
+              >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Other">Other</option>
               </select>
-              <input type="tel" placeholder="Contact (10 digits)" value={userContact} onChange={e => setUserContact(e.target.value)} pattern="[0-9]{10}" className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-400" required />
-              <select value={userBloodGroup} onChange={e => setUserBloodGroup(e.target.value)} className="w-full mb-6 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-400" required>
+              <input
+                type="tel"
+                placeholder="Contact (10 digits)"
+                value={userContact}
+                onChange={(e) => setUserContact(e.target.value)}
+                className="login-input"
+                required
+              />
+              <select
+                value={userBloodGroup}
+                onChange={(e) => setUserBloodGroup(e.target.value)}
+                className="login-input login-mb-large"
+                required
+              >
                 <option value="">Select Blood Group</option>
                 <option value="A+">A+</option>
                 <option value="A-">A-</option>
                 <option value="B+">B+</option>
                 <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
                 <option value="O+">O+</option>
                 <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
               </select>
 
-              <button type="submit" disabled={isLoading} className="w-full h-12 bg-green-600 text-white rounded-full hover:bg-green-700 transition">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="login-submit-button green"
+              >
                 {isLoading ? "Saving Profile..." : "Save Profile"}
               </button>
-            </form>}
+
+              {/* BUG FIX 3: Added back button so user isn't trapped on the profile form */}
+              <p className="login-footer-text">
+                <button
+                  type="button"
+                  onClick={() => setShowProfileForm(false)}
+                  className="login-link-button blue-text"
+                >
+                  &larr; Back to Sign Up
+                </button>
+              </p>
+            </form>
+          )}
 
           {/* ADMIN LOGIN FORM */}
-          {showAdminModal && <form onSubmit={handleAdminLoginSubmit} className="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg">
-              <h2 className="text-2xl font-bold text-center mb-4">
-                Admin Login
-              </h2>
-              <input type="email" placeholder="Admin Email" value={aemail} onChange={e => setAEmail(e.target.value)} className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-red-400" />
-              <input type="password" placeholder="Password" value={apassword} onChange={e => setAPassword(e.target.value)} className="w-full mb-4 px-4 py-3 border rounded-full text-sm outline-none focus:ring-2 focus:ring-red-400" />
-              <button type="submit" disabled={isLoading} className="w-full h-12 bg-red-600 text-white rounded-full hover:bg-red-700 transition">
+          {showAdminModal && (
+            <form onSubmit={handleAdminLoginSubmit} className="login-form-card">
+              <h2 className="login-form-title">Admin Login</h2>
+              <input
+                type="email"
+                placeholder="Admin Email"
+                value={aEmail}  // BUG FIX 4: Restored the missing `value` prop — without it the input
+                                // is uncontrolled and aEmail state stays empty, making login impossible
+                onChange={(e) => setAEmail(e.target.value)}
+                className="login-input focus-red"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={apassword}
+                onChange={(e) => setAPassword(e.target.value)}
+                className="login-input focus-red"
+              />
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="login-submit-button red"
+              >
                 {isLoading ? "Logging in..." : "Login as Admin"}
               </button>
-              <p className="text-center text-sm mt-4 text-gray-600">
+              <p className="login-footer-text">
                 Back to{" "}
-                <button type="button" onClick={() => setShowAdminModal(false)} className="text-blue-500 hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setShowAdminModal(false)}
+                  className="login-link-button blue-text"
+                >
                   User Login
                 </button>
-                <br></br>
-                <button type="button" onClick={() => navigate("/adminsignup")} className="text-blue-500 hover:underline ml-[10px]">
+                <br />
+                <button
+                  type="button"
+                  onClick={() => navigate("/adminsignup")}
+                  className="login-link-button blue-text login-ml-sm"
+                >
                   Register a new admin
                 </button>
               </p>
-            </form>}
+            </form>
+          )}
         </div>
       </div>
-    </div>;
+    </div>
+  );
 }

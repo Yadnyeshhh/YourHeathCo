@@ -1,29 +1,31 @@
 import "./PatientCard.css";
-import React from 'react';
+import React from "react";
 import "../../../styles/admin/Patientcard.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL;
-const PatientCard = ({
-  patient,
-  institue
-}) => {
+const PatientCard = ({ patient, institue }) => {
   const navigate = useNavigate();
-  const handleViewDetails = e => {
+  const handleViewDetails = (e) => {
     e.stopPropagation();
     navigate(`/patient/${patient.id}`, {
       state: {
         patient,
-        institue
-      }
+        institue,
+      },
     }); // ← Pass patient as state
   };
-  return <div className="admin-patient-card" onClick={handleViewDetails}>
-    
-      <img src="/profile.png" alt={`${patient.name}'s profile`} className="patient-photo" />
+  return (
+    <div className="admin-patient-card" onClick={handleViewDetails}>
+      <img
+        src="/profile.png"
+        alt={`${patient.name}'s profile`}
+        className="patient-photo"
+      />
       <h3>{patient.name}</h3>
       <button className="view-details-button" onClick={handleViewDetails}>
         View Details
       </button>
-    </div>;
+    </div>
+  );
 };
 export default PatientCard;

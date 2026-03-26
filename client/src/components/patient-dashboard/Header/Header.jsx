@@ -1,11 +1,9 @@
 import "./Header.css";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import LucideIcon from "../LucideIcon/LucideIcon";
 import PatientProfileModal from "../PatientProfileModal/PatientProfileModal";
 import "../../../styles/patient-dashboard/header.css";
-const Header = ({
-  profile
-}) => {
+const Header = ({ profile }) => {
   // Modal open state
   const [isPatientModalOpen, setIsPatientModalOpen] = useState(false);
 
@@ -21,24 +19,36 @@ const Header = ({
   const handleClosePatientModal = () => {
     setIsPatientModalOpen(false);
   };
-  return <header className="dashboard-header">
+  return (
+    <header className="dashboard-header">
       <h1 className="dashboard-header-title">Dashboard</h1>
 
       <div className="dashboard-header-actions">
         <button className="header-icon-button">
-          <LucideIcon name="Search" size={20} className="header-icon" />
-        </button>
-        <button className="header-icon-button">
           <LucideIcon name="Bell" size={20} className="header-icon" />
         </button>
-        <button className="header-new-patient-button" onClick={handleOpenPatientModal}>
-          <LucideIcon name="UserRoundPen" size={18} className="header-new-patient-icon" />
+        <button
+          className="header-new-patient-button"
+          onClick={handleOpenPatientModal}
+        >
+          <LucideIcon
+            name="UserRoundPen"
+            size={18}
+            className="header-new-patient-icon"
+          />
           Profile
         </button>
       </div>
 
       {/* Patient Profile Modal */}
-      <PatientProfileModal isOpen={isPatientModalOpen} onClose={handleClosePatientModal} patientData={selectedPatient} token={userToken} onUpdate={updatedPatient => setSelectedPatient(updatedPatient)} />
-    </header>;
+      <PatientProfileModal
+        isOpen={isPatientModalOpen}
+        onClose={handleClosePatientModal}
+        patientData={selectedPatient}
+        token={userToken}
+        onUpdate={(updatedPatient) => setSelectedPatient(updatedPatient)}
+      />
+    </header>
+  );
 };
 export default Header;

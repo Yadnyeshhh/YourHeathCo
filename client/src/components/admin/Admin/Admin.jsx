@@ -11,11 +11,7 @@ const Admin = () => {
   const [filter, setFilter] = useState("All"); // 👈 state for filter option
   const location = useLocation();
   const [admin, setAdmin] = useState();
-  const {
-    instituteName,
-    address,
-    id
-  } = location.state || {};
+  const { instituteName, address, id } = location.state || {};
   console.log("state :-", location.state);
   useEffect(() => {
     const fetchPatients = async () => {
@@ -34,8 +30,8 @@ const Admin = () => {
         }
         const res = await axios.get(`${apiUrl}/api/admin/users`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         setPatients(res.data);
       } catch (err) {
@@ -48,29 +44,45 @@ const Admin = () => {
   // console.log(admin)
 
   //  Filter logic
-  const filteredPatients = patients.filter(patient => {
+  const filteredPatients = patients.filter((patient) => {
     if (filter === "All") return true;
     if (filter === "Admitted") return patient.admitted === true;
     if (filter === "Not Admitted") return patient.admitted === false;
     return true;
   });
-  return <div className="dashboard-container">
+  return (
+    <div className="dashboard-container">
       <Sidebar admin={instituteName} id={id} />
       <div className="dashboard-main">
         <div className="dashboard-header">
           <h1>Patient Dashboard</h1>
         </div>
-          <select className="filter-dropdown" value={filter} onChange={e => setFilter(e.target.value)}>
-            <option value="All">All Patients</option>
-            <option value="Admitted">Admitted</option>
-            <option value="Not Admitted">Not Admitted</option>
-          </select>
+        <select
+          className="filter-dropdown"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        >
+          <option value="All">All Patients</option>
+          <option value="Admitted">Admitted</option>
+          <option value="Not Admitted">Not Admitted</option>
+        </select>
 
         {/* 🩺 Patient Cards */}
         <div className="patient-grid">
-          {filteredPatients.length > 0 ? filteredPatients.map(patient => <PatientCard key={patient._id} patient={patient} instituteName={instituteName} />) : <p className="no-patients">No patients found.</p>}
+          {filteredPatients.length > 0 ? (
+            filteredPatients.map((patient) => (
+              <PatientCard
+                key={patient._id}
+                patient={patient}
+                instituteName={instituteName}
+              />
+            ))
+          ) : (
+            <p className="no-patients">No patients found.</p>
+          )}
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 export default Admin;

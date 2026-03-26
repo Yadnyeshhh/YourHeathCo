@@ -7,30 +7,34 @@ import DashboardCard from "../../components/patient-dashboard/DashboardCard/Dash
 import ProgramSection from "../../components/patient-dashboard/ProgramSection/ProgramSection";
 import BillingSection from "../../components/patient-dashboard/BillingSection/BillingSection";
 import TeamTodaySection from "../../components/patient-dashboard/TeamTodaySection/TeamTodaySection";
-import { FaBars } from "react-icons/fa"; // For toggle icon
+import { FaBars } from "react-icons/fa";
 const apiUrl = import.meta.env.VITE_API_URL;
 import { navItems, topCardsData, programData, teamTodayData } from "../../data/mockData.js";
+
 const PatientDashboard = () => {
   const [profile, setProfile] = useState(null);
   const [medications, setMedications] = useState([]);
   const [schedule, setSchedule] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // ✅ NEW
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Fetch user profile
   useEffect(() => {
     const fetchProfile = async () => {
-      const userData = localStorage.getItem("user");
-      if (!userData) return;
-      const {
-        token
-      } = JSON.parse(userData);
+      // BUG FIX: Read token directly from localStorage.
+      // Signup saves "token" as a standalone key, but this code was
+      // reading from "user" (an object) which signup never set —
+      // causing userData to be null, profile to stay null, and the
+      // dashboard to show "Loading..." forever after signup.
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
       try {
         const res = await fetch(`${apiUrl}/api/user/profile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         if (!res.ok) {
           const err = await res.json();
@@ -51,9 +55,7 @@ const PatientDashboard = () => {
       try {
         const response = await fetch(`${apiUrl}/api/meds_meals/create/${profile._id}`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          }
+          headers: { "Content-Type": "application/json" },
         });
         if (!response.ok) {
           const data = await response.json();
@@ -80,41 +82,69 @@ const PatientDashboard = () => {
     };
     if (profile?._id) fetchSchedule();
   }, [profile]);
+
   if (!profile) return <p>Loading...</p>;
-  return <div className="dashboard-app-container">
-      {/* ✅ Mobile toggle button */}
+
+  return (
+    <div className="dashboard-app-container">
+      {/* Mobile toggle button */}
       <button className="sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
         <FaBars size={20} />
       </button>
 
-      {/* ✅ Overlay for mobile view */}
-      <div className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`} onClick={() => setSidebarOpen(false)}></div>
+      {/* Overlay for mobile view */}
+      <div
+        className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
+        onClick={() => setSidebarOpen(false)}
+      ></div>
 
-      {/* ✅ Sidebar (responsive with prop) */}
-      <Sidebar navItems={navItems} profile={profile} isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {/* Sidebar */}
+      <Sidebar
+        navItems={navItems}
+        profile={profile}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
-      {/* ✅ Main Dashboard Content */}
+      {/* Main Dashboard Content */}
       <div className="dashboard-main-content-area">
         <Header profile={profile} meds={medications} />
         <main className="dashboard-main-content-section">
           {/* Top Cards */}
           <div className="dashboard-top-cards-grid">
-            {topCardsData.map((card, index) => <DashboardCard key={index} {...card} meds={["medicines", "meals"].includes(card.title.toLowerCase()) && schedule ? Object.entries(schedule).map(([day, data]) => ({
-            day,
-            medicines: data.medicines || [],
-            meal: data.meal || {}
-          })) : []} />)}
+            {topCardsData.map((card, index) => (
+              <DashboardCard
+                key={index}
+                {...card}
+                meds={
+                  ["medicines", "meals"].includes(card.title.toLowerCase()) && schedule
+                    ? Object.entries(schedule).map(([day, data]) => ({
+                        day,
+                        medicines: data.medicines || [],
+                        meal: data.meal || {},
+                      }))
+                    : []
+                }
+              />
+            ))}
           </div>
 
           {/* Middle Sections */}
           <div className="pbcontainer">
-            <ProgramSection data={programData} nextAppointment={profile?.patientStatus?.nextAppointment} />
+            <ProgramSection
+              data={programData}
+              nextAppointment={profile?.patientStatus?.nextAppointment}
+            />
             <BillingSection />
-            </div>
-            <TeamTodaySection data={teamTodayData} doctor={profile?.patientStatus?.assignedDoctor} />
-        
+          </div>
+          <TeamTodaySection
+            data={teamTodayData}
+            doctor={profile?.patientStatus?.assignedDoctor}
+          />
         </main>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default PatientDashboard;

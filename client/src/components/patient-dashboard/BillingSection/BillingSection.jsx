@@ -73,9 +73,7 @@ const BILLS = [
       { label: "Skin Biopsy", amount: 2800 },
       { label: "Medicines", amount: 1400 },
     ],
-    images: [
-      "https://placehold.co/480x320/ffedd5/7c2d12?text=Prescription+D",
-    ],
+    images: ["https://placehold.co/480x320/ffedd5/7c2d12?text=Prescription+D"],
   },
   {
     id: "INV-2024-005",
@@ -104,8 +102,8 @@ const fmt = (n) =>
 
 function SummaryCard({ icon, label, value, variant, onClick }) {
   return (
-    <div 
-      className={`pb-summary-card pb-summary-card--${variant} pb-clickable`} 
+    <div
+      className={`pb-summary-card pb-summary-card--${variant} pb-clickable`}
       onClick={onClick}
       role="button"
       tabIndex={0}
@@ -158,7 +156,13 @@ function BillRow({ bill, isSelected, onClick }) {
       <div className="pb-bill-row-left">
         <span className="pb-bill-id">{bill.id}</span>
         <span className="pb-bill-category">{bill.category}</span>
-        <span className="pb-bill-date">{new Date(bill.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span>
+        <span className="pb-bill-date">
+          {new Date(bill.date).toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          })}
+        </span>
       </div>
       <div className="pb-bill-row-right">
         <span className="pb-bill-amount">{fmt(bill.amount)}</span>
@@ -172,9 +176,20 @@ function BillRow({ bill, isSelected, onClick }) {
 function ImageModal({ src, onClose }) {
   if (!src) return null;
   return (
-    <div className="pb-modal-overlay pb-sub-modal" onClick={onClose} role="dialog" aria-modal="true">
+    <div
+      className="pb-modal-overlay pb-sub-modal"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="pb-modal-box" onClick={(e) => e.stopPropagation()}>
-        <button className="pb-modal-close" onClick={onClose} aria-label="Close preview">✕</button>
+        <button
+          className="pb-modal-close"
+          onClick={onClose}
+          aria-label="Close preview"
+        >
+          ✕
+        </button>
         <img src={src} alt="Bill document preview" className="pb-modal-img" />
       </div>
     </div>
@@ -183,7 +198,7 @@ function ImageModal({ src, onClose }) {
 
 function BillDetails({ bill, onClose }) {
   const [payMethod, setPayMethod] = useState("UPI");
-  const [payState, setPayState] = useState("idle"); 
+  const [payState, setPayState] = useState("idle");
   const [modalSrc, setModalSrc] = useState(null);
 
   const handlePay = () => {
@@ -198,7 +213,13 @@ function BillDetails({ bill, onClose }) {
           <span className="pb-details-id">{bill.id}</span>
           <h3 className="pb-details-title">{bill.category}</h3>
         </div>
-        <button className="pb-details-close" onClick={onClose} aria-label="Close">✕</button>
+        <button
+          className="pb-details-close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          ✕
+        </button>
       </div>
 
       <div className="pb-details-meta">
@@ -213,7 +234,11 @@ function BillDetails({ bill, onClose }) {
         <div className="pb-meta-item">
           <span className="pb-meta-label">Date</span>
           <span className="pb-meta-value">
-            {new Date(bill.date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
+            {new Date(bill.date).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
           </span>
         </div>
         <div className="pb-meta-item">
@@ -243,7 +268,11 @@ function BillDetails({ bill, onClose }) {
           <h4 className="pb-details-section-title">Documents &amp; Images</h4>
           <div className="pb-doc-grid">
             {bill.images.map((src, i) => (
-              <div key={i} className="pb-doc-thumb" onClick={() => setModalSrc(src)}>
+              <div
+                key={i}
+                className="pb-doc-thumb"
+                onClick={() => setModalSrc(src)}
+              >
                 <img src={src} alt={`Document ${i + 1}`} />
                 <div className="pb-doc-overlay">🔍</div>
               </div>
@@ -259,7 +288,9 @@ function BillDetails({ bill, onClose }) {
             <div className="pb-pay-success">
               <div className="pb-pay-success-icon">✓</div>
               <p className="pb-pay-success-title">Payment Successful!</p>
-              <p className="pb-pay-success-sub">{fmt(bill.amount)} paid via {payMethod}</p>
+              <p className="pb-pay-success-sub">
+                {fmt(bill.amount)} paid via {payMethod}
+              </p>
             </div>
           ) : (
             <>
@@ -294,7 +325,9 @@ function BillDetails({ bill, onClose }) {
                 onClick={handlePay}
                 disabled={payState === "loading"}
               >
-                {payState === "loading" ? "Processing…" : `Pay ${fmt(bill.amount)}`}
+                {payState === "loading"
+                  ? "Processing…"
+                  : `Pay ${fmt(bill.amount)}`}
               </button>
             </>
           )}
@@ -313,10 +346,14 @@ export default function PatientBilling() {
   const [selected, setSelected] = useState(null);
 
   const totalAmt = BILLS.reduce((s, b) => s + b.amount, 0);
-  const paidAmt  = BILLS.filter((b) => b.status === "Paid").reduce((s, b) => s + b.amount, 0);
-  const pendAmt  = totalAmt - paidAmt;
+  const paidAmt = BILLS.filter((b) => b.status === "Paid").reduce(
+    (s, b) => s + b.amount,
+    0,
+  );
+  const pendAmt = totalAmt - paidAmt;
 
-  const visible = filter === "All" ? BILLS : BILLS.filter((b) => b.status === filter);
+  const visible =
+    filter === "All" ? BILLS : BILLS.filter((b) => b.status === filter);
 
   const handleSelect = (bill) => {
     setSelected((prev) => (prev?.id === bill.id ? null : bill));
@@ -338,32 +375,54 @@ export default function PatientBilling() {
 
       {/* ── Summary Cards (Always Visible) ── */}
       <section className="pb-summary-row" aria-label="Summary">
-        <SummaryCard 
-          icon="" label="Total Billed" value={fmt(totalAmt)} variant="blue" 
-          onClick={openDashboard} 
+        <SummaryCard
+          icon=""
+          label="Total Billed"
+          value={fmt(totalAmt)}
+          variant="blue"
+          onClick={openDashboard}
         />
-        <SummaryCard 
-          icon="" label="Total Paid" value={fmt(paidAmt)} variant="green" 
-          onClick={openDashboard} 
+        <SummaryCard
+          icon=""
+          label="Total Paid"
+          value={fmt(paidAmt)}
+          variant="green"
+          onClick={openDashboard}
         />
-        <SummaryCard 
-          icon="" label="Remaining" value={fmt(pendAmt)} variant="red" 
-          onClick={openDashboard} 
+        <SummaryCard
+          icon=""
+          label="Remaining"
+          value={fmt(pendAmt)}
+          variant="red"
+          onClick={openDashboard}
         />
       </section>
 
       {/* ── Main Dashboard Modal ── */}
       {showModal && (
         <div className="pb-dashboard-overlay" onClick={closeDashboard}>
-          <div className="pb-dashboard-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="pb-modal-main-close" onClick={closeDashboard}>✕</button>
-            
-            <div className={`pb-content ${selected ? "pb-content--split" : ""}`}>
+          <div
+            className="pb-dashboard-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="pb-modal-main-close" onClick={closeDashboard}>
+              ✕
+            </button>
+
+            <div
+              className={`pb-content ${selected ? "pb-content--split" : ""}`}
+            >
               {/* Bills List */}
               <section className="pb-bills-section pb-card">
                 <div className="pb-bills-header">
                   <h2 className="pb-card-title">Bill History</h2>
-                  <FilterBar active={filter} onChange={(f) => { setFilter(f); setSelected(null); }} />
+                  <FilterBar
+                    active={filter}
+                    onChange={(f) => {
+                      setFilter(f);
+                      setSelected(null);
+                    }}
+                  />
                 </div>
                 {visible.length === 0 ? (
                   <div className="pb-empty">No bills found.</div>
@@ -384,7 +443,10 @@ export default function PatientBilling() {
               {/* Details Panel */}
               {selected && (
                 <section className="pb-detail-wrapper pb-card">
-                  <BillDetails bill={selected} onClose={() => setSelected(null)} />
+                  <BillDetails
+                    bill={selected}
+                    onClose={() => setSelected(null)}
+                  />
                 </section>
               )}
             </div>
