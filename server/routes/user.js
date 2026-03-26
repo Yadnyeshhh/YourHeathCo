@@ -11,11 +11,32 @@ const {
   searchUsers,
   assignUserToAdmin,
   unassignUser,
+  uploadProfileImage,
 } = require("../controllers/userController");
 
 // ✅ Import middleware
 const authMiddleware = require("../middleware/auth");
-const auth = require("../middleware/requireAdminAuth")
+const auth = require("../middleware/requireAdminAuth");
+
+// ✅ Multer config for Profile Image
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const dir = "./uploads/profile";
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    cb(null, req.user._id.toString() + "-" + Date.now() + ext);
+  }
+});
+const upload = multer({ storage });
 
 // -------------------- Routes --------------------
 
@@ -33,6 +54,9 @@ router.get("/all", getAllUsers);
 
 // Update user (Authenticated)
 router.put("/update/:id", authMiddleware, updateUser);
+
+// Upload profile image (Authenticated)
+router.patch("/upload-profile", authMiddleware, upload.single("profileImage"), uploadProfileImage);
 
 // -------------------- Admin Actions --------------------
 

@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   gender: String,
   contact: String,
   bloodGroup: String,
+  profileImage: String,
   email: {
     type: String,
     required: true,

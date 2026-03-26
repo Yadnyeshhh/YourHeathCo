@@ -1,99 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./BillingSection.css";
-
-/* ─── Dummy Data ──────────────────────────────────────────────────────────── */
-const BILLS = [
-  {
-    id: "INV-2024-001",
-    date: "2024-05-03",
-    amount: 14500,
-    status: "Paid",
-    category: "Cardiology Consultation",
-    doctor: "Dr. Ramesh Iyer",
-    hospital: "Apollo Medcare, Mumbai",
-    items: [
-      { label: "Consultation Fee", amount: 2500 },
-      { label: "ECG Test", amount: 1800 },
-      { label: "Blood Panel", amount: 3200 },
-      { label: "Medicines", amount: 7000 },
-    ],
-    images: [
-      "https://placehold.co/480x320/e0f2fe/0369a1?text=Prescription+A",
-      "https://placehold.co/480x320/d1fae5/065f46?text=Invoice+A",
-    ],
-  },
-  {
-    id: "INV-2024-002",
-    date: "2024-06-11",
-    amount: 8750,
-    status: "Pending",
-    category: "Orthopedic Follow-up",
-    doctor: "Dr. Sheela Nair",
-    hospital: "Fortis Hospital, Pune",
-    items: [
-      { label: "Consultation Fee", amount: 1500 },
-      { label: "X-Ray", amount: 2250 },
-      { label: "Physiotherapy Session", amount: 5000 },
-    ],
-    images: [
-      "https://placehold.co/480x320/fef3c7/92400e?text=Prescription+B",
-      "https://placehold.co/480x320/ede9fe/4c1d95?text=Invoice+B",
-    ],
-  },
-  {
-    id: "INV-2024-003",
-    date: "2024-07-22",
-    amount: 31200,
-    status: "Paid",
-    category: "Appendectomy Surgery",
-    doctor: "Dr. Vikram Bose",
-    hospital: "Narayana Health, Bangalore",
-    items: [
-      { label: "Surgery Charges", amount: 18000 },
-      { label: "Anaesthesia", amount: 5200 },
-      { label: "Room (3 days)", amount: 6000 },
-      { label: "Post-op Medicines", amount: 2000 },
-    ],
-    images: [
-      "https://placehold.co/480x320/fce7f3/9d174d?text=Discharge+Summary",
-      "https://placehold.co/480x320/cffafe/164e63?text=Invoice+C",
-      "https://placehold.co/480x320/f0fdf4/14532d?text=Prescription+C",
-    ],
-  },
-  {
-    id: "INV-2024-004",
-    date: "2024-08-05",
-    amount: 5400,
-    status: "Pending",
-    category: "Dermatology Consultation",
-    doctor: "Dr. Priya Menon",
-    hospital: "Manipal Hospital, Chennai",
-    items: [
-      { label: "Consultation Fee", amount: 1200 },
-      { label: "Skin Biopsy", amount: 2800 },
-      { label: "Medicines", amount: 1400 },
-    ],
-    images: ["https://placehold.co/480x320/ffedd5/7c2d12?text=Prescription+D"],
-  },
-  {
-    id: "INV-2024-005",
-    date: "2024-09-14",
-    amount: 9800,
-    status: "Paid",
-    category: "Dental Implant",
-    doctor: "Dr. Amit Shah",
-    hospital: "Smile Dental Clinic, Delhi",
-    items: [
-      { label: "Implant Procedure", amount: 7500 },
-      { label: "Crown Fitting", amount: 1500 },
-      { label: "Follow-up", amount: 800 },
-    ],
-    images: [
-      "https://placehold.co/480x320/e0f2fe/0369a1?text=Dental+X-Ray",
-      "https://placehold.co/480x320/d1fae5/065f46?text=Invoice+E",
-    ],
-  },
-];
 
 const fmt = (n) =>
   "₹" + Number(n).toLocaleString("en-IN", { maximumFractionDigits: 0 });
@@ -154,7 +60,7 @@ function BillRow({ bill, isSelected, onClick }) {
       onKeyDown={(e) => e.key === "Enter" && onClick(bill)}
     >
       <div className="pb-bill-row-left">
-        <span className="pb-bill-id">{bill.id}</span>
+        <span className="pb-bill-id">{bill.invoiceId}</span>
         <span className="pb-bill-category">{bill.category}</span>
         <span className="pb-bill-date">
           {new Date(bill.date).toLocaleDateString("en-IN", {
@@ -210,7 +116,7 @@ function BillDetails({ bill, onClose }) {
     <div className="pb-details-panel">
       <div className="pb-details-header">
         <div>
-          <span className="pb-details-id">{bill.id}</span>
+          <span className="pb-details-id">{bill.invoiceId}</span>
           <h3 className="pb-details-title">{bill.category}</h3>
         </div>
         <button
@@ -340,23 +246,49 @@ function BillDetails({ bill, onClose }) {
 }
 
 /* ─── Main Component ──────────────────────────────────────────────────────── */
-export default function PatientBilling() {
+export default function PatientBilling({ profile }) {
+  const [bills, setBills] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState(null);
 
-  const totalAmt = BILLS.reduce((s, b) => s + b.amount, 0);
-  const paidAmt = BILLS.filter((b) => b.status === "Paid").reduce(
+  useEffect(() => {
+    const fetchBills = async () => {
+      if (!profile || !profile._id) return;
+      try {
+        const token = localStorage.getItem("token");
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+        const res = await fetch(`${apiUrl}/api/billing/user/${profile._id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        if (!res.ok) throw new Error("Failed to fetch bills");
+        const data = await res.json();
+        setBills(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBills();
+  }, [profile]);
+
+  const totalAmt = bills.reduce((s, b) => s + b.amount, 0);
+  const paidAmt = bills.filter((b) => b.status === "Paid").reduce(
     (s, b) => s + b.amount,
     0,
   );
   const pendAmt = totalAmt - paidAmt;
 
   const visible =
-    filter === "All" ? BILLS : BILLS.filter((b) => b.status === filter);
+    filter === "All" ? bills : bills.filter((b) => b.status === filter);
 
   const handleSelect = (bill) => {
-    setSelected((prev) => (prev?.id === bill.id ? null : bill));
+    setSelected((prev) => (prev?.invoiceId === bill.invoiceId ? null : bill));
   };
 
   const openDashboard = () => setShowModal(true);
@@ -364,6 +296,9 @@ export default function PatientBilling() {
     setShowModal(false);
     setSelected(null);
   };
+
+  if (loading) return <div className="pb-root"><p className="pb-page-sub">Loading billing details...</p></div>;
+  if (error) return <div className="pb-root"><p className="pb-page-sub" style={{color: 'red'}}>Error: {error}</p></div>;
 
   return (
     <div className="pb-root">
@@ -430,9 +365,9 @@ export default function PatientBilling() {
                   <ul className="pb-bill-list">
                     {visible.map((bill) => (
                       <BillRow
-                        key={bill.id}
+                        key={bill.invoiceId || bill._id}
                         bill={bill}
-                        isSelected={selected?.id === bill.id}
+                        isSelected={selected?.invoiceId === bill.invoiceId}
                         onClick={handleSelect}
                       />
                     ))}

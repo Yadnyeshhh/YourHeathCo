@@ -7,12 +7,16 @@ const userRoutes = require("./routes/user.js");
 const adminRoutes = require('./routes/admin.js');
 const medRoutes = require('./routes/meds_meal.js');
 const PatientStatusRoutes = require('./routes/patientStatusRoutes.js');
+const billingRoutes = require('./routes/billingRoutes.js');
 
 const PORT = process.env.PORT;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static uploads
+app.use('/uploads', express.static('uploads'));
 
 app.use((req, res, next) => {
   console.log(req.path);  
@@ -23,6 +27,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/meds_meals", medRoutes);
 app.use("/api/patient-status", PatientStatusRoutes);
+app.use("/api/billing", billingRoutes);
 
 connectDB().then(() => {
   app.listen(PORT, () => {

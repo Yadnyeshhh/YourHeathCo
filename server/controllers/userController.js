@@ -199,6 +199,30 @@ const unassignUser = async (req, res) => {
   }
 };
 
+// 🖼️ Upload user profile image
+const uploadProfileImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No image file provided" });
+    }
+
+    const userId = req.user._id;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profileImage: req.file.path.replace(/\\/g, "/") },
+      { new: true }
+    ).select("-password -__v -admin");
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({ message: "Profile image updated successfully", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to upload profile image", details: error.message });
+  }
+};
+
 module.exports = {
   loginUser,
   signupUser,
@@ -208,4 +232,5 @@ module.exports = {
   searchUsers,
   assignUserToAdmin,
   unassignUser,
+  uploadProfileImage,
 };

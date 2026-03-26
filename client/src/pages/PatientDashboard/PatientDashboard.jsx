@@ -135,7 +135,7 @@ const PatientDashboard = () => {
               data={programData}
               nextAppointment={profile?.patientStatus?.nextAppointment}
             />
-            <BillingSection />
+            <BillingSection profile={profile} />
           </div>
           <TeamTodaySection
             data={teamTodayData}
