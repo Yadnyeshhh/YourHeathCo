@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import "../../../styles/admin/addpatient.css";
 import { useLocation } from "react-router-dom";
 import Modal from "../Modal/Modal";
+import { InteractiveGridPattern } from "../../../assets/gridBgPattern";
 
 // ✅ Use VITE_API_URL or fallback to localhost:5000
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -95,7 +96,15 @@ const AddPatient = () => {
       alert(err.message || "Error assigning user");
     }
   };
-  return <div className="add-patient-container">
+  return <div className="add-patient-page-wrapper">
+    <InteractiveGridPattern 
+  width={40}
+  height={40} 
+  squares={[30, 30]}
+  className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
+  squaresClassName="stroke-gray-700 stroke-[1] hover:fill-teal-500/30"
+/>
+    <div className="add-patient-container">
       <h1 className="add-patient-title">Add Patient to Your Admin List</h1>
 
       {/* Filters */}
@@ -103,18 +112,18 @@ const AddPatient = () => {
         <input type="text" placeholder="Search by name, email, or contact" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
 
         <select value={filters.gender} onChange={e => setFilters({
-        ...filters,
-        gender: e.target.value
-      })}>
+          ...filters,
+          gender: e.target.value
+        })}>
           <option value="">All Genders</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
 
         <select value={filters.bloodGroup} onChange={e => setFilters({
-        ...filters,
-        bloodGroup: e.target.value
-      })}>
+          ...filters,
+          bloodGroup: e.target.value
+        })}>
           <option value="">All Blood Groups</option>
           <option value="A+">A+</option>
           <option value="A-">A-</option>
@@ -127,18 +136,18 @@ const AddPatient = () => {
         </select>
 
         <input type="number" placeholder="Min Age" value={filters.minAge} onChange={e => setFilters({
-        ...filters,
-        minAge: e.target.value
-      })} />
+          ...filters,
+          minAge: e.target.value
+        })} />
         <input type="number" placeholder="Max Age" value={filters.maxAge} onChange={e => setFilters({
-        ...filters,
-        maxAge: e.target.value
-      })} />
+          ...filters,
+          maxAge: e.target.value
+        })} />
 
         <button className="search-btn" onClick={() => {
-        setPage(1);
-        fetchUsers();
-      }}>
+          setPage(1);
+          fetchUsers();
+        }}>
           Search
         </button>
       </div>
@@ -149,21 +158,21 @@ const AddPatient = () => {
       {/* User List */}
       <div className="user-list">
         {loading ? <p className="loading-text">Loading...</p> : users.length === 0 ? <p className="no-results">No unassigned users found.</p> : users.map(user => <div className="user-card" key={user._id}>
-              <div className="user-info">
-                <h3>{user.name}</h3>
-                <p><strong>Email:</strong> {user.email}</p>
-                <p><strong>Contact:</strong> {user.contact}</p>
-                <p><strong>Gender:</strong> {user.gender}</p>
-                <p><strong>Blood Group:</strong> {user.bloodGroup}</p>
-                <p><strong>Age:</strong> {user.age}</p>
-              </div>
-              <button className="assign-btn" onClick={() => {
-          setSelectedUser(user);
-          setShowModal(true);
-        }}>
-                Assign
-              </button>
-            </div>)}
+          <div className="user-info">
+            <h3>{user.name}</h3>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Contact:</strong> {user.contact}</p>
+            <p><strong>Gender:</strong> {user.gender}</p>
+            <p><strong>Blood Group:</strong> {user.bloodGroup}</p>
+            <p><strong>Age:</strong> {user.age}</p>
+          </div>
+          <button className="assign-btn" onClick={() => {
+            setSelectedUser(user);
+            setShowModal(true);
+          }}>
+            Assign
+          </button>
+        </div>)}
       </div>
 
       {/* Pagination */}
@@ -181,6 +190,7 @@ const AddPatient = () => {
 
       {/* Confirmation Modal */}
       {showModal && selectedUser && <Modal title="Confirm Assignment" message={`Are you sure you want to assign ${selectedUser.name} to your admin list?`} onConfirm={() => handleAssign(selectedUser._id)} onCancel={() => setShowModal(false)} />}
-    </div>;
+    </div>
+  </div>;
 };
 export default AddPatient;
