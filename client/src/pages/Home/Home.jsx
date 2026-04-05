@@ -13,7 +13,7 @@ import Footer from "../../components/homeComponents/Footer/Footer";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  
+
   const toLogin = () => {
     navigate("/login");
   };
@@ -39,9 +39,9 @@ const LandingPage = () => {
   return (
     <div className="font-sans text-gray-800 bg-gray-50">
       <Hero toLogin={toLogin} />
+      <CTA toLogin={toLogin} />
       <Services />
       <About />
-      <CTA toLogin={toLogin} />
       <Doctors />
       <Testimonials />
       <Contact />

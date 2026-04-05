@@ -28,7 +28,7 @@ const Contact = () => {
           <input type="email" placeholder="Your Email" className="w-full border p-3 rounded-lg" required />
           <input type="tel" placeholder="Your Phone (Optional)" className="w-full border p-3 rounded-lg" />
           <textarea placeholder="Your Message" rows="5" className="w-full border p-3 rounded-lg" required></textarea>
-          <button type="submit" className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-500 transition">
+          <button type="submit" className="bg-[#0a6b5e] text-white px-6 py-3 rounded-lg hover:bg-[#04463e] transition">
             Send Message
           </button>
         </form>

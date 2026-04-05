@@ -1,182 +1,412 @@
-/* Layout & Background */
-.login-screen-container {
+/* Login.css */
+
+/* Root Wrapper */
+.login-pf-root {
+  background-color: #f8fafc;
+}
+
+/* Core Reset and Base Container */
+.login-pf-root .login-pf-container {
+  display: flex;
   min-height: 100vh;
+  font-family: 'Inter', 'Roboto', sans-serif;
+  background-color: #f8fafc;
+}
+
+/* Left Side: Hero Section */
+.login-pf-root .login-pf-hero-section {
+  width: 50%;
+  position: relative;
+  background-image: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem;
+  color: white;
+}
+
+/* Gradient Overlay */
+.login-pf-root .login-pf-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3));
+  z-index: 1;
+}
+
+.login-pf-root .login-pf-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 600px;
+}
+
+.login-pf-root .login-pf-hero-brand h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.login-pf-root .login-pf-hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.login-pf-root .login-pf-hero-subtitle {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Bullet Points */
+.login-pf-root .login-pf-hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-pf-root .login-pf-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.login-pf-root .login-pf-feature-icon-wrapper {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom, #1e3a8a, #60a5fa, #bfdbfe);
-  position: relative;
-  font-family: sans-serif;
 }
 
-/* Back Button */
-.login-back-button {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background-color: #2563eb;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  border: none;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.2s;
+.login-pf-root .login-pf-feature-icon {
+  width: 24px;
+  height: 24px;
+  fill: white;
 }
 
-.login-back-button:hover {
-  background-color: #1d4ed8;
-}
-
-/* Card Wrapper */
-.login-card-wrapper {
-  display: flex;
-  width: 100%;
-  max-width: 1152px; /* 6xl */
-  background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  border-radius: 1rem;
-  overflow: hidden;
-}
-
-/* Image Section */
-.login-image-section {
-  display: none;
+/* Right Side: Form Container */
+.login-pf-root .login-pf-form-section {
   width: 50%;
-}
-
-@media (min-width: 768px) {
-  .login-image-section {
-    display: block;
-  }
-}
-
-.login-side-image {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
-/* Form Section */
-.login-form-section {
-  width: 100%;
-  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 2rem;
+  position: relative;
 }
 
-@media (min-width: 768px) {
-  .login-form-section {
-    width: 50%;
-  }
+.login-pf-root .login-pf-card {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
+
+/* Typography & Colors */
+.login-pf-root .login-pf-card-header {
+  margin-bottom: 2rem;
+}
+
+.login-pf-root .login-pf-card-title {
+  color: #1A237E;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.login-pf-root .login-pf-card-subtitle {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.login-pf-root .login-pf-link-signup {
+  color: #00897B;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1rem;
+}
+.login-pf-root .login-pf-link-signup:hover { text-decoration: underline; }
 
 /* Alert Banner */
-.login-alert-banner {
-  margin-bottom: 1rem;
-  width: 100%;
-  background-color: #ef4444;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  text-align: center;
-}
-
-/* Form Card */
-.login-form-card {
-  width: 100%;
-  max-width: 24rem; /* sm */
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.login-form-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-/* Inputs */
-.login-input {
-  width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  outline: none;
-  box-sizing: border-box;
-  transition: ring 0.2s;
-}
-
-.login-input:focus {
-  border-color: #60a5fa;
-  box-shadow: 0 0 0 2px #60a5fa;
-}
-
-.login-input.focus-red:focus {
-  border-color: #f87171;
-  box-shadow: 0 0 0 2px #f87171;
-}
-
-.login-mb-large {
+.login-pf-root .login-pf-alert-banner {
+  background-color: #fee2e2;
+  color: #ef4444;
+  padding: 1rem;
+  border-radius: 8px;
   margin-bottom: 1.5rem;
-}
-
-/* Buttons */
-.login-submit-button {
-  width: 100%;
-  height: 3rem;
-  color: white;
-  border-radius: 9999px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  font-weight: 600;
-}
-
-.login-submit-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.login-submit-button.blue { background-color: #2563eb; }
-.login-submit-button.blue:hover { background-color: #1d4ed8; }
-
-.login-submit-button.green { background-color: #16a34a; }
-.login-submit-button.green:hover { background-color: #15803d; }
-
-.login-submit-button.red { background-color: #dc2626; }
-.login-submit-button.red:hover { background-color: #b91c1c; }
-
-/* Text & Links */
-.login-footer-text {
   text-align: center;
-  font-size: 0.875rem;
-  margin-top: 1rem;
-  color: #4b5563;
+  font-weight: 500;
 }
 
-.login-link-button {
+/* Form Inputs */
+.login-pf-root .login-pf-form-group {
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.login-pf-root .login-pf-form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.login-pf-root .login-pf-input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login-pf-root .login-pf-input-icon {
+  position: absolute;
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+  fill: #94a3b8;
+}
+
+.login-pf-root .login-pf-form-input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 2.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1e293b;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  background-color: #f8fafc;
+}
+
+.login-pf-root .login-pf-form-input.login-pf-no-icon {
+  padding-left: 1rem;
+}
+
+.login-pf-root .login-pf-form-input:focus {
+  outline: none;
+  border-color: #00897B;
+  box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+  background-color: white;
+}
+
+.login-pf-root .login-pf-form-select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1e293b;
+  box-sizing: border-box;
+  background-color: #f8fafc;
+  appearance: none;
+}
+.login-pf-root .login-pf-form-select:focus {
+  outline: none;
+  border-color: #00897B;
+  box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+  background-color: white;
+}
+
+/* Options row */
+.login-pf-root .login-pf-options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.login-pf-root .login-pf-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.login-pf-root .login-pf-forgot-password {
+  color: #00897B;
+  text-decoration: none;
+  font-weight: 500;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  font-size: inherit;
+}
+.login-pf-root .login-pf-forgot-password:hover { text-decoration: underline; }
+
+/* Primary Button Element */
+.login-pf-root .login-pf-btn-primary {
+  width: 100%;
+  background-color: #00897B;
+  color: white;
+  padding: 0.875rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 4px 6px -1px rgba(0,137,123, 0.2);
+}
+.login-pf-root .login-pf-btn-primary:hover:not(:disabled) { background-color: #00796B; }
+.login-pf-root .login-pf-btn-primary:active:not(:disabled) { transform: scale(0.98); }
+.login-pf-root .login-pf-btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.login-pf-root .login-pf-btn-danger {
+  background-color: #ef4444;
+}
+.login-pf-root .login-pf-btn-danger:hover:not(:disabled) { background-color: #dc2626; }
+
+/* Divider */
+.login-pf-root .login-pf-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 2rem 0;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.login-pf-root .login-pf-divider::before, 
+.login-pf-root .login-pf-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+.login-pf-root .login-pf-divider:not(:empty)::before { margin-right: 1rem; }
+.login-pf-root .login-pf-divider:not(:empty)::after { margin-left: 1rem; }
+
+/* Social Buttons */
+.login-pf-root .login-pf-social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.login-link-button:hover {
-  text-decoration: underline;
+.login-pf-root .login-pf-btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.login-pf-root .login-pf-btn-social:hover { background-color: #f8fafc; }
+
+.login-pf-root .login-pf-social-icon {
+  width: 20px;
+  height: 20px;
 }
 
-.login-link-button.blue-text { color: #3b82f6; }
-.login-link-button.red-text { color: #ef4444; }
+/* Security Footer */
+.login-pf-root .login-pf-security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
 
-.login-ml-sm {
-  margin-left: 10px;
+.login-pf-root .login-pf-security-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Contact Support */
+.login-pf-root .login-pf-support-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.login-pf-root .login-pf-support-link-text {
+  color: #00897B;
+  font-weight: 600;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.login-pf-root .login-pf-support-link-text:hover { text-decoration: underline; }
+
+/* Back Buttons and Admin Links */
+.login-pf-root .login-pf-admin-toggle {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+.login-pf-root .login-pf-link-admin {
+  color: #1A237E;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.login-pf-root .login-pf-link-admin:hover { text-decoration: underline; }
+
+.login-pf-root .login-pf-back-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #00897B;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+.login-pf-root .login-pf-back-toggle:hover { text-decoration: underline; }
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .login-pf-root .login-pf-hero-section {
+    display: none;
+  }
+  .login-pf-root .login-pf-form-section {
+    width: 100%;
+    padding: 1rem;
+  }
+  .login-pf-root .login-pf-card {
+    padding: 2rem;
+  }
 }

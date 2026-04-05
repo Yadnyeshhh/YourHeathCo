@@ -1,9 +1,11 @@
 import "./AdminSignup.css";
 import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // 👁️ icons
-import "../../styles/adminsignup.css";
+import { FaEye, FaEyeSlash, FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-const Adminsiginup = () => {
+import { InteractiveGridPattern } from "../../assets/gridBgPattern";
+
+
+const AdminSignup = () => {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
@@ -16,13 +18,15 @@ const Adminsiginup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState("");
-  const handleChange = e => {
+
+  const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
-  const handleSubmit = async e => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("Registering...");
     if (formData.password !== formData.confirmPassword) {
@@ -60,47 +64,121 @@ const Adminsiginup = () => {
       setMessage("Something went wrong!");
     }
   };
-  return <div className="as-page">
-    <button onClick={() => navigate("/login")} className="backbutton">
-      ← BACK
-      </button>
-      <div className="as-card">
-        <h2 className="as-title">Hospital Admin Signup</h2>
 
-        <form onSubmit={handleSubmit} className="as-form">
-          <input type="text" name="instituteName" placeholder="Institute Name" value={formData.instituteName} onChange={handleChange} className="as-input" required />
+  return (
+    <div className="adm-up-root">
+      <InteractiveGridPattern 
+  width={40}  /* Increase size so you need fewer squares */
+  height={40} 
+  squares={[30, 30]} /* 900 squares instead of 6,400 */
+  className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
+  squaresClassName="hover:fill-teal-500/30"
+/>
+      <div className="adm-up-card">
+        <div className="adm-up-header">
+          <h1 className="adm-up-title">Hospital Admin Signup</h1>
+          <p className="adm-up-subtitle">Establish your clinical sanctuary and manage your institution with professional precision.</p>
+        </div>
 
-          <input type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} className="as-input" required />
-
-          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} className="as-input" required />
-
-          {/* Password */}
-          <div className="as-password-container">
-            <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} className="as-input as-password-input" required />
-            
+        <form onSubmit={handleSubmit} className="adm-up-form">
+          <div className="adm-up-input-group">
+            <label className="adm-up-label">Institute Name</label>
+            <input
+              type="text"
+              name="instituteName"
+              placeholder="e.g. St. Mary's General Hospital"
+              value={formData.instituteName}
+              onChange={handleChange}
+              className="adm-up-input"
+              required
+            />
           </div>
 
-          {/* Confirm Password */}
-          <div className="as-password-container">
-            <input type={showConfirmPassword ? "text" : "password"} name="confirmPassword" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} className="as-input as-password-input" required />
-            
-              
+          <div className="adm-up-input-group">
+            <label className="adm-up-label">Address</label>
+            <div className="adm-up-input-wrapper">
+              <input
+                type="text"
+                name="address"
+                placeholder="Full Clinical Address"
+                value={formData.address}
+                onChange={handleChange}
+                className="adm-up-input"
+                required
+              />
+              <FaMapMarkerAlt className="adm-up-icon" />
+            </div>
           </div>
 
-          <button type="submit" className="as-btn">
-            Register
+          <div className="adm-up-input-group">
+            <label className="adm-up-label">Work Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="admin@hospital-plus.com"
+              value={formData.email}
+              onChange={handleChange}
+              className="adm-up-input"
+              required
+            />
+          </div>
+
+          <div className="adm-up-grid-row">
+            <div className="adm-up-input-group">
+              <label className="adm-up-label">Password</label>
+              <div className="adm-up-input-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="adm-up-input"
+                  required
+                />
+                <div onClick={() => setShowPassword(!showPassword)} className="adm-up-eye">
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
+            </div>
+
+            <div className="adm-up-input-group">
+              <label className="adm-up-label">Confirm Password</label>
+              <div className="adm-up-input-wrapper">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="••••••••"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="adm-up-input"
+                  required
+                />
+                <div onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="adm-up-eye">
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" className="adm-up-button">
+            Register Institution
           </button>
 
-          {message && <p className="as-message">{message}</p>}
+          {message && <p className="adm-up-message">{message}</p>}
 
-          <p className="as-bottom-text">
-            Already have an account?{" "}
-            <a href="/login" className="as-link">
-              Login
-            </a>
-          </p>
+          <div className="adm-up-footer">
+            <p className="adm-up-footer-text">
+              Already have an account?{" "}
+              <span onClick={() => navigate("/login")} className="adm-up-link">
+                Login
+              </span>
+            </p>
+          </div>
         </form>
       </div>
-    </div>;
+    </div>
+  );
 };
-export default Adminsiginup;
+
+export default AdminSignup;

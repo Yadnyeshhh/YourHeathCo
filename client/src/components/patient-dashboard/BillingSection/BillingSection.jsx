@@ -6,26 +6,23 @@ const fmt = (n) =>
 
 /* ─── Sub-components ──────────────────────────────────────────────────────── */
 
-function SummaryCard({ icon, label, value, variant, onClick }) {
+function SummaryCard({ label, value, variant, onClick }) {
   return (
     <div
-      className={`pb-summary-card pb-summary-card--${variant} pb-clickable`}
+      className={`db-billing-summary-card db-billing-summary-card--${variant}`}
       onClick={onClick}
       role="button"
       tabIndex={0}
     >
-      <div className="pb-summary-icon">{icon}</div>
-      <div className="pb-summary-body">
-        <span className="pb-summary-label">{label}</span>
-        <span className="pb-summary-value">{value}</span>
-      </div>
+      <span className="db-billing-summary-label">{label}</span>
+      <span className="db-billing-summary-value">{value}</span>
     </div>
   );
 }
 
 function StatusBadge({ status }) {
   return (
-    <span className={`pb-badge pb-badge--${status.toLowerCase()}`}>
+    <span className={`db-billing-badge db-billing-badge--${status.toLowerCase()}`}>
       {status === "Paid" ? "✓ Paid" : "● Pending"}
     </span>
   );
@@ -33,11 +30,11 @@ function StatusBadge({ status }) {
 
 function FilterBar({ active, onChange }) {
   return (
-    <div className="pb-filter-bar" role="group" aria-label="Filter bills">
+    <div className="db-billing-filter-bar" role="group" aria-label="Filter bills">
       {["All", "Paid", "Pending"].map((f) => (
         <button
           key={f}
-          className={`pb-filter-btn ${active === f ? "pb-filter-btn--active" : ""}`}
+          className={`db-billing-filter-btn ${active === f ? "db-billing-filter-btn--active" : ""}`}
           onClick={(e) => {
             e.stopPropagation();
             onChange(f);
@@ -53,16 +50,16 @@ function FilterBar({ active, onChange }) {
 function BillRow({ bill, isSelected, onClick }) {
   return (
     <li
-      className={`pb-bill-row pb-bill-row--${bill.status.toLowerCase()} ${isSelected ? "pb-bill-row--selected" : ""}`}
+      className={`db-billing-bill-row db-billing-bill-row--${bill.status.toLowerCase()} ${isSelected ? "db-billing-bill-row--selected" : ""}`}
       onClick={() => onClick(bill)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && onClick(bill)}
     >
-      <div className="pb-bill-row-left">
-        <span className="pb-bill-id">{bill.invoiceId}</span>
-        <span className="pb-bill-category">{bill.category}</span>
-        <span className="pb-bill-date">
+      <div className="db-billing-bill-row-left">
+        <span className="db-billing-bill-id">{bill.invoiceId}</span>
+        <span className="db-billing-bill-category">{bill.category}</span>
+        <span className="db-billing-bill-date">
           {new Date(bill.date).toLocaleDateString("en-IN", {
             day: "numeric",
             month: "short",
@@ -70,10 +67,10 @@ function BillRow({ bill, isSelected, onClick }) {
           })}
         </span>
       </div>
-      <div className="pb-bill-row-right">
-        <span className="pb-bill-amount">{fmt(bill.amount)}</span>
+      <div className="db-billing-bill-row-right">
+        <span className="db-billing-bill-amount">{fmt(bill.amount)}</span>
         <StatusBadge status={bill.status} />
-        <span className="pb-bill-arrow">›</span>
+        <span className="db-billing-bill-arrow">›</span>
       </div>
     </li>
   );
@@ -83,20 +80,20 @@ function ImageModal({ src, onClose }) {
   if (!src) return null;
   return (
     <div
-      className="pb-modal-overlay pb-sub-modal"
+      className="db-billing-modal-overlay db-billing-sub-modal"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
-      <div className="pb-modal-box" onClick={(e) => e.stopPropagation()}>
+      <div className="db-billing-modal-box" onClick={(e) => e.stopPropagation()}>
         <button
-          className="pb-modal-close"
+          className="db-billing-modal-close"
           onClick={onClose}
           aria-label="Close preview"
         >
           ✕
         </button>
-        <img src={src} alt="Bill document preview" className="pb-modal-img" />
+        <img src={src} alt="Bill document preview" className="db-billing-modal-img" />
       </div>
     </div>
   );
@@ -113,14 +110,14 @@ function BillDetails({ bill, onClose }) {
   };
 
   return (
-    <div className="pb-details-panel">
-      <div className="pb-details-header">
+    <div className="db-billing-details-panel">
+      <div className="db-billing-details-header">
         <div>
-          <span className="pb-details-id">{bill.invoiceId}</span>
-          <h3 className="pb-details-title">{bill.category}</h3>
+          <span className="db-billing-details-id">{bill.invoiceId}</span>
+          <h3 className="db-billing-details-title">{bill.category}</h3>
         </div>
         <button
-          className="pb-details-close"
+          className="db-billing-details-close"
           onClick={onClose}
           aria-label="Close"
         >
@@ -128,18 +125,18 @@ function BillDetails({ bill, onClose }) {
         </button>
       </div>
 
-      <div className="pb-details-meta">
-        <div className="pb-meta-item">
-          <span className="pb-meta-label">Doctor</span>
-          <span className="pb-meta-value">{bill.doctor}</span>
+      <div className="db-billing-details-meta">
+        <div className="db-billing-meta-item">
+          <span className="db-billing-meta-label">Doctor</span>
+          <span className="db-billing-meta-value">{bill.doctor}</span>
         </div>
-        <div className="pb-meta-item">
-          <span className="pb-meta-label">Hospital</span>
-          <span className="pb-meta-value">{bill.hospital}</span>
+        <div className="db-billing-meta-item">
+          <span className="db-billing-meta-label">Hospital</span>
+          <span className="db-billing-meta-value">{bill.hospital}</span>
         </div>
-        <div className="pb-meta-item">
-          <span className="pb-meta-label">Date</span>
-          <span className="pb-meta-value">
+        <div className="db-billing-meta-item">
+          <span className="db-billing-meta-label">Date</span>
+          <span className="db-billing-meta-value">
             {new Date(bill.date).toLocaleDateString("en-IN", {
               day: "numeric",
               month: "long",
@@ -147,40 +144,40 @@ function BillDetails({ bill, onClose }) {
             })}
           </span>
         </div>
-        <div className="pb-meta-item">
-          <span className="pb-meta-label">Status</span>
+        <div className="db-billing-meta-item">
+          <span className="db-billing-meta-label">Status</span>
           <StatusBadge status={bill.status} />
         </div>
       </div>
 
-      <div className="pb-details-section">
-        <h4 className="pb-details-section-title">Itemised Charges</h4>
-        <ul className="pb-items-list">
+      <div className="db-billing-details-section">
+        <h4 className="db-billing-details-section-title">Itemised Charges</h4>
+        <ul className="db-billing-items-list">
           {bill.items.map((item, i) => (
-            <li key={i} className="pb-item-row">
+            <li key={i} className="db-billing-item-row">
               <span>{item.label}</span>
-              <span className="pb-item-amount">{fmt(item.amount)}</span>
+              <span className="db-billing-item-amount">{fmt(item.amount)}</span>
             </li>
           ))}
-          <li className="pb-item-row pb-item-row--total">
+          <li className="db-billing-item-row db-billing-item-row--total">
             <span>Total</span>
-            <span className="pb-item-amount">{fmt(bill.amount)}</span>
+            <span className="db-billing-item-amount">{fmt(bill.amount)}</span>
           </li>
         </ul>
       </div>
 
       {bill.images.length > 0 && (
-        <div className="pb-details-section">
-          <h4 className="pb-details-section-title">Documents &amp; Images</h4>
-          <div className="pb-doc-grid">
+        <div className="db-billing-details-section">
+          <h4 className="db-billing-details-section-title">Documents &amp; Images</h4>
+          <div className="db-billing-doc-grid">
             {bill.images.map((src, i) => (
               <div
                 key={i}
-                className="pb-doc-thumb"
+                className="db-billing-doc-thumb"
                 onClick={() => setModalSrc(src)}
               >
                 <img src={src} alt={`Document ${i + 1}`} />
-                <div className="pb-doc-overlay">🔍</div>
+                <div className="db-billing-doc-overlay">🔍</div>
               </div>
             ))}
           </div>
@@ -188,23 +185,23 @@ function BillDetails({ bill, onClose }) {
       )}
 
       {bill.status === "Pending" && (
-        <div className="pb-details-section pb-payment-section">
-          <h4 className="pb-details-section-title">Make Payment</h4>
+        <div className="db-billing-details-section db-billing-payment-section">
+          <h4 className="db-billing-details-section-title">Make Payment</h4>
           {payState === "success" ? (
-            <div className="pb-pay-success">
-              <div className="pb-pay-success-icon">✓</div>
-              <p className="pb-pay-success-title">Payment Successful!</p>
-              <p className="pb-pay-success-sub">
+            <div className="db-billing-pay-success">
+              <div className="db-billing-pay-success-icon">✓</div>
+              <p className="db-billing-pay-success-title">Payment Successful!</p>
+              <p className="db-billing-pay-success-sub">
                 {fmt(bill.amount)} paid via {payMethod}
               </p>
             </div>
           ) : (
             <>
-              <div className="pb-pay-amount-display">
+              <div className="db-billing-pay-amount-display">
                 <span>Amount Due</span>
                 <strong>{fmt(bill.amount)}</strong>
               </div>
-              <div className="pb-pay-methods">
+              <div className="db-billing-pay-methods">
                 {[
                   { id: "UPI", icon: "📲", label: "UPI" },
                   { id: "Card", icon: "💳", label: "Credit / Debit Card" },
@@ -212,7 +209,7 @@ function BillDetails({ bill, onClose }) {
                 ].map((m) => (
                   <label
                     key={m.id}
-                    className={`pb-pay-method ${payMethod === m.id ? "pb-pay-method--active" : ""}`}
+                    className={`db-billing-pay-method ${payMethod === m.id ? "db-billing-pay-method--active" : ""}`}
                   >
                     <input
                       type="radio"
@@ -221,13 +218,13 @@ function BillDetails({ bill, onClose }) {
                       checked={payMethod === m.id}
                       onChange={() => setPayMethod(m.id)}
                     />
-                    <span className="pb-pay-method-icon">{m.icon}</span>
+                    <span className="db-billing-pay-method-icon">{m.icon}</span>
                     <span>{m.label}</span>
                   </label>
                 ))}
               </div>
               <button
-                className={`pb-pay-btn ${payState === "loading" ? "pb-pay-btn--loading" : ""}`}
+                className={`db-billing-pay-btn ${payState === "loading" ? "db-billing-pay-btn--loading" : ""}`}
                 onClick={handlePay}
                 disabled={payState === "loading"}
               >
@@ -297,60 +294,63 @@ export default function PatientBilling({ profile }) {
     setSelected(null);
   };
 
-  if (loading) return <div className="pb-root"><p className="pb-page-sub">Loading billing details...</p></div>;
-  if (error) return <div className="pb-root"><p className="pb-page-sub" style={{color: 'red'}}>Error: {error}</p></div>;
+  if (loading) return <div className="db-billing-root"><p className="db-billing-page-sub">Loading billing details...</p></div>;
+  if (error) return <div className="db-billing-root"><p className="db-billing-page-sub" style={{color: 'red'}}>Error: {error}</p></div>;
 
   return (
-    <div className="pb-root">
-      <header className="pb-page-header">
-        <div className="pb-header-pill">My Health Wallet</div>
-        <h1 className="pb-page-title">Billing &amp; Payments</h1>
-        <p className="pb-page-sub">Quick summary of your billing status.</p>
+    <div className="db-billing-root">
+      <header className="db-billing-page-header">
+        <div className="db-billing-header-pill">MY HEALTH WALLET</div>
+        <h1 className="db-billing-page-title">Billing & Payments</h1>
+        <p className="db-billing-page-sub">Quick summary of your billing status.</p>
       </header>
 
       {/* ── Summary Cards (Always Visible) ── */}
-      <section className="pb-summary-row" aria-label="Summary">
+      <section className="db-billing-summary-row" aria-label="Summary">
         <SummaryCard
-          icon=""
-          label="Total Billed"
+          label="TOTAL BILLED"
           value={fmt(totalAmt)}
           variant="blue"
           onClick={openDashboard}
         />
         <SummaryCard
-          icon=""
-          label="Total Paid"
+          label="TOTAL PAID"
           value={fmt(paidAmt)}
           variant="green"
           onClick={openDashboard}
         />
         <SummaryCard
-          icon=""
-          label="Remaining"
+          label="REMAINING"
           value={fmt(pendAmt)}
           variant="red"
           onClick={openDashboard}
         />
       </section>
 
+      {/* Action Buttons to match design layout */}
+      <section className="db-billing-actions-row">
+        <button className="db-billing-btn-solid">Schedule Appointment</button>
+        <button className="db-billing-btn-outline">View Medical History</button>
+      </section>
+
       {/* ── Main Dashboard Modal ── */}
       {showModal && (
-        <div className="pb-dashboard-overlay" onClick={closeDashboard}>
+        <div className="db-billing-dashboard-overlay" onClick={closeDashboard}>
           <div
-            className="pb-dashboard-modal"
+            className="db-billing-dashboard-modal"
             onClick={(e) => e.stopPropagation()}
           >
-            <button className="pb-modal-main-close" onClick={closeDashboard}>
+            <button className="db-billing-modal-main-close" onClick={closeDashboard}>
               ✕
             </button>
 
             <div
-              className={`pb-content ${selected ? "pb-content--split" : ""}`}
+              className={`db-billing-content ${selected ? "db-billing-content--split" : ""}`}
             >
               {/* Bills List */}
-              <section className="pb-bills-section pb-card">
-                <div className="pb-bills-header">
-                  <h2 className="pb-card-title">Bill History</h2>
+              <section className="db-billing-bills-section db-billing-card">
+                <div className="db-billing-bills-header">
+                  <h2 className="db-billing-card-title">Bill History</h2>
                   <FilterBar
                     active={filter}
                     onChange={(f) => {
@@ -360,9 +360,9 @@ export default function PatientBilling({ profile }) {
                   />
                 </div>
                 {visible.length === 0 ? (
-                  <div className="pb-empty">No bills found.</div>
+                  <div className="db-billing-empty">No bills found.</div>
                 ) : (
-                  <ul className="pb-bill-list">
+                  <ul className="db-billing-bill-list">
                     {visible.map((bill) => (
                       <BillRow
                         key={bill.invoiceId || bill._id}
@@ -377,7 +377,7 @@ export default function PatientBilling({ profile }) {
 
               {/* Details Panel */}
               {selected && (
-                <section className="pb-detail-wrapper pb-card">
+                <section className="db-billing-detail-wrapper db-billing-card">
                   <BillDetails
                     bill={selected}
                     onClose={() => setSelected(null)}

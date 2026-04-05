@@ -1,1 +1,64 @@
-/* CTA styles */
+/* CTA styles completely refactored from Tailwind */
+
+.cta-section {
+  padding: 64px 20px;
+  background-color: #0c8272;
+  color: #ffffff;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cta-title {
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.cta-text {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.cta-button {
+  background-color: #fdfdfd;
+  border: 2px solid #0a6b5e;
+  color: #111827;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.cta-button:hover {
+  background-color: #12a793;
+  border: 2px solid #04463e;
+  color: #fdfdfd;
+}
+
+@media (max-width: 768px) {
+  .cta-section {
+    padding: 48px 20px;
+  }
+  
+  .cta-title {
+    font-size: 26px;
+    line-height: 32px;
+  }
+  
+  .cta-text {
+    font-size: 15px;
+  }
+  
+  .cta-button {
+    width: 100%;
+    max-width: 320px;
+  }
+}

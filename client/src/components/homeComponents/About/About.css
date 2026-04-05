@@ -1,1 +1,83 @@
-/* About styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.about-section {
+  background-color: #f5f7fa;
+  padding: 80px 20px;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-heading {
+  text-align: center;
+  color: #1f3b5b;
+  font-size: 36px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 60px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.about-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.about-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(31, 59, 91, 0.08);
+}
+
+.about-number {
+  color: #a8d5d3;
+  font-size: 52px;
+  font-weight: 600;
+  opacity: 0.9;
+  margin-bottom: 15px;
+  line-height: 1;
+}
+
+.about-title {
+  color: #1f3b5b;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+
+.about-description {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .about-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}

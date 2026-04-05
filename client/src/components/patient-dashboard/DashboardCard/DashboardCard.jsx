@@ -1,7 +1,7 @@
 import "./DashboardCard.css";
 import React, { useState } from 'react';
 import LucideIcon from "../LucideIcon/LucideIcon";
-import "../../../styles/patient-dashboard/dashboardcard.css";
+
 const DashboardCard = ({
   title,
   value,
@@ -19,7 +19,7 @@ const DashboardCard = ({
   const lowerTitle = title.toLowerCase();
   const renderTable = () => {
     if (lowerTitle === 'medicines') {
-      return <table className="data-table">
+      return <table className="db-card-data-table">
           <thead>
             <tr>
               <th>Day</th>
@@ -40,7 +40,7 @@ const DashboardCard = ({
         </table>;
     }
     if (lowerTitle === 'meals') {
-      return <table className="data-table">
+      return <table className="db-card-data-table">
           <thead>
             <tr>
               <th>Day</th>
@@ -61,27 +61,27 @@ const DashboardCard = ({
     }
 
     // For other cards
-    return <div className="dashboardcard-inline-1">
+    return <div className="db-card-inline-1">
         <p>🚧 This section is under maintenance.</p>
       </div>;
   };
   return <>
-      <div className="dashboard-card-upper">
-        <button className={`dashboard-card-${title}`} onClick={handleClick}>
-          <div className={`dashboard-card-icon-wrapper ${colorClass}`}>
+      <div className="db-card-upper">
+        <button className="db-card-button" onClick={handleClick}>
+          <div className={`db-card-icon-wrapper ${colorClass}`}>
             <LucideIcon name={icon} size={24} />
           </div>
-          <div className="dashboard-card-content">
-            <div className="dashboard-card-title">{title}</div>
+          <div className="db-card-content">
+            <div className="db-card-title">{title}</div>
           </div>
         </button>
       </div>
 
-      {showTable && <div className="modal-overlay" onClick={handleClose}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
+      {showTable && <div className="db-card-modal-overlay" onClick={handleClose}>
+          <div className="db-card-modal-content" onClick={e => e.stopPropagation()}>
             <h3>{title} Details</h3>
             {renderTable()}
-            <button className="close-button" onClick={handleClose}>Close</button>
+            <button className="db-card-close-button" onClick={handleClose}>Close</button>
           </div>
         </div>}
     </>;

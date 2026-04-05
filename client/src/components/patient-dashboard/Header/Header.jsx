@@ -2,7 +2,7 @@ import "./Header.css";
 import React, { useState } from "react";
 import LucideIcon from "../LucideIcon/LucideIcon";
 import PatientProfileModal from "../PatientProfileModal/PatientProfileModal";
-import "../../../styles/patient-dashboard/header.css";
+
 const Header = ({ profile }) => {
   // Modal open state
   const [isPatientModalOpen, setIsPatientModalOpen] = useState(false);
@@ -13,6 +13,7 @@ const Header = ({ profile }) => {
   // Get token from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const userToken = user?.token;
+
   const handleOpenPatientModal = () => {
     setIsPatientModalOpen(true);
   };
@@ -20,21 +21,21 @@ const Header = ({ profile }) => {
     setIsPatientModalOpen(false);
   };
   return (
-    <header className="dashboard-header">
-      <h1 className="dashboard-header-title">Dashboard</h1>
+    <header className="db-header-root">
+      <h1 className="db-header-title">Dashboard</h1>
 
-      <div className="dashboard-header-actions">
-        <button className="header-icon-button">
-          <LucideIcon name="Bell" size={20} className="header-icon" />
+      <div className="db-header-actions">
+        <button className="db-header-icon-button">
+          <LucideIcon name="Bell" size={20} className="db-header-icon" />
         </button>
         <button
-          className="header-new-patient-button"
+          className="db-header-new-patient-button"
           onClick={handleOpenPatientModal}
         >
           <LucideIcon
             name="UserRoundPen"
             size={18}
-            className="header-new-patient-icon"
+            className="db-header-new-patient-icon"
           />
           Profile
         </button>

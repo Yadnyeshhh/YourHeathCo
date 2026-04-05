@@ -1,58 +1,98 @@
 import "./Sidebar.css";
 import React from 'react';
 import LucideIcon from "../LucideIcon/LucideIcon";
-import { useNavigate } from 'react-router-dom';
-import "../../../styles/patient-dashboard/sidebar.css";
+import { NavLink, useNavigate } from 'react-router-dom';
+
 const Sidebar = ({
-  navItems,
   profile,
   isOpen,
-  onClose
+  onClose,
+  messagesCount = 2,
+  appointmentsCount = 3
 }) => {
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user"));
-  const handleNavClick = name => {
-    if (name === "Logout") {
-      localStorage.removeItem("user");
-      navigate("/login");
-      return;
-    }
 
-    // Optional: close sidebar when navigating (for mobile)
-    if (onClose) onClose();
+  const handleSignOut = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/login");
   };
-  return <aside className={`sidebar ${isOpen ? "open" : ""}`}>
-      <div>
-        <div className="sidebar-logo-section">
-          {/* Optional logo */}
-          {/* <LucideIcon name="HeartPulse" className="sidebar-logo-icon" size={28} /> */}
-          {/* <span className="sidebar-logo-text">eCare MD</span> */}
-        </div>
 
-        <nav>
-          <ul className="sidebar-nav-list">
-            {navItems.map((item, index) => <li key={index} className="sidebar-nav-item-wrapper">
-                <a href="#" onClick={() => handleNavClick(item.name)} className={`sidebar-nav-item ${item.active ? "sidebar-nav-item-active" : "sidebar-nav-item-inactive"}`}>
-                  <LucideIcon name={item.icon} className="sidebar-nav-item-icon" size={20} />
-                  <span className="sidebar-nav-item-text">{item.name}</span>
+  const menuItems = [
+    { name: 'Dashboard', icon: 'LayoutDashboard', path: '/dashboard', active: true },
+    { name: 'Appointments', icon: 'Calendar', path: '#', badge: appointmentsCount },
+    { name: 'Medical Records', icon: 'FileText', path: '#' },
+    { name: 'Prescriptions', icon: 'ClipboardPlus', path: '#' },
+    { name: 'Test Results', icon: 'BarChart2', path: '#' },
+    { name: 'Billing & Payments', icon: 'CreditCard', path: '#' },
+    { name: 'Messages', icon: 'MessageCircle', path: '#', badge: messagesCount },
+    { name: 'Settings', icon: 'Settings', path: '#' },
+  ];
 
-                  {item.count && <span className={`sidebar-nav-item-count ${item.active ? "sidebar-nav-item-count-active" : "sidebar-nav-item-count-inactive"}`}>
-                      {item.count}
-                    </span>}
-                </a>
-              </li>)}
-          </ul>
-        </nav>
+  // Derive user info
+  const name = profile?.name || "John Patient";
+  const initials = name.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2);
+  const patientId = profile?.patientId || "#12345";
+
+  return (
+    <nav className={`sb-pt-root ${isOpen ? "open" : ""}`}>
+      {/* Header / Logo */}
+      <div className="sb-pt-header">
+        <h2 className="sb-pt-logo-text">YourHealthCo</h2>
+        <button className="sb-pt-menu-btn" onClick={onClose} aria-label="Close menu">
+          {/* <LucideIcon name="Menu" size={24} /> */}
+        </button>
       </div>
 
-      {/* User Profile */}
-      <div className="sidebar-user-profile-section">
-        <img src={`https://placehold.co/40x40/F0F4F8/000000?text=${profile?.name?.[0] || 'U'}`} alt="User Avatar" className="sidebar-user-avatar" />
-        <div className="sidebar-user-info">
-          <div className="sidebar-user-name">{profile?.name}</div>
-          <div className="sidebar-user-role">member</div>
-        </div>
+      {/* Main Navigation Links */}
+      <div className="sb-pt-nav-section">
+        {menuItems.map((item, index) => (
+          <NavLink
+            to={item.path}
+            key={index}
+            className={`sb-pt-item ${item.active ? 'sb-pt-item-active' : ''}`}
+            onClick={item.active ? undefined : (e) => e.preventDefault()}
+          >
+            <div className="sb-pt-item-left">
+              <LucideIcon name={item.icon} size={20} className="sb-pt-item-icon" />
+              <span>{item.name}</span>
+            </div>
+          </NavLink>
+        ))}
+
+        <div className="sb-pt-divider"></div>
+
+        <NavLink to="#" className="sb-pt-item" onClick={(e) => e.preventDefault()}>
+          <div className="sb-pt-item-left">
+            <LucideIcon name="HelpCircle" size={20} className="sb-pt-item-icon" />
+            <span>Help & Support</span>
+          </div>
+        </NavLink>
+
+        <NavLink to="#" className="sb-pt-item sb-pt-emergency-item" onClick={(e) => e.preventDefault()}>
+          <div className="sb-pt-item-left">
+            <LucideIcon name="PhoneCall" size={20} className="sb-pt-item-icon" />
+            <span>Emergency</span>
+          </div>
+        </NavLink>
       </div>
-    </aside>;
+
+      {/* Bottom User Card */}
+      <div className="sb-pt-user-card">
+        <div className="sb-pt-user-info-row">
+          <div className="sb-pt-avatar">{initials}</div>
+          <div className="sb-pt-details">
+            <h3 className="sb-pt-user-name">{name}</h3>
+          </div>
+        </div>
+
+        <button className="sb-pt-signout-btn" onClick={handleSignOut}>
+          <LucideIcon name="LogOut" size={18} />
+          Sign Out
+        </button>
+      </div>
+    </nav>
+  );
 };
+
 export default Sidebar;

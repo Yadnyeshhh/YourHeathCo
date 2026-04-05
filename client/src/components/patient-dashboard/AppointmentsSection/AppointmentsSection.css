@@ -1,0 +1,137 @@
+.db-vitals-root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.db-vitals-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.db-vitals-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1A2B4D;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.db-vitals-list-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.db-vitals-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+}
+
+.db-vitals-item-title {
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.db-vitals-item-count {
+  color: #1A2B4D;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.db-vitals-appointment-card {
+  background-color: #f0f4ff;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.db-vitals-appointment-title {
+  color: #1e3a8a;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.db-vitals-appointment-time {
+  color: #3b82f6;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.db-doctor-root {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.db-doctor-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1A2B4D;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.db-doctor-title::before {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 20px;
+  background-color: #3b82f6;
+  border-radius: 2px;
+}
+
+.db-doctor-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.db-doctor-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.db-doctor-avatar {
+  background-color: #3b82f6;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.db-doctor-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.db-doctor-name {
+  color: #1A2B4D;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.db-doctor-designation {
+  color: #64748b;
+  font-size: 0.95rem;
+}

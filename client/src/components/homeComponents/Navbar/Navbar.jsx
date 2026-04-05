@@ -8,7 +8,7 @@ const Navbar = ({ toLogin }) => {
     <nav className="w-full flex items-center justify-between px-8 py-4 bg-black/30 backdrop-blur-lg fixed top-0 left-0 z-50">
       {/* Logo */}
       <div className="text-2xl font-bold text-white">
-        <a href="/" className="hover:text-yellow-400">
+        <a href="/" className="hover:text-[#0a6b5e]">
           YourHealthCo
         </a>
       </div>
@@ -41,7 +41,7 @@ const Navbar = ({ toLogin }) => {
       <div className="hidden md:flex">
         <button
           onClick={toLogin}
-          className="bg-yellow-400 text-gray-900 px-5 py-2 rounded-full font-semibold hover:bg-yellow-300 transition"
+          className="bg-[#0c8272] c text-white px-5 py-2 rounded-full font-semibold hover:bg-[#0a6b5e] transition"
         >
           Register
         </button>
@@ -89,7 +89,7 @@ const Navbar = ({ toLogin }) => {
               setMenuOpen(false);
               toLogin();
             }}
-            className="bg-yellow-400 text-gray-900 px-5 py-2 rounded-full font-semibold hover:bg-yellow-300 transition"
+            className="bg-[#0c8272] c text-white px-5 py-2 rounded-full font-semibold hover:bg-yellow-300 transition"
           >
             Register
           </button>
