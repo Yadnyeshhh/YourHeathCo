@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const validator = require("validator");
 
 // -------------------- Schema --------------------
 const userSchema = new mongoose.Schema({
@@ -24,62 +23,30 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false, // Don't return password by default
   },
   admin: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Admin",
+    default: null,
   },
+}, { timestamps: true });
+
+// Pre-save hook to hash password before saving
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
-
-userSchema.statics.signup = async function (name, age, gender, contact, bloodGroup, email, password, admin) {
-  if (!name || !email || !password) {
-    throw Error("All required fields must be filled");
-  }
-
-  if (!validator.isEmail(email)) {
-    throw Error("Invalid email format");
-  }
-
-  const exists = await this.findOne({ email });
-  if (exists) {
-    throw Error("Email already exists");
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
-
-  const user = await this.create({
-    name,
-    age,
-    gender,
-    contact,
-    bloodGroup,
-    email,
-    password: hash,
-    admin,
-  });
-
-  return user;
+// Instance method to compare password
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  return await bcrypt.compare(candidatePassword, this.password);
 };
 
-
-userSchema.statics.login = async function (email, password) {
-  if (!email || !password) {
-    throw Error("All fields must be filled");
-  }
-
-  const user = await this.findOne({ email });
-  if (!user) {
-    throw Error("Incorrect email");
-  }
-
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) {
-    throw Error("Incorrect password");
-  }
-
-  return user;
-};
-module.exports = mongoose.models.User || mongoose.model("User", userSchema);
-
+module.exports = mongoose.model("User", userSchema);

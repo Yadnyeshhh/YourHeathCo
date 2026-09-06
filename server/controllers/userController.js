@@ -1,227 +1,98 @@
-const User = require("../models/userModel");
+const userService = require("../services/userService");
+const medsService = require("../services/medsService");
 const PatientStatus = require("../models/PatientStatus");
-
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const { getAllUsers } = require("./adminController");
-
-// Helper: Create a JWT for users
-const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
-};
+const User = require("../models/userModel");
+const catchAsync = require("../utils/catchAsync");
+const ApiResponse = require("../utils/apiResponse");
+const AppError = require("../utils/appError");
 
 // 🧍‍♂️ Get patient (user) profile
-const getProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id).select("-password");
+const getProfile = catchAsync(async (req, res) => {
+  const profile = await User.findById(req.user._id).lean();
+  const patientStatus = await PatientStatus.findOne({ patient: req.user._id }).lean();
+  
+  const data = {
+    ...profile,
+    patientStatus: patientStatus || null
+  };
 
-    const status = await PatientStatus.findOne({ patient: req.user._id });
-
-    res.status(200).json({
-      ...user.toObject(),
-      patientStatus: status || null, // include linked status
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch profile" });
-  }
-};
-
-// 🔐 Login user (patient)
-const loginUser = async (req, res) => {
+  res.status(200).json(new ApiResponse(200, data, "Profile fetched successfully"));
+});
+//  Login user (patient)s
+const loginUser = catchAsync(async (req, res) => {
   const { email, password } = req.body;
+  const result = await userService.login(email, password);
+  
+  res.status(200).json(new ApiResponse(200, result, "Login successful"));
+});
 
-  try {
-    const user = await User.login(email, password);
-    const token = createToken(user._id);
-    res.status(200).json({ email, token });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+//  Signup user
+const signupUser = catchAsync(async (req, res) => {
+  const adminId = req.admin ? req.admin._id : null;
+  const result = await userService.signup(req.body, adminId);
+  
+  res.status(201).json(new ApiResponse(201, result, "Signup successful"));
+});
 
-// 🆕 Signup user (patient self-registration — optional)
-const signupUser = async (req, res) => {
-  const { name, age, gender, contact, bloodGroup, email, password } = req.body;
+//  Update user info
+const updateUser = catchAsync(async (req, res) => {
+  const userId = req.params.id;
+  const updatedUser = await userService.updateUser(userId, req.body);
+  
+  res.status(200).json(new ApiResponse(200, { user: updatedUser }, "User updated successfully"));
+});
 
-  try {
-    const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ error: "Email already exists" });
+// Search users
+const searchUsers = catchAsync(async (req, res) => {
+  const { query, gender, bloodGroup, minAge, maxAge, page } = req.query;
+  const limit = 10;
+  
+  const result = await userService.searchUsers(
+    query || "", 
+    { gender, bloodGroup, minAge: parseInt(minAge), maxAge: parseInt(maxAge) },
+    { page: parseInt(page) || 1, limit }
+  );
 
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password, salt);
-
-    // Note: if this route is used by admin, req.admin._id will exist
-    const adminId = req.admin ? req.admin._id : null;
-
-    const user = await User.create({
-      name,
-      age,
-      gender,
-      contact,
-      bloodGroup,
-      email,
-      password: hash,
-      admin: adminId, // assign admin if available
-    });
-
-    const token = createToken(user._id);
-    res.status(201).json({ email: user.email, token });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-// ✏️ Update user info (patients can update their profile)
-const updateUser = async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const updates = req.body;
-
-    delete updates.password;
-    delete updates.email;
-
-    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
-      new: true,
-    }).select("-password -__v -admin");
-
-    if (!updatedUser)
-      return res.status(404).json({ message: "User not found" });
-
-    res
-      .status(200)
-      .json({ message: "User updated successfully", user: updatedUser });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Failed to update user", error: error.message });
-  }
-};
-
-const searchUsers = async (req, res) => {
-  try {
-    const query = req.query.query || "";
-    const gender = req.query.gender || "";
-    const bloodGroup = req.query.bloodGroup || "";
-    const minAge = parseInt(req.query.minAge) || 0;
-    const maxAge = parseInt(req.query.maxAge) || 120;
-    const page = parseInt(req.query.page) || 1;
-    const limit = 10;
-
-    // ✅ Base filter: users who are not assigned to any admin
-    const filter = {
-      $and: [
-        {
-          $or: [
-            { admin: { $exists: false } },
-            { admin: null }
-          ]
-        },
-        { age: { $gte: minAge, $lte: maxAge } }
-      ]
-    };
-
-    // ✅ Search fields dynamically
-    if (query) {
-      filter.$and.push({
-        $or: [
-          { name: { $regex: query, $options: "i" } },
-          { email: { $regex: query, $options: "i" } },
-          { contact: { $regex: query, $options: "i" } }
-        ]
-      });
-    }
-
-    if (gender) filter.$and.push({ gender });
-    if (bloodGroup) filter.$and.push({ bloodGroup });
-
-    const skip = (page - 1) * limit;
-
-    const users = await User.find(filter)
-      .skip(skip)
-      .limit(limit)
-      .select("-password -__v");
-
-    const totalUsers = await User.countDocuments(filter);
-    const totalPages = Math.ceil(totalUsers / limit);
-
-    res.status(200).json({ users, totalPages });
-  } catch (error) {
-    console.error("Search users error:", error);
-    res.status(500).json({ message: "Server error while searching users" });
-  }
-};
-
-// @desc    Assign a user to an admin
-// @route   PATCH /api/users/assign/:id
-// @access  Private (Admin)
-const assignUserToAdmin = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { adminId } = req.body;
-
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { admin: adminId },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// @desc    Unassign a user (remove admin)
-// @route   PATCH /api/users/unassign/:id
-// @access  Private (Admin)
-const unassignUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { admin: null },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
+  res.status(200).json(new ApiResponse(200, result, "Users fetched successfully"));
+});
 
 // 🖼️ Upload user profile image
-const uploadProfileImage = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: "No image file provided" });
-    }
-
-    const userId = req.user._id;
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { profileImage: req.file.path.replace(/\\/g, "/") },
-      { new: true }
-    ).select("-password -__v -admin");
-
-    if (!updatedUser) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    res.status(200).json({ message: "Profile image updated successfully", user: updatedUser });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to upload profile image", details: error.message });
+const uploadProfileImage = catchAsync(async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json(new ApiResponse(400, null, "No image file provided"));
   }
-};
+
+  const updatedUser = await userService.uploadProfileImage(req.user._id, req.file.path);
+  res.status(200).json(new ApiResponse(200, { user: updatedUser }, "Profile image updated successfully"));
+});
+
+// Admin assigning actions. (Can also live in admin controller, but kept here since it uses User model mostly)
+const assignUserToAdmin = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const adminId = req.body.adminId || req.auth?.id;
+  if (!adminId) {
+    throw new AppError('Admin ID missing for assignment', 400);
+  }
+  const updatedUser = await userService.updateUser(id, { admin: adminId });
+  
+  res.status(200).json(new ApiResponse(200, { user: updatedUser }, "User assigned successfully"));
+});
+
+const unassignUser = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const updatedUser = await userService.updateUser(id, { admin: null });
+  // Empty all meds and meal fields for this patient
+  await medsService.resetSchedule(id);
+  
+  res.status(200).json(new ApiResponse(200, { user: updatedUser }, "User unassigned and schedule cleared successfully"));
+});
+
+// Used internally by other controllers, keep it or move it
+const getAllUsers = catchAsync(async (req, res) => {
+  const users = await User.find().select("-password -__v");
+  res.status(200).json(new ApiResponse(200, { users }, "All users fetched"));
+});
+
 
 module.exports = {
   loginUser,

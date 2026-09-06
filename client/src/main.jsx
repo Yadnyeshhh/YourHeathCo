@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
 import App from "./App"; // Ensure App is imported correctly
 
-createRoot(document.getElementById("root")).render(<BrowserRouter>
+createRoot(document.getElementById("root")).render(
+  <BrowserRouter>
     <App />
-  </BrowserRouter>);
+  </BrowserRouter>,
+);

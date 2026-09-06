@@ -2,24 +2,18 @@ import "./Header.css";
 import React, { useState } from "react";
 import LucideIcon from "../LucideIcon/LucideIcon";
 import PatientProfileModal from "../PatientProfileModal/PatientProfileModal";
+import { getToken } from "../../../utils/auth.js";
 
 const Header = ({ profile }) => {
-  // Modal open state
   const [isPatientModalOpen, setIsPatientModalOpen] = useState(false);
-
-  // Patient state to hold current profile
   const [selectedPatient, setSelectedPatient] = useState(profile);
 
-  // Get token from localStorage
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userToken = user?.token;
+  // Token is stored as plain string under the key "token" by the Login page
+  const token = getToken();
 
-  const handleOpenPatientModal = () => {
-    setIsPatientModalOpen(true);
-  };
-  const handleClosePatientModal = () => {
-    setIsPatientModalOpen(false);
-  };
+  const handleOpenPatientModal = () => setIsPatientModalOpen(true);
+  const handleClosePatientModal = () => setIsPatientModalOpen(false);
+
   return (
     <header className="db-header-root">
       <h1 className="db-header-title">Dashboard</h1>
@@ -41,15 +35,15 @@ const Header = ({ profile }) => {
         </button>
       </div>
 
-      {/* Patient Profile Modal */}
       <PatientProfileModal
         isOpen={isPatientModalOpen}
         onClose={handleClosePatientModal}
         patientData={selectedPatient}
-        token={userToken}
+        token={token}
         onUpdate={(updatedPatient) => setSelectedPatient(updatedPatient)}
       />
     </header>
   );
 };
+
 export default Header;

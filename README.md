@@ -8,47 +8,58 @@ A full-stack healthcare management platform built with React (Vite) and Node.js 
 healthcare/
 ├── client/          # React frontend (Vite + TailwindCSS)
 ├── server/          # Node.js backend (Express + Mongoose)
-├── shared/          # Shared constants and utilities
-└── docs/            # Documentation
+├── tests/           # Integration & Unit Tests (Jest + Supertest)
+└── docs/            # Documentation & Postman Collection
 ```
 
 ## Getting Started
 
 ### Prerequisites
 - Node.js (v18+)
-- MongoDB Atlas account or local MongoDB instance
+- Local MongoDB or MongoDB Atlas instance
+
+### Environment Setup
+
+1. Copy `server/.env.example` to `server/.env` and fill in values:
+   ```env
+   PORT=3000
+   MONGO_URI=mongodb://localhost:27017/yourhealthco
+   JWT_SECRET=your_jwt_secret_key_here
+   CLIENT_ORIGIN=http://localhost:5173
+   ```
+
+2. Copy `client/.env.example` to `client/.env.local`:
+   ```env
+   VITE_API_URL=http://localhost:3000/api
+   ```
 
 ### Installation
 
 ```bash
-# Install all dependencies
+# Install dependencies across project
+npm install
 npm run install:all
-
-# Or install individually
-npm run install:client
-npm run install:server
 ```
 
 ### Running the App
 
 ```bash
-# Start the frontend dev server
-npm run client
-
-# Start the backend server
+# Start backend server
 npm run server
+
+# Start frontend dev server
+npm run client
 ```
 
-### Environment Variables
+### Automated Tests & Verification
 
-**Client** (`client/.env.local`):
-```
-VITE_API_URL=http://localhost:3000
+```bash
+# Run backend Jest unit tests
+npm test
+
+# Build frontend production bundle
+cd client && npm run build
 ```
 
-**Server** (`server/.env`):
-```
-SECRET=your_jwt_secret
-MONGO_URI=your_mongodb_uri
-PORT=3000
-```
+### API Testing
+Import `YourHealthCo_Postman_Collection.json` into Postman to execute tests against all backend API endpoints.

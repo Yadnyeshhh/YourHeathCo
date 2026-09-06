@@ -1,9 +1,10 @@
 import "./Login.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser, loginAdmin } from "../../services/authService";
+import api from "../../services/api";
 
 export default function AuthPage() {
-  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const [isSignInMode, setIsSignInMode] = useState(true);
   const [showProfileForm, setShowProfileForm] = useState(false);
@@ -31,9 +32,6 @@ export default function AuthPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // BUG FIX 1: Removed unused `userToken` state and the useEffect that set it
-  // (the token is stored in localStorage on login/signup — no need to mirror it in state)
-
   const showCustomAlert = (message) => {
     setAlertMessage(message);
     setShowAlert(true);
@@ -45,36 +43,20 @@ export default function AuthPage() {
     setError(null);
 
     if (isSignInMode) {
-      // ---- LOGIN ----
       if (!userEmail || !userPassword) {
         return showCustomAlert("Please fill in all login fields.");
       }
       setIsLoading(true);
       try {
-        const response = await fetch(`${apiUrl}/api/user/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userEmail, password: userPassword }),
-        });
-        const json = await response.json();
-        if (!response.ok) {
-          setError(json.error);
-          showCustomAlert(json.error || "Login failed");
-        } else {
-          // BUG FIX 2: Store token and email consistently (same pattern as signup),
-          // instead of storing the whole object under "user" and never saving "token"
-          localStorage.setItem("token", json.token);
-          localStorage.setItem("userEmail", json.email);
-          navigate("/pdashboard");
-        }
+        await loginUser({ email: userEmail, password: userPassword });
+        navigate("/pdashboard");
       } catch (err) {
         setError(err.message);
-        showCustomAlert("Network error. Please check your connection.");
+        showCustomAlert(err.message || "Login failed");
       } finally {
         setIsLoading(false);
       }
     } else {
-      // ---- SIGNUP (step 1) ----
       if (!userEmail || !userPassword || !userConfirmPassword) {
         return showCustomAlert("Please fill in all signup fields.");
       }
@@ -108,37 +90,21 @@ export default function AuthPage() {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/api/user/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: userName.trim(),
-          age: age,
-          gender: userGender,
-          contact: userContact,
-          bloodGroup: userBloodGroup,
-          email: userEmail.trim(),
-          password: userPassword,
-        }),
+      const response = await api.post('/user/signup', {
+        name: userName.trim(),
+        age: age,
+        gender: userGender,
+        contact: userContact,
+        bloodGroup: userBloodGroup,
+        email: userEmail.trim(),
+        password: userPassword,
       });
 
-      let json;
-      try {
-        json = await response.json();
-      } catch {
-        throw new Error("Invalid server response");
+      const token = response?.data?.token || response?.token;
+      if (token) {
+        localStorage.setItem("token", token);
       }
 
-      if (!response.ok) {
-        setError(json.error);
-        showCustomAlert(json.error || "Signup failed");
-        return;
-      }
-
-      localStorage.setItem("token", json.token);
-      localStorage.setItem("userEmail", json.email);
-
-      // Reset profile form fields
       setUserName("");
       setUserAge("");
       setUserGender("");
@@ -166,30 +132,16 @@ export default function AuthPage() {
     setError(null);
 
     try {
-      const response = await fetch(`${apiUrl}/api/admin/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: aEmail, password: apassword }),
-      });
+      const json = await loginAdmin({ email: aEmail, password: apassword });
+      const adminData = json?.data?.admin || json?.admin;
+      const adminToken = json?.data?.token || json?.token;
 
-      const json = await response.json();
-
-      if (!response.ok) {
-        setError(json.error);
-        showCustomAlert(json.error || "Admin login failed");
-        return;
-      }
-
-      if (json && json.email && json.token) {
-        localStorage.setItem(
-          "admin",
-          JSON.stringify({ email: json.email, token: json.token })
-        );
+      if (adminData && adminToken) {
         navigate("/admin", {
           state: {
-            instituteName: json.instituteName,
-            address: json.address,
-            id: json._id,
+            instituteName: adminData.instituteName || adminData.name,
+            address: adminData.address,
+            id: adminData._id,
           },
         });
       } else {
@@ -197,7 +149,7 @@ export default function AuthPage() {
       }
     } catch (err) {
       setError(err.message);
-      showCustomAlert("Network error.");
+      showCustomAlert(err.message || "Admin login failed.");
     } finally {
       setIsLoading(false);
     }
@@ -206,7 +158,6 @@ export default function AuthPage() {
   return (
     <div className="login-pf-root">
       <div className="login-pf-container">
-        {/* Left Image Background & Hero Section */}
         <div className="login-pf-hero-section">
           <div className="login-pf-hero-overlay"></div>
           <div className="login-pf-hero-content">
@@ -240,14 +191,12 @@ export default function AuthPage() {
           </div>
         </div>
 
-        {/* Right Side: Form Container */}
         <div className="login-pf-form-section">
           <div className="login-pf-card">
             {showAlert && (
               <div className="login-pf-alert-banner">{alertMessage}</div>
             )}
 
-            {/* LOGIN / SIGNUP FORM */}
             {!showProfileForm && !showAdminModal && (
               <form onSubmit={handleUserFormSubmit}>
                 <div className="login-pf-card-header">
@@ -327,26 +276,6 @@ export default function AuthPage() {
 
                 <div className="login-pf-divider">OR</div>
 
-                <div className="login-pf-social-buttons">
-                  <button type="button" className="login-pf-btn-social">
-                    <svg className="login-pf-social-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-                    Continue with Google
-                  </button>
-                  <button type="button" className="login-pf-btn-social">
-                    <svg className="login-pf-social-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.04 2.26-.74 3.58-.74s2.83.67 3.65 1.57c-3.13 1.65-2.58 5.48.56 6.72-1.02 2.62-1.99 4.2-2.87 4.62zm-3.17-14.86c-.52 2.37-2.84 4-5.06 3.61.64-2.5 2.87-3.99 5.06-3.61z"/></svg>
-                    Continue with Apple
-                  </button>
-                </div>
-
-                <div className="login-pf-security-note">
-                  <svg className="login-pf-security-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-                  256-bit SSL Encryption
-                </div>
-
-                <div className="login-pf-support-link">
-                  Need Help? <button type="button" className="login-pf-support-link-text">Contact Support</button>
-                </div>
-
                 <div className="login-pf-admin-toggle">
                   <button
                     type="button"
@@ -355,8 +284,7 @@ export default function AuthPage() {
                   >
                     Login as Administrator
                   </button>
-                   <br />
-                   <br />
+                  <br /><br />
                   <button 
                     type="button" 
                     onClick={() => navigate("/")} 
@@ -368,7 +296,6 @@ export default function AuthPage() {
               </form>
             )}
 
-            {/* PROFILE FORM */}
             {showProfileForm && (
               <form onSubmit={handleProfileFormSubmit}>
                 <button
@@ -460,7 +387,6 @@ export default function AuthPage() {
               </form>
             )}
 
-            {/* ADMIN LOGIN FORM */}
             {showAdminModal && (
               <form onSubmit={handleAdminLoginSubmit}>
                 <button

@@ -1,0 +1,504 @@
+{
+  "info": {
+    "name": "YourHealthCo Backend API",
+    "description": "Postman Collection for testing all YourHealthCo Backend Endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "patientToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "patientId",
+      "value": "60d5f9c2e1d3c8b4f4a7c123",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Admin Endpoints",
+      "item": [
+        {
+          "name": "Admin Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Admin\",\n  \"email\": \"admin@yourhealthco.com\",\n  \"password\": \"adminpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "signup"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@yourhealthco.com\",\n  \"password\": \"adminpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Admin Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Assigned Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users?query=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User & Patient Endpoints",
+      "item": [
+        {
+          "name": "Patient Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"patient@yourhealthco.com\",\n  \"password\": \"patientpassword123\",\n  \"contact\": \"1234567890\",\n  \"age\": 30,\n  \"gender\": \"male\",\n  \"bloodGroup\": \"O+\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "signup"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Patient Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"patient@yourhealthco.com\",\n  \"password\": \"patientpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{patientToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{patientToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"contact\": \"9876543210\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "{{patientId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Search Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/search?query=John",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "John"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Assign User to Admin",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"adminId\": \"60d5f9c2e1d3c8b4f4a7c999\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user/assign/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "assign",
+                "{{patientId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Unassign User from Admin",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/user/unassign/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "unassign",
+                "{{patientId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Medication & Meal Schedules",
+      "item": [
+        {
+          "name": "Get Schedule",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{patientToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/meds_meals/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meds_meals",
+                "{{patientId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Schedule",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{patientToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"medications\": [\n    {\n      \"name\": \"Aspirin\",\n      \"time\": \"08:00 AM\",\n      \"dosage\": \"500mg\"\n    }\n  ],\n  \"meals\": [\n    {\n      \"type\": \"Breakfast\",\n      \"time\": \"08:30 AM\",\n      \"notes\": \"Low salt\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/meds_meals/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meds_meals",
+                "{{patientId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Schedule",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/meds_meals/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "meds_meals",
+                "{{patientId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Patient Status",
+      "item": [
+        {
+          "name": "Update Patient Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"heartRate\": 72,\n  \"bloodPressure\": \"120/80\",\n  \"sugarLevel\": 95,\n  \"temperature\": 98.6\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/patient-status/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "patient-status",
+                "{{patientId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "item": [
+        {
+          "name": "Get Appointments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{patientToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/appointments/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "appointments",
+                "{{patientId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Upsert Appointment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{patientToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"date\": \"2026-09-10\",\n  \"time\": \"10:30 AM\",\n  \"notes\": \"Regular check-up\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/appointments/{{patientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "appointments",
+                "{{patientId}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

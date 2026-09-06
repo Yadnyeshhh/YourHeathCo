@@ -4,52 +4,36 @@ import { useLocation } from "react-router-dom";
 import "../../../styles/admin/Admin.css";
 import Sidebar from "../Sidebar/Sidebar";
 import PatientCard from "../PatientCard/PatientCard";
-import axios from "axios";
-const apiUrl = import.meta.env.VITE_API_URL;
+import api from "../../../services/api";
+
 const Admin = () => {
   const [patients, setPatients] = useState([]);
-  const [filter, setFilter] = useState("All"); // 👈 state for filter option
+  const [filter, setFilter] = useState("All");
   const location = useLocation();
-  const [admin, setAdmin] = useState();
   const { instituteName, address, id } = location.state || {};
-  console.log("state :-", location.state);
+
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const storedAdmin = localStorage.getItem("admin");
-        if (!storedAdmin) {
-          console.warn("No admin data found in localStorage.");
-          return;
-        }
-        const admin = JSON.parse(storedAdmin);
-        // console.log(admin)
-        const token = admin?.token;
-        if (!token) {
-          console.warn("No admin token found. Admin not logged in.");
-          return;
-        }
-        const res = await axios.get(`${apiUrl}/api/admin/users`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setPatients(res.data);
+        const response = await api.get(`/admin/users?cb=${Date.now()}`);
+        // ApiResponse format: { success, message, data: { users }, error }
+        const users = response?.data?.users || [];
+        setPatients(users);
+        console.log(users);
       } catch (err) {
-        console.error("Failed to fetch admin's patients:", err);
+        console.error("Failed to fetch admin's patients:", err.message);
       }
     };
     fetchPatients();
   }, []);
-  console.log(patients);
-  // console.log(admin)
 
-  //  Filter logic
   const filteredPatients = patients.filter((patient) => {
     if (filter === "All") return true;
     if (filter === "Admitted") return patient.admitted === true;
     if (filter === "Not Admitted") return patient.admitted === false;
     return true;
   });
+
   return (
     <div className="dashboard-container">
       <Sidebar admin={instituteName} id={id} />
@@ -67,7 +51,6 @@ const Admin = () => {
           <option value="Not Admitted">Not Admitted</option>
         </select>
 
-        {/* 🩺 Patient Cards */}
         <div className="patient-grid">
           {filteredPatients.length > 0 ? (
             filteredPatients.map((patient) => (
@@ -85,4 +68,5 @@ const Admin = () => {
     </div>
   );
 };
+
 export default Admin;

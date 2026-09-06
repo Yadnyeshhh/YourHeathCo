@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import "./Hero.css";
+import { InteractiveGridPattern } from "../../../assets/gridBgPattern";
 
 const Hero = ({ toLogin }) => {
   const hospitalLogos = [
@@ -13,8 +14,10 @@ const Hero = ({ toLogin }) => {
 
   return (
     <header className="hero-section">
-      <div className="hero-overlay"></div>
-      
+      <div className="hero-overlay">
+        
+      </div>
+
       <div className="hero-top-nav">
         <Navbar toLogin={toLogin} />
       </div>
@@ -24,7 +27,7 @@ const Hero = ({ toLogin }) => {
         <p className="hero-subtext">
           Compassionate care meets cutting-edge medical excellence
         </p>
-        
+
         <div className="hero-buttons">
           <button className="btn-primary" onClick={toLogin}>
             Book Appointment

@@ -1,60 +1,45 @@
 import "./PatientProfileModal.css";
 import React, { useState } from "react";
-const apiUrl = import.meta.env.VITE_API_URL;
+import { updateUser } from "../../../services/userService";
 
 const PatientProfileModal = ({
   isOpen,
   onClose,
   patientData,
-  token,
   onUpdate,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(patientData || {});
+
+  React.useEffect(() => {
+    setEditedData(patientData || {});
+  }, [patientData]);
+
   if (!isOpen) return null;
-  const pfp = {
-    display: "flex",
-  };
-  const pfpinfo = {
-    width: "50%",
-  };
-  const pfpimg = {
-    width: "50%",
-    marginLeft: "auto",
-  };
+
+  const pfp = { display: "flex" };
+  const pfpinfo = { width: "50%" };
+  const pfpimg = { width: "50%", marginLeft: "auto" };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "age" ? Number(value) : value,
     }));
   };
+
   const handleSave = async () => {
     try {
-      const response = await fetch(
-        `${apiUrl}/api/user/update/${patientData._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(editedData),
-        },
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setIsEditing(false);
-        if (onUpdate) onUpdate(data.user);
-      } else {
-        const error = await response.json();
-        alert("Failed to update: " + (error.message || "Unknown error"));
-      }
+      const response = await updateUser(patientData._id, editedData);
+      setIsEditing(false);
+      const updatedUser = response?.data?.user || response?.user || editedData;
+      if (onUpdate) onUpdate(updatedUser);
     } catch (err) {
-      console.error("Error updating:", err);
-      alert("Error updating patient details.");
+      alert("Could not update patient details: " + err.message);
     }
   };
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -72,7 +57,7 @@ const PatientProfileModal = ({
                     <input
                       type="text"
                       name="name"
-                      value={editedData.name}
+                      value={editedData.name || ""}
                       onChange={handleChange}
                     />
                   </p>
@@ -81,7 +66,7 @@ const PatientProfileModal = ({
                     <input
                       type="number"
                       name="age"
-                      value={editedData.age}
+                      value={editedData.age || ""}
                       onChange={handleChange}
                     />
                   </p>
@@ -89,7 +74,7 @@ const PatientProfileModal = ({
                     <strong>Gender:</strong>{" "}
                     <select
                       name="gender"
-                      value={editedData.gender}
+                      value={editedData.gender || ""}
                       onChange={handleChange}
                     >
                       <option value="Male">Male</option>
@@ -102,7 +87,7 @@ const PatientProfileModal = ({
                     <input
                       type="text"
                       name="contact"
-                      value={editedData.contact}
+                      value={editedData.contact || ""}
                       onChange={handleChange}
                     />
                   </p>
@@ -111,7 +96,7 @@ const PatientProfileModal = ({
                     <input
                       type="text"
                       name="bloodGroup"
-                      value={editedData.bloodGroup}
+                      value={editedData.bloodGroup || ""}
                       onChange={handleChange}
                     />
                   </p>

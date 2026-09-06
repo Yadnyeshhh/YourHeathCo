@@ -1,28 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const {
+const validate = require('../middleware/validate');
+const auth = require('../middleware/auth'); // <-- added auth middleware import
+const { updateMedsSchema } = require('../validators/medsValidator');
+const { updateMeds, getAllMedsAndMeals, createEmptyPatientSchedule } = require('../controllers/meds_meal');
+// const { checkOwnership } = require('../utils/ownership'); // ownership removed
 
-  updateMeds,
-  getAllMedsAndMeals,
-  createEmptyPatientSchedule
-} = require('../controllers/meds_meal');
+// Create empty schedule (owner must match id)
+router.post('/create/:id', auth, createEmptyPatientSchedule);
 
-router.post('/create/:id', createEmptyPatientSchedule);
-
-router.patch('/patient/:id/medications', updateMeds);
-
-router.get('/patient/:id/schedule',async (req, res) => {
-  try {
-    const schedule = await getAllMedsAndMeals(req.params.id);
-
-    if (!schedule) {
-      return res.status(404).json({ message: "Schedule not found" });
-    }
-
-    res.json(schedule); 
-  } catch (err) {
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+// Update medications (owner must match id)
+router.patch('/patient/:id/medications', auth, validate(updateMedsSchema), updateMeds);
+router.get('/patient/:id/schedule', auth, getAllMedsAndMeals);
 
 module.exports = router;

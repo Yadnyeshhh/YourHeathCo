@@ -2,7 +2,6 @@
 
 export const navItems = [
   { name: 'Dashboard', icon: 'LayoutDashboard', active: true },
-  { name: 'Billing & Claims', icon: 'CreditCard' },
   { name: 'Analytics', icon: 'BarChart' },
   { name: 'Alerts', icon: 'Bell' },
   { name: 'Settings', icon: 'Settings' },
@@ -13,9 +12,8 @@ export const navItems = [
 export const topCardsData = [
   { title: 'Meals', icon: 'Utensils', colorClass: 'card-icon-green' },
   { title: 'Medicines', icon: 'Heart', colorClass: 'card-icon-blue' },
-  { title: 'Reports', value: '50', icon: 'DollarSign', colorClass: 'card-icon-purple' },
-  { title: 'Presciptions', value: '75%', icon: 'CheckCircle', colorClass: 'card-icon-yellow' },
-  { title: 'Bills', value: '84%', icon: 'UserPlus', colorClass: 'card-icon-red' },
+  { title: 'Reports', value: '50', icon: 'FileText', colorClass: 'card-icon-purple' },
+  { title: 'Prescriptions', value: '75%', icon: 'CheckCircle', colorClass: 'card-icon-yellow' },
 ];
 
 export const programData = [

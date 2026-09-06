@@ -2,6 +2,7 @@ import "./Sidebar.css";
 import React from 'react';
 import LucideIcon from "../LucideIcon/LucideIcon";
 import { NavLink, useNavigate } from 'react-router-dom';
+import { clearPatientSession } from "../../../utils/auth.js";
 
 const Sidebar = ({
   profile,
@@ -13,8 +14,7 @@ const Sidebar = ({
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    clearPatientSession();
     navigate("/login");
   };
 
@@ -24,7 +24,6 @@ const Sidebar = ({
     { name: 'Medical Records', icon: 'FileText', path: '#' },
     { name: 'Prescriptions', icon: 'ClipboardPlus', path: '#' },
     { name: 'Test Results', icon: 'BarChart2', path: '#' },
-    { name: 'Billing & Payments', icon: 'CreditCard', path: '#' },
     { name: 'Messages', icon: 'MessageCircle', path: '#', badge: messagesCount },
     { name: 'Settings', icon: 'Settings', path: '#' },
   ];

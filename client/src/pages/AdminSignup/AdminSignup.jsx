@@ -3,11 +3,10 @@ import React, { useState } from "react";
 import { FaEye, FaEyeSlash, FaMapMarkerAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { InteractiveGridPattern } from "../../assets/gridBgPattern";
-
+import { signupAdmin } from "../../services/authService";
 
 const AdminSignup = () => {
   const navigate = useNavigate();
-  const apiUrl = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
     instituteName: "",
     address: "",
@@ -34,46 +33,36 @@ const AdminSignup = () => {
       return;
     }
     try {
-      const response = await fetch(`${apiUrl}/api/admin/signin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          instituteName: formData.instituteName,
-          address: formData.address,
-          email: formData.email,
-          password: formData.password
-        })
+      await signupAdmin({
+        name: formData.instituteName,
+        instituteName: formData.instituteName,
+        address: formData.address,
+        email: formData.email,
+        password: formData.password
       });
-      if (response.ok) {
-        setMessage("✅ Hospital registered successfully!");
-        setFormData({
-          instituteName: "",
-          address: "",
-          email: "",
-          password: "",
-          confirmPassword: ""
-        });
-      } else {
-        const data = await response.json();
-        setMessage(data.message || "Registration failed!");
-      }
+      setMessage("✅ Hospital registered successfully!");
+      setFormData({
+        instituteName: "",
+        address: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+      });
+      setTimeout(() => navigate('/admin'), 1500);
     } catch (error) {
-      console.error("Error:", error);
-      setMessage("Something went wrong!");
+      setMessage(error.message || "Registration failed!");
     }
   };
 
   return (
     <div className="adm-up-root">
       <InteractiveGridPattern 
-  width={40}  /* Increase size so you need fewer squares */
-  height={40} 
-  squares={[30, 30]} /* 900 squares instead of 6,400 */
-  className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
-  squaresClassName="hover:fill-teal-500/30"
-/>
+        width={40}
+        height={40} 
+        squares={[30, 30]}
+        className="[mask-image:radial-gradient(600px_circle_at_center,white,transparent)]"
+        squaresClassName="hover:fill-teal-500/30"
+      />
       <div className="adm-up-card">
         <div className="adm-up-header">
           <h1 className="adm-up-title">Hospital Admin Signup</h1>
