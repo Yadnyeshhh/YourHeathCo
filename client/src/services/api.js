@@ -14,14 +14,24 @@ api.interceptors.request.use(
   (config) => {
     const adminToken = localStorage.getItem('adminToken');
     const userToken = localStorage.getItem('token');
-    // Choose token: admin token for admin routes and meds_meals, otherwise patient token
-    const isAdminRoute = config.url && (
-      config.url.startsWith('/admin') ||
-      config.url.includes('/user/assign') ||
-      config.url.includes('/user/unassign') ||
-      config.url.includes('/meds_meals')
-    );
-    const token = isAdminRoute ? adminToken : userToken;
+
+    let token = null;
+    const url = config.url || '';
+
+    if (
+      url.startsWith('/admin') ||
+      url.includes('/user/assign') ||
+      url.includes('/user/unassign') ||
+      url.includes('/user/search')
+    ) {
+      token = adminToken;
+    } else if (url.startsWith('/user/')) {
+      token = userToken;
+    } else {
+      // Shared endpoints (e.g., /meds_meals, /appointment)
+      token = adminToken || userToken;
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
