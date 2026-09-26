@@ -7,12 +7,29 @@ class MedsService {
       throw new AppError("Schedule required", 400);
     }
 
+    // Ensure patient schedule document exists first
+    await this.createEmptyPatientSchedule(id);
+
     const updateQuery = Object.entries(schedule).reduce((acc, [day, data]) => {
       if (data.medicines) {
-        acc[`schedule.${day}.medicines`] = data.medicines;
+        const cleanMeds = (data.medicines || [])
+          .filter(m => m && (m.label || m.time))
+          .map(m => ({
+            label: m.label && m.label.trim() ? m.label.trim() : (m.time ? `Med at ${m.time}` : "Medication"),
+            time: m.time && m.time.trim() ? m.time.trim() : "08:00",
+            done: Boolean(m.done)
+          }));
+        acc[`schedule.${day}.medicines`] = cleanMeds;
       }
-      if (data.meal) {
-        acc[`schedule.${day}.meal`] = data.meal;
+      if (data.meals) {
+        const cleanMeals = (data.meals || [])
+          .filter(m => m && (m.label || m.time))
+          .map(m => ({
+            label: m.label && m.label.trim() ? m.label.trim() : (m.time ? `Meal at ${m.time}` : "Meal"),
+            time: m.time && m.time.trim() ? m.time.trim() : "12:00",
+            done: Boolean(m.done)
+          }));
+        acc[`schedule.${day}.meals`] = cleanMeals;
       }
       return acc;
     }, {});
@@ -42,11 +59,7 @@ class MedsService {
 
     const defaultDay = {
       medicines: [],
-      meal: {
-        breakfast: null,
-        lunch: null,
-        dinner: null
-      }
+      meals: []
     };
 
     const schedule = {
@@ -75,7 +88,7 @@ class MedsService {
       const dayData = schedule[day];
       result[day] = {
         medicines: dayData?.medicines || [],
-        meal: dayData?.meal || {}
+        meals: dayData?.meals || []
       };
     }
 
@@ -88,7 +101,7 @@ class MedsService {
     }
     const defaultDay = {
       medicines: [],
-      meal: { breakfast: null, lunch: null, dinner: null }
+      meals: []
     };
     const defaultSchedule = {
       monday: defaultDay,

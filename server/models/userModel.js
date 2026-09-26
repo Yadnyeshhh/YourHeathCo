@@ -10,8 +10,9 @@ const userSchema = new mongoose.Schema({
   },
   age: Number,
   gender: String,
-  contact: String,
   bloodGroup: String,
+  dob: { type: String, default: '' },
+  phone: { type: String, default: '' },
   profileImage: String,
   email: {
     type: String,
@@ -23,7 +24,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    select: false, // Don't return password by default
+    select: false, 
   },
   admin: {
     type: mongoose.Schema.Types.ObjectId,

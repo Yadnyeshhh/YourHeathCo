@@ -13,7 +13,5 @@ export const getSchedule = async (patientId) => {
 };
 
 export const updateMeds = async (patientId, medsData) => {
-  // PATCH medications for a patient (owner must match ID)
-  // Backend expects { schedule: { ... } }
   return await api.patch(`/meds_meals/patient/${patientId}/medications`, { schedule: medsData });
 };

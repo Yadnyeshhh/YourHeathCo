@@ -11,8 +11,8 @@ function checkOwnership(paramName) {
     if (!ownerId) {
       return res.status(400).json({ message: 'Owner ID missing in route params' });
     }
-    // Allow any role as long as the JWT id matches the requested resource id
-    if (auth.id === ownerId) {
+    // Allow admin role OR matching JWT id
+    if (auth.role === 'admin' || auth.id === ownerId) {
       return next();
     }
     return res.status(403).json({ message: 'Forbidden: insufficient permissions' });

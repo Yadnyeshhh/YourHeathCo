@@ -28,6 +28,17 @@ const API_ROUTES = {
 
   // Patient Status routes
   PATIENT_STATUS_UPDATE: '/api/patient-status/:userId',
+
+  // Appointment routes
+  APPOINTMENTS_GET: '/api/appointments/:patientId',
+  APPOINTMENTS_UPDATE: '/api/appointments/:patientId',
+
+  // Doctor routes
+  DOCTORS_ALL: '/api/doctors',
+  DOCTORS_GET: '/api/doctors/:id',
+  DOCTORS_CREATE: '/api/doctors',
+  DOCTORS_UPDATE: '/api/doctors/:id',
+  DOCTORS_DELETE: '/api/doctors/:id',
 };
 
 module.exports = API_ROUTES;

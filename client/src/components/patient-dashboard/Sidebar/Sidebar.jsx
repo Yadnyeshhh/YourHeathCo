@@ -1,16 +1,10 @@
-import "./Sidebar.css";
-import React from 'react';
-import LucideIcon from "../LucideIcon/LucideIcon";
-import { NavLink, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { LayoutDashboard, Calendar, Utensils, Pill, Stethoscope, User, LogOut } from "lucide-react";
 import { clearPatientSession } from "../../../utils/auth.js";
 
-const Sidebar = ({
-  profile,
-  isOpen,
-  onClose,
-  messagesCount = 2,
-  appointmentsCount = 3
-}) => {
+export default function Sidebar({ profile }) {
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -18,80 +12,71 @@ const Sidebar = ({
     navigate("/login");
   };
 
-  const menuItems = [
-    { name: 'Dashboard', icon: 'LayoutDashboard', path: '/dashboard', active: true },
-    { name: 'Appointments', icon: 'Calendar', path: '#', badge: appointmentsCount },
-    { name: 'Medical Records', icon: 'FileText', path: '#' },
-    { name: 'Prescriptions', icon: 'ClipboardPlus', path: '#' },
-    { name: 'Test Results', icon: 'BarChart2', path: '#' },
-    { name: 'Messages', icon: 'MessageCircle', path: '#', badge: messagesCount },
-    { name: 'Settings', icon: 'Settings', path: '#' },
+  const navItems = [
+    { icon: LayoutDashboard, label: "Dashboard", href: "/pdashboard" },
+    { icon: Utensils, label: "Meals", href: "/meals" },
+    { icon: Pill, label: "Meds", href: "/meds" },
+    { icon: Calendar, label: "Appointments", href: "/appointments" },
+    { icon: Stethoscope, label: "Doctors", href: "/doctors" },
+    { icon: User, label: "Profile", href: "/profile" },
   ];
 
-  // Derive user info
-  const name = profile?.name || "John Patient";
-  const initials = name.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2);
-  const patientId = profile?.patientId || "#12345";
-
   return (
-    <nav className={`sb-pt-root ${isOpen ? "open" : ""}`}>
-      {/* Header / Logo */}
-      <div className="sb-pt-header">
-        <h2 className="sb-pt-logo-text">YourHealthCo</h2>
-        <button className="sb-pt-menu-btn" onClick={onClose} aria-label="Close menu">
-          {/* <LucideIcon name="Menu" size={24} /> */}
-        </button>
+    <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex shrink-0">
+      <div>
+        <div className="p-6">
+          <h2 className="text-2xl font-bold tracking-tight text-jade">YourHealthCo</h2>
+        </div>
+        <nav className="mt-2 px-4 flex flex-col gap-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-colors ${
+                  isActive
+                    ? "bg-jade/15 text-jade font-semibold"
+                    : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                }`}
+              >
+                <Icon className={`size-5 ${isActive ? "text-jade" : "text-slate-400"}`} />
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
       </div>
-
-      {/* Main Navigation Links */}
-      <div className="sb-pt-nav-section">
-        {menuItems.map((item, index) => (
-          <NavLink
-            to={item.path}
-            key={index}
-            className={`sb-pt-item ${item.active ? 'sb-pt-item-active' : ''}`}
-            onClick={item.active ? undefined : (e) => e.preventDefault()}
-          >
-            <div className="sb-pt-item-left">
-              <LucideIcon name={item.icon} size={20} className="sb-pt-item-icon" />
-              <span>{item.name}</span>
-            </div>
-          </NavLink>
-        ))}
-
-        <div className="sb-pt-divider"></div>
-
-        <NavLink to="#" className="sb-pt-item" onClick={(e) => e.preventDefault()}>
-          <div className="sb-pt-item-left">
-            <LucideIcon name="HelpCircle" size={20} className="sb-pt-item-icon" />
-            <span>Help & Support</span>
-          </div>
-        </NavLink>
-
-        <NavLink to="#" className="sb-pt-item sb-pt-emergency-item" onClick={(e) => e.preventDefault()}>
-          <div className="sb-pt-item-left">
-            <LucideIcon name="PhoneCall" size={20} className="sb-pt-item-icon" />
-            <span>Emergency</span>
-          </div>
-        </NavLink>
-      </div>
-
-      {/* Bottom User Card */}
-      <div className="sb-pt-user-card">
-        <div className="sb-pt-user-info-row">
-          <div className="sb-pt-avatar">{initials}</div>
-          <div className="sb-pt-details">
-            <h3 className="sb-pt-user-name">{name}</h3>
+      
+      <div className="p-4 border-t border-slate-100">
+        <div className="flex items-center gap-3 mb-4 px-2">
+          {profile?.profileImage ? (
+            <img 
+              src={profile.profileImage.startsWith('http') ? profile.profileImage : `http://localhost:3000/${profile.profileImage}`} 
+              alt="Profile" 
+              className="size-10 rounded-full object-cover"
+            />
+          ) : (
+            <img 
+              src="/profile.png" 
+              alt="Default Profile" 
+              className="size-10 rounded-full object-cover bg-slate-100"
+            />
+          )}
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold truncate w-32">{profile?.name || "No name provided"}</span>
+            <Link to="/profile" className="text-xs text-slate-500 hover:text-jade transition-colors">Settings</Link>
           </div>
         </div>
-
-        <button className="sb-pt-signout-btn" onClick={handleSignOut}>
-          <LucideIcon name="LogOut" size={18} />
-          Sign Out
+        <button
+          onClick={handleSignOut}
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+        >
+          <LogOut className="size-5" />
+          Sign out
         </button>
       </div>
-    </nav>
+    </aside>
   );
-};
-
-export default Sidebar;
+}

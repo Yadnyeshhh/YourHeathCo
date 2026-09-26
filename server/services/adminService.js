@@ -8,6 +8,9 @@ const createToken = (_id) => {
   return jwt.sign({ _id, id: _id, role: "admin" }, process.env.JWT_SECRET, { expiresIn: "3d" });
 };
 
+const PatientStatus = require("../models/PatientStatus");
+const Appointment = require("../models/Appointment");
+
 class AdminService {
   async signup(data) {
     const { email } = data;
@@ -42,7 +45,17 @@ class AdminService {
       ];
       filter.$or = orConditions;
     }
-    const users = await User.find(filter).select("-password -__v");
+    const users = await User.find(filter).select("-password -__v").lean();
+    for (let u of users) {
+      const statusDoc = await PatientStatus.findOne({ patient: u._id })
+        .populate('assignedDoctor')
+        .populate('consultingDoctors')
+        .lean();
+      u.patientStatus = statusDoc || null;
+
+      const appts = await Appointment.find({ patientId: u._id }).sort({ date: 1 }).lean();
+      u.appointments = appts || [];
+    }
     return users;
   }
 

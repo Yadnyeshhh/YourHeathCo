@@ -9,6 +9,8 @@ const signupSchema = {
     gender: z.string().optional(),
     contact: z.string().optional(),
     bloodGroup: z.string().optional(),
+    dob: z.string().optional(),
+    phone: z.string().optional(),
   })
 };
 
@@ -26,6 +28,8 @@ const updateSchema = {
     gender: z.string().optional(),
     contact: z.string().optional(),
     bloodGroup: z.string().optional(),
+    dob: z.string().optional(),
+    phone: z.string().optional(),
     // Keep out sensitive fields just in case
   })
 };

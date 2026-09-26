@@ -1,4 +1,4 @@
-﻿const Appointment = require('../models/Appointment');
+const Appointment = require('../models/Appointment');
 
 // GET /api/appointments/:patientId
 exports.getAppointments = async (req, res, next) => {
@@ -13,12 +13,24 @@ exports.getAppointments = async (req, res, next) => {
 exports.updateAppointment = async (req, res, next) => {
   try {
     const { patientId } = req.params;
-    const { date, time, notes } = req.body;
-    const appointment = await Appointment.findOneAndUpdate(
-      { patientId, date },
-      { patientId, date, time, notes },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
-    );
+    const { title, doctorName, doctorRole, location, mode, notes, date, time } = req.body;
+    
+    // Find existing appointment for this patient or create new
+    let appointment = await Appointment.findOne({ patientId });
+    if (!appointment) {
+      appointment = new Appointment({ patientId });
+    }
+    
+    if (title !== undefined) appointment.title = title;
+    if (doctorName !== undefined) appointment.doctorName = doctorName;
+    if (doctorRole !== undefined) appointment.doctorRole = doctorRole;
+    if (location !== undefined) appointment.location = location;
+    if (mode !== undefined) appointment.mode = mode;
+    if (notes !== undefined) appointment.notes = notes;
+    if (date) appointment.date = new Date(date);
+    if (time !== undefined) appointment.time = time;
+
+    await appointment.save();
     res.status(200).json({ success: true, data: appointment });
   } catch (err) { next(err); }
 };

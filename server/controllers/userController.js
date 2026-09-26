@@ -9,7 +9,10 @@ const AppError = require("../utils/appError");
 // 🧍‍♂️ Get patient (user) profile
 const getProfile = catchAsync(async (req, res) => {
   const profile = await User.findById(req.user._id).lean();
-  const patientStatus = await PatientStatus.findOne({ patient: req.user._id }).lean();
+  const patientStatus = await PatientStatus.findOne({ patient: req.user._id })
+    .populate('assignedDoctor')
+    .populate('consultingDoctors')
+    .lean();
   
   const data = {
     ...profile,

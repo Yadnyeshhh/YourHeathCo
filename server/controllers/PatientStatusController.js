@@ -5,7 +5,19 @@ const ApiResponse = require("../utils/apiResponse");
 // PUT /api/patient-status/:userId
 const updatePatientStatus = catchAsync(async (req, res) => {
   const { userId } = req.params;
-  const updates = req.body;
+  const updates = { ...req.body };
+
+  // Sanitize assignedDoctor if empty or invalid
+  if (updates.assignedDoctor === "" || updates.assignedDoctor === "null" || updates.assignedDoctor === undefined) {
+    updates.assignedDoctor = null;
+  }
+
+  // Sanitize consultingDoctors array
+  if (Array.isArray(updates.consultingDoctors)) {
+    updates.consultingDoctors = updates.consultingDoctors.filter(
+      docId => docId && typeof docId === "string" && docId.trim() !== ""
+    );
+  }
 
   let status = await PatientStatus.findOne({ patient: userId });
 
