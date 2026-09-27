@@ -4,7 +4,12 @@ const Appointment = require('../models/Appointment');
 exports.getAppointments = async (req, res, next) => {
   try {
     const { patientId } = req.params;
-    const appointments = await Appointment.find({ patientId });
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const appointments = await Appointment.find({
+      patientId,
+      date: { $gte: startOfToday }
+    }).sort({ date: 1 });
     res.json({ success: true, data: appointments });
   } catch (err) { next(err); }
 };

@@ -89,13 +89,21 @@ export default function PatientDashboard() {
     });
   }
 
-  // Get current day's data (mocking to Tuesday as per design for now, or use real day)
+  // Get current day's data
   const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'short' });
-  const displayDay = weekDays.includes(currentDay) ? currentDay : 'Tue';
+  const displayDay = weekDays.includes(currentDay) ? currentDay : 'Mon';
   const currentMeals = mealsWeek[displayDay] || [];
   const currentMeds = medsWeek[displayDay] || [];
 
-  const nextAppt = appointments.length > 0 ? appointments[0] : null;
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  const validAppts = (appointments || []).filter(appt => {
+    if (!appt || !appt.date) return false;
+    const apptDate = new Date(appt.date);
+    return apptDate >= startOfToday;
+  });
+
+  const nextAppt = validAppts.length > 0 ? validAppts[0] : null;
   // Format next appt for the UI
   const formattedNextAppointment = nextAppt ? {
     title: nextAppt.title || "Upcoming Appointment",

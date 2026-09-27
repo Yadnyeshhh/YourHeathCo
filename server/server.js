@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
@@ -25,12 +26,13 @@ app.use(
 app.use(express.json());
 
 // Serve static uploads
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use((req, res, next) => {
   console.log(req.path);
   next();
 });
 
+// API Routes
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/meds_meals", medRoutes);

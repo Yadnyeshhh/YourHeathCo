@@ -36,6 +36,15 @@ export default function Appointments() {
     );
   }
 
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+
+  const validAppointments = appointments.filter(appt => {
+    if (!appt || !appt.date) return false;
+    const apptDate = new Date(appt.date);
+    return apptDate >= startOfToday;
+  });
+
   return (
     <DashboardLayout>
       <header className="animate-rise">
@@ -44,10 +53,10 @@ export default function Appointments() {
       </header>
 
       <div className="mt-6 space-y-6">
-        {appointments.length === 0 ? (
+        {validAppointments.length === 0 ? (
           <p className="text-slate-500">No appointments scheduled.</p>
         ) : (
-          appointments.map((appt, i) => (
+          validAppointments.map((appt, i) => (
             <section key={appt._id || i} className="animate-rise" style={{ animationDelay: `${120 + i * 100}ms` }}>
               <div className="max-w-2xl rounded-[22px] bg-deep p-6 text-white ring-1 ring-black/5 shadow-xl">
                 <div className="flex items-start justify-between">

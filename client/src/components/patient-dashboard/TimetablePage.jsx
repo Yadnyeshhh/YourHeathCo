@@ -15,13 +15,26 @@ export function TimetablePage({ section, title, subtitle, data, profile }) {
       <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         {weekDays.map((day, i) => {
           const items = data[day] || [];
+          const currentDayName = new Date().toLocaleDateString('en-US', { weekday: 'short' });
+          const isToday = day === currentDayName;
           return (
             <div
               key={day}
-              className="rounded-[22px] bg-white/70 p-6 ring-1 ring-black/5 backdrop-blur-md animate-rise"
+              className={`rounded-[22px] p-6 backdrop-blur-md animate-rise transition-all ${
+                isToday
+                  ? "bg-white ring-2 ring-jade shadow-lg"
+                  : "bg-white/70 ring-1 ring-black/5"
+              }`}
               style={{ animationDelay: `${120 + i * 80}ms` }}
             >
-              <h2 className="text-xl font-extrabold tracking-tight text-slate-900 mb-4">{day}</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-extrabold tracking-tight text-slate-900">{day}</h2>
+                {isToday && (
+                  <span className="rounded-full bg-jade/15 px-2.5 py-0.5 font-mono text-[10px] font-bold text-jade uppercase tracking-wider">
+                    Today
+                  </span>
+                )}
+              </div>
               {items.length === 0 ? (
                 <p className="text-sm text-ink/40">No entries for this day.</p>
               ) : (

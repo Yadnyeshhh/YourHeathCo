@@ -21,16 +21,17 @@ export default function MealsSection({ currentMeals, weekDays, mealsWeek }) {
         </div>
         <p className="mt-1 text-sm text-ink/60">Weekly nutrition plan</p>
         <div className="mt-5 grid grid-cols-7 gap-2">
-          {weekDays.map((day, i) => {
-            const active = i < 2; // Mon, Tue
+          {weekDays.map((day) => {
+            const currentDayName = new Date().toLocaleDateString('en-US', { weekday: 'short' });
+            const active = day === currentDayName;
             return (
               <div
                 key={day}
-                className={`rounded-lg py-2 text-center ${active ? "bg-jade/15" : "bg-white/60"}`}
+                className={`rounded-lg py-2 text-center ${active ? "bg-jade/15 ring-1 ring-jade/40 font-bold" : "bg-white/60"}`}
               >
-                <p className={`font-mono text-[10px] ${active ? "text-jade" : "text-ink/40"}`}>{day[0]}</p>
-                <p className={`mt-1 text-[11px] font-semibold ${active ? "text-slate-900" : "text-ink/40"}`}>
-                  {mealsWeek[day].length}
+                <p className={`font-mono text-[10px] ${active ? "text-jade font-bold" : "text-ink/40"}`}>{day[0]}</p>
+                <p className={`mt-1 text-[11px] font-semibold ${active ? "text-slate-900 font-bold" : "text-ink/40"}`}>
+                  {mealsWeek[day] ? mealsWeek[day].length : 0}
                 </p>
               </div>
             );
