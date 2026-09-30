@@ -18,7 +18,6 @@ const Navbar = ({ toLogin }) => {
       <div className="hidden md:flex items-center gap-8 text-white">
         {[
           { name: "About Us", to: "/about" },
-          { name: "Our Doctors", to: "/doctors" },
           { name: "Contact", to: "/contact" },
         ].map((link) => (
           <Link
