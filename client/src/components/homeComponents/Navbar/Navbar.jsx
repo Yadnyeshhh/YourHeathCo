@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = ({ toLogin }) => {
@@ -8,23 +9,21 @@ const Navbar = ({ toLogin }) => {
     <nav className="w-full flex items-center justify-between px-8 py-4 bg-black/30 backdrop-blur-lg fixed top-0 left-0 z-50">
       {/* Logo */}
       <div className="text-2xl font-bold text-white">
-        <a href="/" className="hover:text-[#0a6b5e]">
+        <Link to="/" className="hover:text-[#0a6b5e]">
           YourHealthCo
-        </a>
+        </Link>
       </div>
 
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center gap-8 text-white">
         {[
-          { name: "Services", href: "#services" },
-          { name: "About Us", href: "#about" },
-          { name: "Our Doctors", href: "#doctors" },
-          { name: "Testimonials", href: "#testimonials" },
-          { name: "Contact", href: "#contact" },
+          { name: "About Us", to: "/about" },
+          { name: "Our Doctors", to: "/doctors" },
+          { name: "Contact", to: "/contact" },
         ].map((link) => (
-          <a
+          <Link
             key={link.name}
-            href={link.href}
+            to={link.to}
             className="relative overflow-hidden h-6 group font-medium"
           >
             <span className="block group-hover:-translate-y-full transition-transform duration-300">
@@ -33,7 +32,7 @@ const Navbar = ({ toLogin }) => {
             <span className="block absolute top-full left-0 group-hover:translate-y-[-100%] transition-transform duration-300">
               {link.name}
             </span>
-          </a>
+          </Link>
         ))}
       </div>
 
@@ -69,20 +68,18 @@ const Navbar = ({ toLogin }) => {
       {menuOpen && (
         <div className="absolute top-16 left-0 bg-black/90 w-full flex flex-col items-center gap-4 py-4 text-white">
           {[
-            { name: "Services", href: "#services" },
-            { name: "About Us", href: "#about" },
-            { name: "Our Doctors", href: "#doctors" },
-            { name: "Testimonials", href: "#testimonials" },
-            { name: "Contact", href: "#contact" },
+            { name: "About Us", to: "/about" },
+            { name: "Our Doctors", to: "/doctors" },
+            { name: "Contact", to: "/contact" },
           ].map((link) => (
-            <a
+            <Link
               key={link.name}
-              href={link.href}
+              to={link.to}
               className="hover:text-yellow-400"
               onClick={() => setMenuOpen(false)}
             >
               {link.name}
-            </a>
+            </Link>
           ))}
           <button
             onClick={() => {

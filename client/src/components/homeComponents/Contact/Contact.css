@@ -1,1 +1,84 @@
-/* Contact styles */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.contact-section {
+  background-color: #f5f7fa;
+  padding: 80px 20px;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+.contact-container {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-heading {
+  color: #1f3b5b;
+  font-size: 36px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.contact-intro {
+  color: #6b7280;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 50px;
+}
+
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.contact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 30px 20px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 15px rgba(31, 59, 91, 0.06);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(31, 59, 91, 0.12);
+}
+
+.contact-icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+.contact-label {
+  color: #1f3b5b;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.contact-value {
+  color: #0c8272;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  word-break: break-all;
+}
+
+@media (max-width: 768px) {
+  .contact-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}

@@ -1,20 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 .hero-section {
   position: relative;
   width: 100%;
-  min-height: 800px;
-  background-image: url('../../../assets/background-image-home.webp'); 
-  background-size: cover;
+  height: 100vh;
+
+  background-image: url("../../../assets/background-image-home.webp");
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   box-sizing: border-box;
-  transform: none !important; /* fixes distortion */
-  overflow: hidden; /* cleanly caps extreme marquee overflow */
+
+  transform: none !important;
+  overflow: hidden;
 }
 
 .hero-overlay {
@@ -34,7 +37,8 @@
 }
 
 .hero-main-content {
-  position: relative;
+  /* position: absolute; */
+  /* height: 100vh; */
   z-index: 2;
   flex: 1;
   display: flex;
@@ -42,7 +46,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 80px 20px 60px 20px;
+  /* padding: 80px 20px 60px 20px; */
 }
 
 .hero-heading {
@@ -135,8 +139,20 @@
   margin-top: 20px;
   padding-bottom: 10px;
   z-index: 2;
-  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 10%,
+    black 90%,
+    transparent
+  );
 }
 
 .marquee-content {
@@ -152,7 +168,9 @@
   object-fit: contain;
   opacity: 0.5;
   filter: grayscale(100%);
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    filter 0.3s ease;
 }
 
 .marquee-image:hover {
@@ -161,20 +179,31 @@
 }
 
 @keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @media (max-width: 768px) {
-  .hero-heading { font-size: 38px; }
-  .hero-subtext { font-size: 16px; }
+  .hero-heading {
+    font-size: 38px;
+  }
+  .hero-subtext {
+    font-size: 16px;
+  }
   .hero-buttons {
     flex-direction: column;
     gap: 15px;
     width: 100%;
     max-width: 320px;
   }
-  .btn-primary, .btn-secondary { width: 100%; }
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
   .hero-features {
     flex-direction: column;
     gap: 20px;

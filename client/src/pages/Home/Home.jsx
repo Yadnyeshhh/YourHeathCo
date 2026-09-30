@@ -37,15 +37,8 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="font-sans text-gray-800 bg-gray-50">
+    <div className="font-sans text-gray-800 bg-gray-50 h-[100vh] overflow-hidden">
       <Hero toLogin={toLogin} />
-      <CTA toLogin={toLogin} />
-      <Services />
-      <About />
-      <Doctors />
-      <Testimonials />
-      <Contact />
-      <Footer />
     </div>
   );
 };

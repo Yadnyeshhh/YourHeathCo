@@ -3,35 +3,50 @@ import "./Contact.css";
 
 const Contact = () => {
   return (
-    <section id="contact" className="py-16 max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10">
-      <div>
-        <h2 className="text-3xl font-bold mb-6">Get in Touch</h2>
-        <p>📍 123 Health Ave, Wellness City, 56789</p>
-        <p>📞 (123) 456-7890</p>
-        <p>📧 info@yourhealthco.com</p>
-        <div className="flex space-x-4 mt-4">
-          <a href="#" className="text-blue-600 hover:text-blue-500 text-2xl">
-            🌐
+    <section id="contact" className="contact-section">
+      <div className="contact-container">
+        <h2 className="contact-heading">Get in Touch</h2>
+        <p className="contact-intro">
+          Have questions or want to collaborate? Feel free to reach out!
+        </p>
+
+        <div className="contact-cards">
+          {/* Email */}
+          <a
+            href="mailto:yadnyesh2202@gmail.com"
+            className="contact-card"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="contact-icon">📧</div>
+            <h3 className="contact-label">Email</h3>
+            <p className="contact-value">yadnyesh2202@gmail.com</p>
           </a>
-          <a href="#" className="text-blue-400 hover:text-blue-300 text-2xl">
-            🐦
+
+          {/* GitHub */}
+          <a
+            href="https://github.com/yadnyeshhh"
+            className="contact-card"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="contact-icon">💻</div>
+            <h3 className="contact-label">GitHub</h3>
+            <p className="contact-value">Yadnyeshhh</p>
           </a>
-          <a href="#" className="text-blue-700 hover:text-blue-600 text-2xl">
-            💼
+
+          {/* LinkedIn */}
+          <a
+            href="https://www.linkedin.com/in/yadnyesh-chaudhari-6b72a62a3"
+            className="contact-card"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="contact-icon">💼</div>
+            <h3 className="contact-label">LinkedIn</h3>
+            <p className="contact-value">Link coming soon</p>
           </a>
         </div>
-      </div>
-      <div>
-        <h3 className="text-xl font-semibold mb-4">Send Us a Message</h3>
-        <form className="space-y-4">
-          <input type="text" placeholder="Your Name" className="w-full border p-3 rounded-lg" required />
-          <input type="email" placeholder="Your Email" className="w-full border p-3 rounded-lg" required />
-          <input type="tel" placeholder="Your Phone (Optional)" className="w-full border p-3 rounded-lg" />
-          <textarea placeholder="Your Message" rows="5" className="w-full border p-3 rounded-lg" required></textarea>
-          <button type="submit" className="bg-[#0a6b5e] text-white px-6 py-3 rounded-lg hover:bg-[#04463e] transition">
-            Send Message
-          </button>
-        </form>
       </div>
     </section>
   );

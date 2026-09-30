@@ -12,6 +12,8 @@ import Appointments from "./pages/Appointments/Appointments";
 import Doctors from "./pages/Doctors/Doctors";
 import Profile from "./pages/Profile/Profile";
 import Adminsiginup from "./pages/AdminSignup/AdminSignup";
+import About from "./components/homeComponents/About/About";
+import Contact from "./components/homeComponents/Contact/Contact";
 import { ProtectedRoute, AdminProtectedRoute } from "./components/common/ProtectedRoute";
 import './index.css';
 
@@ -21,6 +23,8 @@ const App = () => {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/adminsignup" element={<Adminsiginup />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
 
       {/* Patient Protected Routes */}
       <Route 

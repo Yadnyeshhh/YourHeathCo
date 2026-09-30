@@ -16,18 +16,13 @@ const Footer = () => {
           <h4 className="font-semibold text-white mb-3">Quick Links</h4>
           <ul className="space-y-2">
             <li>
-              <a href="#services" className="hover:text-white">
-                Services
-              </a>
-            </li>
-            <li>
               <a href="#about" className="hover:text-white">
-                About Us
+                About
               </a>
             </li>
             <li>
-              <a href="#doctors" className="hover:text-white">
-                Our Doctors
+              <a href="#contact" className="hover:text-white">
+                Contact
               </a>
             </li>
             <li>
@@ -43,10 +38,19 @@ const Footer = () => {
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold text-white mb-3">Contact Us</h4>
-          <p>123 Health Ave, Wellness City</p>
-          <p>(123) 456-7890</p>
-          <p>info@yourhealthco.com</p>
+          <h4 className="font-semibold text-white mb-3">Contact</h4>
+          <p>📧 yadnyesh2202@gmail.com</p>
+          <p className="mt-2">
+            💻{" "}
+            <a
+              href="https://github.com/yadnyeeshhh"
+              className="hover:text-white"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/yadnyeeshhh
+            </a>
+          </p>
         </div>
       </div>
     </footer>

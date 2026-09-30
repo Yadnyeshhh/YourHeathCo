@@ -4,27 +4,27 @@ import "./About.css";
 const aboutData = [
   {
     id: "01",
-    title: "Experienced Medical Team",
+    title: "Hospital Management Interface",
     description:
-      "Board-certified physicians with decades of combined experience in their specialties.",
+      "A comprehensive dashboard for hospitals to manage patient records, appointments, and doctor schedules seamlessly.",
   },
   {
     id: "02",
-    title: "State-of-the-Art Technology",
+    title: "Patient-Centric Portal",
     description:
-      "Latest medical equipment and innovative treatment methods for optimal patient outcomes.",
+      "Patients can book appointments, track medications, manage meals, and access their health records from one place.",
   },
   {
     id: "03",
-    title: "Patient-Centered Care",
+    title: "Seamless Communication",
     description:
-      "Personalized treatment plans focused on your unique health needs and wellness goals.",
+      "Bridging the gap between hospitals and patients with real-time updates, notifications, and secure data sharing.",
   },
   {
     id: "04",
-    title: "Comprehensive Coverage",
+    title: "Built for Modern Healthcare",
     description:
-      "Wide range of medical services under one roof for convenient, coordinated care.",
+      "Designed with cutting-edge technology to simplify healthcare workflows and improve patient outcomes.",
   },
 ];
 
@@ -32,7 +32,13 @@ const About = () => {
   return (
     <section className="about-section" id="about">
       <div className="about-container">
-        <h2 className="about-heading">Why Patients Choose Us</h2>
+        <h2 className="about-heading">About This Project</h2>
+        <p className="about-intro">
+          YourHealthCo is a healthcare management platform that provides a
+          unified interface for both hospitals and patients. Our goal is to
+          streamline hospital operations while empowering patients with easy
+          access to their health information and services.
+        </p>
         <div className="about-grid">
           {aboutData.map((item, index) => (
             <div className="about-card" key={index}>
