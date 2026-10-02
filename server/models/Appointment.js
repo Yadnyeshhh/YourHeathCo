@@ -10,6 +10,8 @@ const AppointmentSchema = new mongoose.Schema({
   location: { type: String, default: '' },
   mode: { type: String, enum: ['In-person', 'Telehealth'], default: 'In-person' },
   notes: { type: String },
+  requestedAt: { type: Date, default: Date.now },
+  status: { type: String, enum: ['Pending', 'Accepted', 'Rejected'], default: 'Pending' },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Appointment', AppointmentSchema);

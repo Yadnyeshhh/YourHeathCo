@@ -10,6 +10,7 @@ const medRoutes = require("./routes/meds_meal.js");
 const PatientStatusRoutes = require("./routes/patientStatusRoutes.js");
 const appointmentRoutes = require("./routes/appointment.js");
 const doctorRoutes = require("./routes/doctor.js");
+const notificationRoutes = require("./routes/notification.js");
 
 const errorMiddleware = require("./middleware/errorMiddleware.js");
 
@@ -39,6 +40,7 @@ app.use("/api/meds_meals", medRoutes);
 app.use("/api/patient-status", PatientStatusRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/doctors", doctorRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Global Error Handler
 app.use(errorMiddleware);

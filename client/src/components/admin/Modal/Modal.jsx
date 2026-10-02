@@ -1,4 +1,3 @@
-import "./Modal.css";
 import React from "react";
 import "../../../styles/admin/addpatient.css";
 const Modal = ({

@@ -11,6 +11,14 @@ const appointmentSchema = z.object({
   notes: z.string().optional(),
 });
 
+const requestAppointmentSchema = z.object({
+  title: z.string().optional(),
+  date: z.preprocess(arg => (arg ? new Date(arg) : undefined), z.date().refine(val => val !== undefined && !isNaN(val.getTime()), { message: 'Invalid date' })),
+  time: z.string().min(1, 'Time is required'),
+  mode: z.enum(['In-person', 'Telehealth']).optional(),
+  notes: z.string().optional(),
+});
+
 const appointmentValidator = {
   params: z.object({
     patientId: z.string().regex(/^[0-9a-fA-F]{24}$/),
@@ -18,4 +26,8 @@ const appointmentValidator = {
   body: appointmentSchema,
 };
 
-module.exports = { appointmentValidator };
+const requestAppointmentValidator = {
+  body: requestAppointmentSchema,
+};
+
+module.exports = { appointmentValidator, requestAppointmentValidator };

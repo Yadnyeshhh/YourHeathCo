@@ -1,4 +1,3 @@
-import "./AddPatient.css";
 import React, { useState, useEffect } from "react";
 import "../../../styles/admin/addpatient.css";
 import { useLocation } from "react-router-dom";

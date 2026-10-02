@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AdminHeader from "../AdminHeader";
 import { getSchedule, updateMeds } from "../../../services/scheduleService";
 import { updatePatientStatus } from "../../../services/patientStatusService";
-import { getAppointments, updateAppointment } from "../../../services/appointmentService";
+import { getAppointments, updateAppointment, updateAppointmentStatus } from "../../../services/appointmentService";
 import { getAllDoctors, createDoctor, deleteDoctor } from "../../../services/doctorService";
 import api from "../../../services/api";
 
@@ -49,6 +49,8 @@ export default function PatientDetails() {
   const [apptTime, setApptTime] = useState("");
   const [apptLocation, setApptLocation] = useState("");
   const [apptMode, setApptMode] = useState("Telehealth");
+  const [apptId, setApptId] = useState(null);
+  const [apptStatus, setApptStatus] = useState("Accepted");
 
   // Doctors & Care Team State
   const [allDoctorsList, setAllDoctorsList] = useState([]);
@@ -133,6 +135,8 @@ export default function PatientDetails() {
           const appts = apptRes?.data?.data || apptRes?.data || apptRes;
           if (Array.isArray(appts) && appts.length > 0) {
             const latest = appts[0];
+            setApptId(latest._id);
+            setApptStatus(latest.status || 'Accepted');
             if (latest.title) setApptTitle(latest.title);
             if (latest.doctorName) setApptDoctor(latest.doctorName);
             if (latest.notes) setApptStatusNote(latest.notes);
@@ -312,6 +316,40 @@ export default function PatientDetails() {
     }
   };
 
+  // Accept Appointment Handler
+  const handleAcceptAppointment = async () => {
+    if (!apptId) return;
+    try {
+      setSaving(true);
+      await updateAppointmentStatus(apptId, 'Accepted');
+      setApptStatus('Accepted');
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (err) {
+      console.error("Failed to accept appointment:", err);
+      alert("Error accepting appointment: " + err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Reject Appointment Handler
+  const handleRejectAppointment = async () => {
+    if (!apptId) return;
+    try {
+      setSaving(true);
+      await updateAppointmentStatus(apptId, 'Rejected');
+      setApptStatus('Rejected');
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (err) {
+      console.error("Failed to reject appointment:", err);
+      alert("Error rejecting appointment: " + err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   // Unassign Patient Handler
   const handleUnassignPatient = async () => {
     const targetId = id || patient?._id;
@@ -410,7 +448,8 @@ export default function PatientDetails() {
 
         {/* 3 Grid Cards Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Card 1: Set Appointment */}
+          {/* Card 1: Set Appointment - hidden if rejected */}
+          {apptStatus !== 'Rejected' && (
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3">
@@ -420,11 +459,33 @@ export default function PatientDetails() {
                   </span>
                   <h2 className="text-lg font-bold text-slate-900">Set appointment</h2>
                 </div>
-                {apptStatusNote && (
-                  <span className="bg-emerald-100 text-emerald-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">
-                    {apptStatusNote}
-                  </span>
-                )}
+                <div className="flex items-center gap-2">
+                  {apptStatus === 'Pending' && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={handleAcceptAppointment}
+                        disabled={saving}
+                        className="text-[11px] font-semibold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 px-3 py-1 rounded-lg transition disabled:opacity-50"
+                      >
+                        ✓ Accept
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleRejectAppointment}
+                        disabled={saving}
+                        className="text-[11px] font-semibold text-rose-700 bg-rose-100 hover:bg-rose-200 px-3 py-1 rounded-lg transition disabled:opacity-50"
+                      >
+                        ✕ Reject
+                      </button>
+                    </>
+                  )}
+                  {apptStatus === 'Accepted' && (
+                    <span className="bg-emerald-100 text-emerald-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">
+                      Accepted
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-3 mt-4 text-xs">
@@ -528,6 +589,7 @@ export default function PatientDetails() {
               </div>
             </div>
           </div>
+          )}
 
           {/* Card 2: Set Doctors / Care Team */}
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 flex flex-col justify-between">

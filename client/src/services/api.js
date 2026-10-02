@@ -25,10 +25,10 @@ api.interceptors.request.use(
       url.includes('/user/search')
     ) {
       token = adminToken;
-    } else if (url.startsWith('/user/')) {
+    } else if (url.startsWith('/user/') || url.includes('/appointments')) {
       token = userToken;
     } else {
-      // Shared endpoints (e.g., /meds_meals, /appointment)
+      // Shared endpoints (e.g., /meds_meals)
       token = adminToken || userToken;
     }
 

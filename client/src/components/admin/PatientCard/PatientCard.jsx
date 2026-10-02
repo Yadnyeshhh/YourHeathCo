@@ -38,6 +38,9 @@ export default function PatientCard({ patient, instituteName }) {
         ? new Date(patient.patientStatus.nextAppointment).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })
         : "");
 
+  // Check if there's a pending appointment request
+  const pendingRequest = nextAppt?.status === 'Pending';
+
   // Doctors care team
   const doctorsList = [];
   if (patient?.patientStatus?.assignedDoctor) {
@@ -80,6 +83,11 @@ export default function PatientCard({ patient, instituteName }) {
           <span className={`text-xs px-3 py-1 rounded-full font-medium border ${getBadgeStyle(statusFlag)}`}>
             {statusFlag}
           </span>
+          {pendingRequest && (
+            <span className="text-xs px-3 py-1 rounded-full font-medium border bg-amber-100 text-amber-700 border-amber-200">
+              Pending Request
+            </span>
+          )}
         </div>
 
         {/* Divider */}
